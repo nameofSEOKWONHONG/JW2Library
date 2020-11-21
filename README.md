@@ -1,2 +1,3 @@
-# JWLibraryNetCore
-implement dotnet extensions and useful methods 
+# JW2Library
+implement dotnet extensions and useful methods.
+original src is JWLibrary.
