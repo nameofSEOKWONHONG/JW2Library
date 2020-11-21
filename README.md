@@ -1,2 +1,2 @@
-# JWLibrary.Net
-new jwlibrary dotnet core and dotnet 5
+# JWLibraryNetCore
+implement dotnet extensions and useful methods 
