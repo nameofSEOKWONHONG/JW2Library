@@ -42,6 +42,12 @@ namespace JWLibrary.ServiceExecutor {
             action(this.service);
         }
 
+        public async Task OnExecutedAsync(Action<TIService> action) {
+            await Task.Factory.StartNew(() => {
+                this.OnExecuted(action);
+            });
+        }
+
         public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
