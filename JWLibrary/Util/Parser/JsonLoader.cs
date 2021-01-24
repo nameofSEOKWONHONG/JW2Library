@@ -10,15 +10,14 @@ namespace JWLibrary.Utils {
         public static T LoadFromJson(string filename) {
             if (false == File.Exists(filename)) return null;
 
-            try {
+            try
+            {
                 // read JSON directly from a file
-                using (var file = File.OpenText(filename)) {
-                    var json = file.ReadToEnd();
-                    return JsonConvert.DeserializeObject<T>(json);
-                }
+                using var file = File.OpenText(filename);
+                var json = file.ReadToEnd();
+                return JsonConvert.DeserializeObject<T>(json);
             } catch (Exception e) {
                 Debug.Assert(false);
-                e.ToString();
             }
 
             return null;
@@ -29,13 +28,12 @@ namespace JWLibrary.Utils {
 
             var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
-            try {
-                using (var sw = File.CreateText(filename)) {
-                    sw.Write(json);
-                }
+            try
+            {
+                using var sw = File.CreateText(filename);
+                sw.Write(json);
             } catch (Exception e) {
                 Debug.Assert(false);
-                e.ToString();
                 return false;
             }
 

@@ -54,13 +54,11 @@ namespace JWLibrary.Core {
         public static IEnumerable<T> jWhere<T>(this IEnumerable<T> obj, Func<T, bool> predicate)
             where T : class {
             var list = new JList<T>();
-            if (obj.jToList().jCount() <= 0) obj = new JList<T>();
+            if (obj.jIsNull()) {
+                obj = new JList<T>();
+            }
             list = obj.Where(predicate).jToList();
             return list;
-        }
-
-        public static bool jEquals<T>(this T obj, object diffObj) {
-            return obj.Equals(diffObj);
         }
     }
 }

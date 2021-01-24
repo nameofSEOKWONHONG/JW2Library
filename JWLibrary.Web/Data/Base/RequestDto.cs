@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace JWLibrary.Core {
+namespace JWLibrary.Web {
 
     /// <summary>
     ///     base request class

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
+using JWLibrary.Core;
 
 namespace JWLibrary.Utils {
 
@@ -11,50 +12,30 @@ namespace JWLibrary.Utils {
 
         public static T LoadFromXml(string filename) {
             T settings = null;
-            if (false == File.Exists(filename)) return null;
-            FileStream fs = null;
-            XmlSerializer xs = null;
-
+            if (File.Exists(filename).jIsNotNull()) return null;
+            
             try {
-                xs = new XmlSerializer(typeof(T));
-            } catch (Exception e) {
-                Debug.Assert(false);
-                e.ToString();
-            }
-
-            try {
-                fs = new FileStream(filename, FileMode.Open);
+                var xs = new XmlSerializer(typeof(T));
+                using var fs = new FileStream(filename, FileMode.Open);
                 settings = (T)xs.Deserialize(fs);
             } catch (Exception e) {
                 Debug.Assert(false);
-                e.ToString();
             }
 
-            if (null != fs) fs.Close();
             return settings;
         }
 
         public static bool Save2Xml(string filename, T settings) {
-            if (null == filename || string.Empty == Path.GetFileName(filename)) return false;
-            TextWriter tw = null;
-            XmlSerializer xs = null;
-
+            if (null == filename) return false;
+            if (Path.GetFileName(filename).jIsNullOrEmpty()) return false;
+            
             try {
-                xs = new XmlSerializer(typeof(T));
-            } catch (Exception e) {
-                Debug.Assert(false);
-                e.ToString();
-            }
-
-            try {
-                tw = new StreamWriter(filename);
+                var xs = new XmlSerializer(typeof(T));
+                using var tw = new StreamWriter(filename);
                 xs.Serialize(tw, settings);
             } catch (Exception e) {
                 Debug.Assert(false);
-                e.ToString();
                 return false;
-            } finally {
-                if (null != tw) tw.Close();
             }
 
             return true;

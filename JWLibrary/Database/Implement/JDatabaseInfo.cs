@@ -35,9 +35,9 @@ namespace JWLibrary.Database {
             var section = configuration.GetSection("DbConnections");
 
             ConKeyValues.jForEach(item => {
-                if (item.Key.jEquals("MSSQL"))
+                if (item.Key == "MSSQL")
                     ConKeyValues[item.Key] = new SqlConnection(section.GetValue<string>(item.Key));
-                else if (item.Key.jEquals("MYSQL"))
+                else if (item.Key == "MYSQL")
                     ConKeyValues[item.Key] = new MySqlConnection(section.GetValue<string>(item.Key));
             });
         }

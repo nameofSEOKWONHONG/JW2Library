@@ -16,7 +16,7 @@ namespace JWLibrary.Database {
     /// </summary>
     public static class JDBClientExtension {
 
-        private static readonly Dictionary<SQL_COMPILER_TYPE, Compiler> _COMPILER_MAP =
+        private static readonly Dictionary<SQL_COMPILER_TYPE, Compiler> COMPILER_MAP =
             new Dictionary<SQL_COMPILER_TYPE, Compiler>
             {
                 {SQL_COMPILER_TYPE.MSSQL, new SqlServerCompiler()},
@@ -277,7 +277,7 @@ namespace JWLibrary.Database {
             var result = default(T);
             try {
                 connection.Open();
-                var compiler = _COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
+                var compiler = COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
                 var compilerResult = compiler.Value.Compile(query);
                 result = connection.QueryFirstOrDefault<T>(compilerResult.ToString());
                 if (func.jIsNotNull()) return func(result);
@@ -293,7 +293,7 @@ namespace JWLibrary.Database {
             var result = default(T);
             try {
                 connection.Open();
-                var compiler = _COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
+                var compiler = COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
                 var compilerResult = compiler.Value.Compile(query);
                 result = await connection.jGetAsync<T>(compilerResult.ToString());
                 if (func.jIsNotNull()) return func(result);
@@ -319,7 +319,7 @@ namespace JWLibrary.Database {
             var result = default(IEnumerable<T>);
             try {
                 connection.Open();
-                var compiler = _COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
+                var compiler = COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
                 var compilerResult = compiler.Value.Compile(query);
                 result = connection.Query<T>(compilerResult.ToString());
                 if (func.jIsNotNull()) return func(result);
@@ -336,7 +336,7 @@ namespace JWLibrary.Database {
             var result = default(IEnumerable<T>);
             try {
                 connection.Open();
-                var compiler = _COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
+                var compiler = COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
                 var compilerResult = compiler.Value.Compile(query);
                 result = await connection.jGetAllAsync<T>(compilerResult.ToString());
                 if (func.jIsNotNull()) return func(result);
@@ -360,7 +360,7 @@ namespace JWLibrary.Database {
             where T : class, new() {
             try {
                 connection.Open();
-                var compiler = _COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
+                var compiler = COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
                 var compilerResult = compiler.Value.Compile(query);
                 var result = connection.Execute(compilerResult.ToString()) > 0;
                 action(result);
@@ -375,7 +375,7 @@ namespace JWLibrary.Database {
             where T : class, new() {
             try {
                 connection.Open();
-                var compiler = _COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
+                var compiler = COMPILER_MAP.Where(m => m.Key == sqlCompilerType).jFirst();
                 var compilerResult = compiler.Value.Compile(query);
                 var result = await connection.jExecuteAsync(compilerResult.ToString());
                 action(result);

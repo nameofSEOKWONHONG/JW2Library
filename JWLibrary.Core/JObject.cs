@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace JWLibrary.Core {
 
@@ -28,6 +29,15 @@ namespace JWLibrary.Core {
         public static bool jIsNotNull(this object obj) {
             if (obj == null) return false;
             return true;
+        }
+
+        public static bool jIsEmpty(this object obj) {
+            if (obj.jIsNull()) return true;
+            if (obj is ICollection) {
+                if ((obj as ICollection).Count > 0) return true;
+            }
+
+            return false;
         }
     }
 }
