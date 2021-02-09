@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
+using JWLibrary.ServiceExecutor;
 
 namespace JWLibrary.Web {
     /// <summary>
@@ -15,6 +17,17 @@ namespace JWLibrary.Web {
 
         public JControllerBase(ILogger<TController> logger) {
             Logger = logger;
+        }
+
+        protected async Task<TResult> ExecuteServiceAsync<TServiceExecutor, TRequest, TResult>
+            (TServiceExecutor serviceExecutor, TRequest request) where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
+            TResult result = default(TResult);
+            using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
+            await executor.SetRequest(o => o.Request = request)
+                .OnExecutedAsync(o => {
+                    result = o.Result;
+                });
+            return result;
         }
 
         public void Dispose() {
