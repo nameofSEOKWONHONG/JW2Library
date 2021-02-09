@@ -18,12 +18,11 @@ using System.Threading.Tasks;
 namespace JWLibrary.ApiCore.Config {
     /// <summary>
     ///     mvc : https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api
-    ///     api :
-    ///     https://jasonwatmore.com/post/2020/07/21/aspnet-core-3-create-and-validate-jwt-tokens-use-custom-jwt-middleware
+    ///     api : https://jasonwatmore.com/post/2020/07/21/aspnet-core-3-create-and-validate-jwt-tokens-use-custom-jwt-middleware
     /// </summary>
     public class JwtMiddleware {
-        public static readonly Lazy<JWTSettings> JWTSettings =
-            new Lazy<JWTSettings>(() => { return new JWTSettings(); });
+        public static readonly Lazy<JWTSettings> JwtSettings =
+            new Lazy<JWTSettings>(() => new JWTSettings());
 
         private readonly RequestDelegate _next;
         private readonly IGetAccountByIdSvc _getAccountByIdSvc;
@@ -43,7 +42,7 @@ namespace JWLibrary.ApiCore.Config {
         private async Task AttachAccountToContext(HttpContext context, string token) {
             try {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(JWTSettings.Value.Secret);
+                var key = Encoding.ASCII.GetBytes(JwtSettings.Value.Secret);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
@@ -70,10 +69,10 @@ namespace JWLibrary.ApiCore.Config {
         }
     }
 
-    public class JWTTokenService {
+    public class JwtTokenService {
         public string GenerateJwtToken(int accountId) {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(JwtMiddleware.JWTSettings.Value.Secret);
+            var key = Encoding.ASCII.GetBytes(JwtMiddleware.JwtSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", accountId.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
@@ -86,7 +85,7 @@ namespace JWLibrary.ApiCore.Config {
 
         public int? ValidateJwtToken(string token) {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(JwtMiddleware.JWTSettings.Value.Secret);
+            var key = Encoding.ASCII.GetBytes(JwtMiddleware.JwtSettings.Value.Secret);
             try {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters {
                     ValidateIssuerSigningKey = true,

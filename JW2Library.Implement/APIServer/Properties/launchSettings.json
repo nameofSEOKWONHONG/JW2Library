@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "JWLibrary.ApiCore": {
+    "APIServer": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "",

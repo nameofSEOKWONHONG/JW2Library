@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
 
 namespace JWLibrary.Web {
@@ -13,17 +14,19 @@ namespace JWLibrary.Web {
     [Route("api/{v:apiVersion}/[controller]/[action]")] //url version route
     public class JControllerBase<TController> : ControllerBase, IDisposable
         where TController : class {
-        protected ILogger<TController> Logger;
+        private ILogger<TController> _logger;
 
-        public JControllerBase(ILogger<TController> logger) {
-            Logger = logger;
+        public JControllerBase(ILogger<TController> logger)
+        {
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
         }
 
         protected async Task<TResult> ExecuteServiceAsync<TServiceExecutor, TRequest, TResult>
-            (TServiceExecutor serviceExecutor, TRequest request) where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
+            (TServiceExecutor serviceExecutor, TRequest request, Func<TServiceExecutor, bool> func = null) where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
             TResult result = default(TResult);
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             await executor.SetRequest(o => o.Request = request)
+                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
                 .OnExecutedAsync(o => {
                     result = o.Result;
                 });

@@ -16,9 +16,11 @@ namespace JWLibrary.Database {
         public static IDbConnection Resolve<TDatabase>()
             where TDatabase : IDbConnection {
             if (typeof(TDatabase) == typeof(SqlConnection))
-                return JDataBaseInfo.Value.ConKeyValues["MSSQL"];
-            if (typeof(TDatabase) == typeof(MySqlConnection))
-                return JDataBaseInfo.Value.ConKeyValues["MYSQL"];
+                return JDataBaseInfo.Value.Connections["MSSQL"];
+            else if (typeof(TDatabase) == typeof(MySqlConnection))
+                return JDataBaseInfo.Value.Connections["MYSQL"];
+            else if (typeof(TDatabase) == typeof(Npgsql.NpgsqlConnection))
+                return JDataBaseInfo.Value.Connections["NPGSQL"];
             throw new NotImplementedException();
         }
     }

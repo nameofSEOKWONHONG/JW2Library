@@ -50,19 +50,17 @@ namespace JWLibrary.Utils {
         }
 
         private T LoadLanguageSetting(string language) {
-            var resourceJson = string.Empty;
-            var keyValue = _keyValues.Where(m => m.Key == language).FirstOrDefault();
+            var keyValue = _keyValues.FirstOrDefault(m => m.Key == language);
             T langRes = null;
 
-            if (string.IsNullOrEmpty(keyValue.Key)) keyValue = _keyValues.Where(m => m.Key == "en-US").First();
+            if (string.IsNullOrEmpty(keyValue.Key)) keyValue = _keyValues.First(m => m.Key == "en-US");
 
-            resourceJson = File.ReadAllText(keyValue.Value);
+            var resourceJson = File.ReadAllText(keyValue.Value);
 
             langRes = JsonConvert.DeserializeObject<T>(resourceJson);
 
             var numberFormatInfo = CultureInfo.CreateSpecificCulture(language).NumberFormat;
-            var cultureInfo = new CultureInfo(language);
-            cultureInfo.NumberFormat = numberFormatInfo;
+            var cultureInfo = new CultureInfo(language) {NumberFormat = numberFormatInfo};
 
             if (language == "ko-KR") {
                 cultureInfo.DateTimeFormat.DateSeparator = "-";

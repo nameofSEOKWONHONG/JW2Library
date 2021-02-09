@@ -21,7 +21,7 @@ namespace JWLibrary.ApiCore.Controllers {
 
         [HttpPost]
         public async Task<string> GetToken([FromBody] Account account) {
-            var jwtTokenService = new JWTTokenService();
+            var jwtTokenService = new JwtTokenService();
             Account result = null;
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_svc);
             await executor.SetRequest(o => o.Request = account)

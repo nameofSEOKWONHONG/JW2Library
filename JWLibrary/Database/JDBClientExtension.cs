@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace JWLibrary.Database {
 
     /// <summary>
-    ///     Database Client Extension
+    /// Database Client Extension
     /// </summary>
-    public static class JDBClientExtension {
+    public static partial class JdbClientExtension {
 
         private static readonly Dictionary<SQL_COMPILER_TYPE, Compiler> COMPILER_MAP =
             new Dictionary<SQL_COMPILER_TYPE, Compiler>
@@ -76,7 +76,13 @@ namespace JWLibrary.Database {
                 connection.Close();
             }
         }
+    }
 
+    /// <summary>
+    /// create dbconnection only
+    /// </summary>
+    public static partial class JdbClientExtension
+    {
         #region [self impletment func method]
 
         /// <summary>
@@ -113,7 +119,13 @@ namespace JWLibrary.Database {
         }
 
         #endregion [self impletment func method]
+    }
 
+    /// <summary>
+    /// dapper
+    /// </summary>
+    public static partial class JdbClientExtension
+    {
         #region [sql implement and result. after call func method]
 
         /// <summary>
@@ -259,7 +271,13 @@ namespace JWLibrary.Database {
         }
 
         #endregion [sql implement and result. after call func method]
+    }
 
+    /// <summary>
+    /// sqlkata
+    /// </summary>
+    public static partial class JdbClientExtension
+    {
         #region [using sqlkata]
 
         /// <summary>
@@ -388,12 +406,4 @@ namespace JWLibrary.Database {
         #endregion [using sqlkata]
     }
 
-    public enum SQL_COMPILER_TYPE {
-        MSSQL,
-        MYSQL,
-        ORACLE,
-        FIREBIRD,
-        SQLLITE,
-        POSTGRESQL
-    }
 }

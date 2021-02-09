@@ -30,39 +30,27 @@ namespace JWLibrary.ApiCore.Controllers {
         }
 
         [HttpPost]
-        public async Task<bool> SaveMember([FromBody] Account account) => await this.ExecuteServiceAsync<ISaveAccountSvc, Account, bool>(this._saveAccountSvc, account);
+        public async Task<bool> SaveMember([FromBody] Account account) => await this.ExecuteServiceAsync<ISaveAccountSvc, Account, bool>(this._saveAccountSvc, 
+            account);
 
         [Authorize]
         [HttpGet]
         public async Task<PagingResultDto<IEnumerable<Account>>> GetMembers([FromQuery] PagingRequestDto<Account> pagingRequestDto)
-            => await this.ExecuteServiceAsync<IGetAccountsSvc, PagingRequestDto<Account>, PagingResultDto<IEnumerable<Account>>>(this._getAccountsSvc, pagingRequestDto);
+            => await this.ExecuteServiceAsync<IGetAccountsSvc, PagingRequestDto<Account>, PagingResultDto<IEnumerable<Account>>>(this._getAccountsSvc, 
+                pagingRequestDto);
 
         [Authorize]
         [HttpGet]
-        public async Task<Account> GetMember(string userId, string passwd) {
-            Account result = null;
-            using var executor = new ServiceExecutorManager<IGetAccountSvc>(this._getAccountSvc);
-            await executor.SetRequest(o => o.Request = new Account() { UserId = userId, Passwd = passwd })
-                .AddFilter(o => o.Request.UserId.jIsNullOrEmpty())
-                .AddFilter(o => o.Request.Passwd.jIsNullOrEmpty())
-                .OnExecutedAsync(o => {
-                    result = o.Result;
-                });
-
-            return result;
-        }
+        public async Task<Account> GetMember(string userId, string passwd) =>
+            await this.ExecuteServiceAsync<IGetAccountSvc, Account, Account>(this._getAccountSvc,
+                new Account() {UserId = userId, Passwd = passwd},
+                (o) => o.Request.jIsNotNull());
 
         [Authorize]
         [HttpDelete]
-        public async Task<bool> DeleteMember(int id) {
-            var result = false;
-            using var executor = new ServiceExecutorManager<IDeleteAccountSvc>(this._deleteAccountSvc);
-            await executor.SetRequest(o => o.Request = new RequestDto<int>() { Data = id })
-                .AddFilter(o => o.Request.Data > 0)
-                .OnExecutedAsync(o => {
-                    result = o.Result;
-                });
-            return result;
-        }
+        public async Task<bool> DeleteMember(int id) =>
+            await this.ExecuteServiceAsync<IDeleteAccountSvc, RequestDto<int>, bool>(this._deleteAccountSvc, 
+                new RequestDto<int>(){Data = id},
+                (o) => o.Request.Data > 0);
     }
 }

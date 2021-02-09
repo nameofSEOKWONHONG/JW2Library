@@ -1,15 +1,14 @@
 # JW2Library
 implement dotnet extensions and useful methods.
-(original src is JWLibrary.)
+(original source from [JWLibrary](https://github.com/nameofSEOKWONHONG/JWLibrary).)
+- JWLibrary.Core dotnet extension methods.
+- JWLibrary dotnet utility.
+- JWLibrary.Web asp.net extensions.
 
-1. JWLibrary.Core
-- Dotnet extension methods.
+### Acknowledgements
 
-2. JWLibrary
-- Dotnet utility.
+[JetBrains](https://www.jetbrains.com/?from=Mapster) kindly provides Mapster with a free open-source licence for their Resharper and Rider.
+- **Resharper** makes Visual Studio a much better IDE
+- **Rider** is fast & powerful cross platform .NET IDE
 
-3. JWLibrary.Web
-- Asp.net Core & 5 extensions.
-
-4. JWLibrary.Test
-- Test project.
+![image](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/121px-JetBrains_Logo_2016.svg.png)
