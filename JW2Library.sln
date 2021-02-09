@@ -11,6 +11,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWLibrary.Web", "JWLibrary.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWLibrary.Test", "JWLibrary.Test\JWLibrary.Test.csproj", "{64975C37-4143-4C0B-8068-B808AEB19EBD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JWLibrary.Implement", "JWLibrary.Implement", "{4CBF0C58-1163-4775-BE7B-1081F653612D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIServer", "JW2Library.Implement\APIServer\APIServer.csproj", "{1D94FD26-847C-47DB-95BC-34C4B32D937B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "JW2Library.Implement\Service\Service.csproj", "{E542E614-6361-4D12-90C0-A6826385F265}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Data", "JW2Library.Implement\Service.Data\Service.Data.csproj", "{D6935CCC-8859-49FC-80A4-660BFD3CC44E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Test", "JW2Library.Implement\Service.Test\Service.Test.csproj", "{B941251C-4522-4519-8180-9B2F37333453}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorClient.Client", "JW2Library.Implement\BlazorClient\Client\BlazorClient.Client.csproj", "{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,11 +45,38 @@ Global
 		{64975C37-4143-4C0B-8068-B808AEB19EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64975C37-4143-4C0B-8068-B808AEB19EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64975C37-4143-4C0B-8068-B808AEB19EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D94FD26-847C-47DB-95BC-34C4B32D937B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D94FD26-847C-47DB-95BC-34C4B32D937B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D94FD26-847C-47DB-95BC-34C4B32D937B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D94FD26-847C-47DB-95BC-34C4B32D937B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E542E614-6361-4D12-90C0-A6826385F265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E542E614-6361-4D12-90C0-A6826385F265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E542E614-6361-4D12-90C0-A6826385F265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E542E614-6361-4D12-90C0-A6826385F265}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6935CCC-8859-49FC-80A4-660BFD3CC44E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6935CCC-8859-49FC-80A4-660BFD3CC44E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6935CCC-8859-49FC-80A4-660BFD3CC44E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6935CCC-8859-49FC-80A4-660BFD3CC44E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B941251C-4522-4519-8180-9B2F37333453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B941251C-4522-4519-8180-9B2F37333453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B941251C-4522-4519-8180-9B2F37333453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B941251C-4522-4519-8180-9B2F37333453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA4FE31B-843B-4816-B5F9-3592A7FF5240}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1D94FD26-847C-47DB-95BC-34C4B32D937B} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
+		{E542E614-6361-4D12-90C0-A6826385F265} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
+		{D6935CCC-8859-49FC-80A4-660BFD3CC44E} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
+		{B941251C-4522-4519-8180-9B2F37333453} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
+		{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
 	EndGlobalSection
 EndGlobal
