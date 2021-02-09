@@ -22,7 +22,7 @@ namespace JWLibrary.Core {
         /// <param name="enumType">Enum type.</param>
         public StringEnum(Type enumType) {
             if (!typeof(Type).GetTypeInfo().IsEnum)
-                throw new ArgumentException(string.Format("Supplied type must be an Enum.  Type was {0}", enumType));
+                throw new ArgumentException($"Supplied type must be an Enum.  Type was {enumType}");
 
             EnumType = enumType;
         }
@@ -33,12 +33,16 @@ namespace JWLibrary.Core {
         /// <param name="valueName">Name of the enum value.</param>
         /// <returns>String Value</returns>
         public string GetStringValue(string valueName) {
-            Enum enumType;
             string stringValue = null;
-            try {
-                enumType = (Enum)Enum.Parse(EnumType, valueName);
+            try
+            {
+                var enumType = (Enum)Enum.Parse(EnumType, valueName);
                 stringValue = GetStringValue(enumType);
-            } catch (Exception) { }//Swallow!
+            }
+            catch (Exception)
+            {
+                // ignored
+            }   //Swallow!
 
             return stringValue;
         }
@@ -52,8 +56,7 @@ namespace JWLibrary.Core {
             //Look for our string value associated with fields in this enum
             foreach (var fi in EnumType.GetFields()) {
                 //Check for our custom attribute
-                var attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
-                if (attrs.Length > 0)
+                if (fi.GetCustomAttributes(typeof(StringValueAttribute), false) is StringValueAttribute[] attrs && attrs.Length > 0)
                     values.Add(attrs[0].Value);
             }
 
@@ -70,8 +73,7 @@ namespace JWLibrary.Core {
             //Look for our string value associated with fields in this enum
             foreach (var fi in EnumType.GetFields()) {
                 //Check for our custom attribute
-                var attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
-                if (attrs.Length > 0)
+                if (fi.GetCustomAttributes(typeof(StringValueAttribute), false) is StringValueAttribute[] attrs && attrs.Length > 0)
                     values.Add(new DictionaryEntry(Convert.ChangeType(Enum.Parse(EnumType, fi.Name), underlyingType), attrs[0].Value));
             }
 
@@ -101,7 +103,7 @@ namespace JWLibrary.Core {
         /// Gets the underlying enum type for this instance.
         /// </summary>
         /// <value></value>
-        public Type EnumType { get; }
+        private Type EnumType { get; }
 
         #endregion Instance implementation
 
@@ -117,12 +119,11 @@ namespace JWLibrary.Core {
             var type = value.GetType();
 
             if (_stringValues.ContainsKey(value)) {
-                output = (_stringValues[value] as StringValueAttribute).Value;
+                output = (_stringValues[value] as StringValueAttribute)?.Value;
             } else {
                 //Look for our 'StringValueAttribute' in the field's custom attributes
                 var fi = type.GetField(value.ToString());
-                var attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
-                if (attrs.Length > 0) {
+                if (fi?.GetCustomAttributes(typeof(StringValueAttribute), false) is StringValueAttribute[] attrs && attrs.Length > 0) {
                     _stringValues.Add(value, attrs[0]);
                     output = attrs[0].Value;
                 }
@@ -157,8 +158,7 @@ namespace JWLibrary.Core {
             //Look for our string value associated with fields in this enum
             foreach (var fi in type.GetFields()) {
                 //Check for our custom attribute
-                var attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
-                if (attrs.Length > 0)
+                if (fi.GetCustomAttributes(typeof(StringValueAttribute), false) is StringValueAttribute[] attrs && attrs.Length > 0)
                     enumStringValue = attrs[0].Value;
 
                 //Check for equality then select actual enum value.
