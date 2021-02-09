@@ -19,8 +19,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JWLibrary" Version="0.0.2" />
-    <PackageReference Include="JWLibrary.Core" Version="0.0.1" />
     <PackageReference Include="LiteDbFlex" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
@@ -37,6 +35,11 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JWLibrary.Core\JWLibrary.Core.csproj" />
+    <ProjectReference Include="..\JWLibrary\JWLibrary.csproj" />
   </ItemGroup>
 
 </Project>

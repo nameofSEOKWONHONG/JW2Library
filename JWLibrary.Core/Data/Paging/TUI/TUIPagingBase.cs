@@ -1,4 +1,4 @@
-﻿namespace JWLibrary.Web.Data.TUI {
+﻿namespace JWLibrary.Core.Data.TUI {
 
     /// <summary>
     ///     ref : https://github.com/nhn/tui.pagination/blob/production/docs/getting-started.md

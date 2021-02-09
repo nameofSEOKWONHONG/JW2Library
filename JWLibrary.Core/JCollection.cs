@@ -76,7 +76,7 @@ namespace JWLibrary.Core {
 
             var index = 0;
             foreach (var item in iterator) {
-                var isBreak = func(item);
+                var isBreak = !func(item);
                 if (isBreak) break;
 
                 if (index % JConst.LOOP_LIMIT == 0)
@@ -97,7 +97,7 @@ namespace JWLibrary.Core {
 
             var index = 0;
             iterator.jForEach<T>(item => {
-                var isBreak = func(item, index);
+                var isBreak = !func(item, index);
                 index++;
 
                 if (isBreak) return true;

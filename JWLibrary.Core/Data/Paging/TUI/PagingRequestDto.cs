@@ -1,4 +1,4 @@
-﻿namespace JWLibrary.Web.Data.TUI {
+﻿namespace JWLibrary.Core.Data.TUI {
 
     public class TUIPagingRequestDto<T> : RequestDto<T>, ITUIPagingBase, ITUIPagingOption {
         public int TotalItems { get; set; }
