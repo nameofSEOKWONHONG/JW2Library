@@ -9,22 +9,22 @@ namespace JWLibrary.Util
 {
     public static class JavascriptExecutor
     {
-        public static void ExecuteJavascriptSource(this string jssource, Action<Context> preaction, Action<Context> endaction)
+        public static void ExecuteJavascriptSource(this string source, Action<Context> preaction, Action<Context> endaction)
         {
             Context context = new Context();
             preaction(context);
-            context.Eval(jssource);
+            context.Eval(source);
             endaction(context);
         }
-        public static void ExecuteJavascriptFile(this string jsPath, Action<Context> preaction, Action<Context> endaction)
+        public static void ExecuteJavascriptFile(this string fileName, Action<Context> preaction, Action<Context> endaction)
         {
-            if (jsPath.jIsNull()) throw new FileNotFoundException("jsPath is empty");
-            if (!jsPath.jFileExists()) throw new FileNotFoundException();
-            if (!jsPath.Contains(".js")) throw new FileLoadException("file is not support javascript");
+            if (fileName.jIsNull()) throw new FileNotFoundException("jsPath is empty");
+            if (!fileName.jFileExists()) throw new FileNotFoundException();
+            if (!fileName.Contains(".js")) throw new FileLoadException("file is not support javascript");
             
             Context context = new Context();
             preaction(context);
-            context.Eval(string.Join(" ", jsPath.jReadLines()));
+            context.Eval(string.Join(" ", fileName.jReadLines()));
             endaction(context);
         }
     }

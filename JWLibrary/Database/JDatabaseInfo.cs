@@ -17,9 +17,21 @@ namespace JWLibrary.Database {
         private IConfiguration _configuration;
         private readonly Dictionary<string, Func<string, IDbConnection>> _connectionMaps = new Dictionary<string, Func<string, IDbConnection>>
         {
-            {"MSSQL", (connectionString) => new SqlConnection(connectionString)},
-            {"MYSQL", (connectionString) => new MySqlConnection(connectionString)},
-            {"NPGSQL", (connectionString) => new NpgsqlConnection(connectionString) }
+            {"MSSQL", (connectionString) => {
+                    RepoDb.SqlServerBootstrap.Initialize();
+                    return new SqlConnection(connectionString);
+                }
+            },
+            {"MYSQL", (connectionString) => {
+                    RepoDb.MySqlBootstrap.Initialize();
+                    return new MySqlConnection(connectionString);
+                }
+            },
+            {"NPGSQL", (connectionString) => {
+                    RepoDb.PostgreSqlBootstrap.Initialize();
+                    return new NpgsqlConnection(connectionString);
+                }
+            }
         };
 
         public Dictionary<string, IDbConnection> Connections { get; private set; } =

@@ -10,12 +10,12 @@ namespace JWLibrary.Util
 {
     public static class PythonExecutor
     {
-        public static async Task Execute_Python_Script_Async(this string python_script, Action<ScriptScope> preaction, Action<ScriptScope> endaction)
+        public static async Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction, Action<ScriptScope> endaction)
         {
-            if (python_script.jIsNullOrEmpty()) throw new Exception("script is empty.");
+            if (script.jIsNullOrEmpty()) throw new Exception("script is empty.");
 
             var engine = Python.CreateEngine();
-            var src = engine.CreateScriptSourceFromString(python_script);
+            var src = engine.CreateScriptSourceFromString(script);
             var scope = engine.CreateScope();
             var paths = engine.GetSearchPaths();
             engine.SetSearchPaths(paths);
@@ -25,16 +25,16 @@ namespace JWLibrary.Util
             endaction(scope);
         }
         
-        public static async Task Execute_Python_File_Async(this string python_file_path, Action<ScriptScope> preaction, Action<ScriptScope> endaction)
+        public static async Task Execute_Python_File_Async(this string fileName, Action<ScriptScope> preaction, Action<ScriptScope> endaction)
         {
-            if (python_file_path.jIsNull()) throw new FileNotFoundException("pytho_file_path is empty");
-            if (!python_file_path.jFileExists()) throw new FileNotFoundException();
-            if (!python_file_path.Contains(".py")) throw new FileLoadException("file is not support python");
+            if (fileName.jIsNull()) throw new FileNotFoundException("pytho_file_path is empty");
+            if (!fileName.jFileExists()) throw new FileNotFoundException();
+            if (!fileName.Contains(".py")) throw new FileLoadException("file is not support python");
 
-            var lines = await python_file_path.jReadLinesAsync();
+            var lines = await fileName.jReadLinesAsync();
 
             var engine = Python.CreateEngine();
-            var src = engine.CreateScriptSourceFromFile(python_file_path);
+            var src = engine.CreateScriptSourceFromFile(fileName);
             var scope = engine.CreateScope();
             var paths = engine.GetSearchPaths();
             engine.SetSearchPaths(paths);

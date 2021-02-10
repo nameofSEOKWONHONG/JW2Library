@@ -1,4 +1,7 @@
-﻿namespace Service.WeatherForecast {
+﻿using SqlKata.Compilers;
+using SqlKata.Execution;
+
+namespace Service.WeatherForecast {
     using FluentValidation;
     using JWLibrary.Core;
     using JWLibrary.Database;
@@ -16,16 +19,13 @@
             //use sqlkata
             var query = new Query("WEATHER_FORECAST").Where("ID", this.Request.ID).Select("*");
             this.Result = JDataBase.Resolve<SqlConnection>()
-                        .jGet<WEATHER_FORECAST>(query, SQL_COMPILER_TYPE.MSSQL, item => {
-                            if (item.jIsNull()) return null;
-                            item.TEMPERATURE_F = 32 + (int)(item.TEMPERATURE_C / 0.5556);
-                            return item;
-                        });
-            //use text query
-            //return DatabaseConfig.DB_CONNECTION.Get<WEATHER_FORECAST>($"select * from dbo.WEATHER_FORECAST where ID = {this.Request.ID}", item => {
-            //    item.TEMPERATURE_F = 32 + (int)(item.TEMPERATURE_C / 0.5556);
-            //    return item;
-            //});
+                .DbContainer(con => {
+                    var compiler = new SqlServerCompiler();
+                    var db = new QueryFactory(con, compiler);
+                    var weather = db.Query("dbo.WEATHER_FORECAST").Where("ID", this.Request.ID).FirstOrDefault<WEATHER_FORECAST>();
+                    weather.TEMPERATURE_F = 32 + (int)(weather.TEMPERATURE_C / 0.5556);
+                    return weather;
+                });
         }
         public class Validator : AbstractValidator<GetWeatherForecastSvc> {
             public Validator() {

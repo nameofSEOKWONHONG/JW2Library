@@ -30,7 +30,7 @@
         public override void Execute() {
             this.Result =
                 JDataBase.Resolve<SqlConnection>()
-                    .jQuery<int>(db => {
+                    .DbContainer<int>(db => {
                         if (this._exists.jIsNotNull()) {
                             return db.Update<WEATHER_FORECAST>(this.Request);
                         }

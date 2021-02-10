@@ -1,4 +1,8 @@
 ﻿namespace JWService.WeatherForecast {
+    using System.Linq;
+    using Dapper;
+    using SqlKata.Compilers;
+    using SqlKata.Execution;    
     using FluentValidation;
     using JWLibrary.Core;
     using JWLibrary.Database;
@@ -10,16 +14,18 @@
 
     public class GetAllWeatherForecastSvc : ServiceExecutor<GetAllWeatherForecastSvc, WeatherForecastRequestDto, IEnumerable<WEATHER_FORECAST>>, IGetAllWeatherForecastSvc {
         public override void Execute() {
-            var query = new Query("WEATHER_FORECAST").Select("*");
             this.Result = JDataBase.Resolve<SqlConnection>()
-                        .jGetAll<WEATHER_FORECAST>(query, SQL_COMPILER_TYPE.MSSQL, items => {
-                            items.jForEach(item => {
-                                item.TEMPERATURE_F = 32 + (int)(item.TEMPERATURE_C / 0.5556);
-                                return true;
-                            });
+                .DbContainer(con => {
+                    var compiler = new SqlServerCompiler();
+                    var db = new QueryFactory(con, compiler);
+                    var weathers = db.Query("dbo.WEATHER_FORECAST").Get<WEATHER_FORECAST>();
+                    weathers.jForEach(item => {
+                        item.TEMPERATURE_F = 32 + (int)(item.TEMPERATURE_C / 0.5556);
+                        return true;
+                    });
 
-                            return items;
-                        });
+                    return weathers;
+                });
         }
 
         public class Validator : AbstractValidator<GetAllWeatherForecastSvc> {

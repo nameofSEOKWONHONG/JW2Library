@@ -14,11 +14,12 @@ namespace JWLibrary.Web {
     [Route("api/{v:apiVersion}/[controller]/[action]")] //url version route
     public class JControllerBase<TController> : ControllerBase, IDisposable
         where TController : class {
-        private ILogger<TController> _logger;
+        protected ILogger<TController> Logger;
 
         public JControllerBase(ILogger<TController> logger)
         {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
+            this.Logger = logger;
         }
 
         protected async Task<TResult> ExecuteServiceAsync<TServiceExecutor, TRequest, TResult>

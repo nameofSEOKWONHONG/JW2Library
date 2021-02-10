@@ -27,7 +27,7 @@
         }
 
         public override void Execute() {
-            this.Result = JDataBase.Resolve<SqlConnection>().jQuery<bool>(db => {
+            this.Result = JDataBase.Resolve<SqlConnection>().DbContainer<bool>(db => {
                 return db.Delete<WEATHER_FORECAST>(_removeObj) > 0;
             });
         }

@@ -23,5 +23,12 @@ namespace JWLibrary.Database {
                 return JDataBaseInfo.Value.Connections["NPGSQL"];
             throw new NotImplementedException();
         }
+
+        public static Tuple<IDbConnection, IDbConnection> Resolve<TDatabaseA, TDatabaseB>() 
+        where TDatabaseA : IDbConnection
+        where TDatabaseB : IDbConnection {
+            if (typeof(TDatabaseA) == typeof(TDatabaseB)) throw new Exception("not allow same database connection.");
+            return new Tuple<IDbConnection, IDbConnection>(Resolve<TDatabaseA>(), Resolve<TDatabaseB>());
+        }
     }
 }
