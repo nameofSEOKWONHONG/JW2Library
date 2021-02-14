@@ -2,7 +2,7 @@
     using System.Linq;
     using Dapper;
     using SqlKata.Compilers;
-    using SqlKata.Execution;    
+    using SqlKata.Execution;
     using FluentValidation;
     using JWLibrary.Core;
     using JWLibrary.Database;
@@ -14,8 +14,8 @@
 
     public class GetAllWeatherForecastSvc : ServiceExecutor<GetAllWeatherForecastSvc, WeatherForecastRequestDto, IEnumerable<WEATHER_FORECAST>>, IGetAllWeatherForecastSvc {
         public override void Execute() {
-            this.Result = JDataBase.Resolve<SqlConnection>()
-                .DbContainer(con => {
+            JDataBase.Resolve<SqlConnection>()
+                .DbExecutor<WEATHER_FORECAST>(con => {
                     var compiler = new SqlServerCompiler();
                     var db = new QueryFactory(con, compiler);
                     var weathers = db.Query("dbo.WEATHER_FORECAST").Get<WEATHER_FORECAST>();
@@ -24,7 +24,7 @@
                         return true;
                     });
 
-                    return weathers;
+                    this.Result = weathers;
                 });
         }
 

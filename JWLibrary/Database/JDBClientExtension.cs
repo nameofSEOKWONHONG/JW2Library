@@ -81,26 +81,36 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static T DbContainer<T>(this IDbConnection connection, Func<IDbConnection, T> func) {
+        public static void DbExecutor<T>(this IDbConnection connection, Action<IDbConnection> action) {
             try {
                 connection.Open();
-                return func(connection);
+                action(connection);
             } finally {
                 connection.Close();
             }
         }
 
-        public static T DbContainer<T>(this Tuple<IDbConnection, IDbConnection> connections, Func<IDbConnection, IDbConnection, T> func) {
+        public static void DbExecutor(this IDbConnection connection, Action<IDbConnection> action) {
+            try {
+                connection.Open();
+                action(connection);
+            }
+            finally {
+                connection.Close();
+            }
+        }
+
+        public static void DbExecutor<T>(this Tuple<IDbConnection, IDbConnection> connections, Action<IDbConnection, IDbConnection> action) {
             try {
                 connections.Item1.Open();
                 connections.Item2.Open();
-                return func(connections.Item1, connections.Item2);
+                action(connections.Item1, connections.Item2);
             }
             finally {
                 connections.Item1.Close();
                 connections.Item2.Close();
             }
-        } 
+        }
 
         /// <summary>
         ///     async execute(select, update, delete, insert) db, use any code on func method. (use dapper, ef and so on...)
@@ -109,22 +119,22 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static async Task<T> DbContainerAsync<T>(this IDbConnection connection, Func<IDbConnection, Task<T>> func)
-            where T : class, new() {
+        public static async Task DbExecutorAsync<T>(this IDbConnection connection, Action<IDbConnection> action){
             try {
                 connection.Open();
-                return await func(connection);
+                var task = new Task(() => action(connection));
+                await task;
             } finally {
                 connection.Close();
             }
         }
 
-        public static async Task<T> DbContainerAsync<T>(this Tuple<IDbConnection, IDbConnection> connections,
-            Func<IDbConnection, IDbConnection, Task<T>> func) {
+        public static async void DbExecutorAsync<T>(this Tuple<IDbConnection, IDbConnection> connections,
+            Action<IDbConnection, IDbConnection> action) {
             try {
                 connections.Item1.Open();
                 connections.Item2.Open();
-                return await func(connections.Item1, connections.Item2);
+                await Task.Run(() => action(connections.Item1, connections.Item2));
             }
             finally {
                 connections.Item1.Close();

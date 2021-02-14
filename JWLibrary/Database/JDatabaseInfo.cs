@@ -45,13 +45,15 @@ namespace JWLibrary.Database {
         private void InitConfig(IServiceCollection serviceCollection) {
             // Build configuration
             _configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile("./appsettings.json", true, true)
                 .AddEnvironmentVariables()
                 .Build();
             var section = _configuration.GetSection("DbConnections");
 
             _connectionMaps.jForEach(item => {
+                if (section.GetValue<string>(item.Key).jIsNullOrEmpty()) return true;
                 Connections.Add(item.Key, item.Value(section.GetValue<string>(item.Key)));
+                return true;
             });
         }
     }

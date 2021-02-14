@@ -27,8 +27,8 @@
         }
 
         public override void Execute() {
-            this.Result = JDataBase.Resolve<SqlConnection>().DbContainer<bool>(db => {
-                return db.Delete<WEATHER_FORECAST>(_removeObj) > 0;
+            JDataBase.Resolve<SqlConnection>().DbExecutor<bool>(db => {
+                this.Result = db.Delete<WEATHER_FORECAST>(_removeObj) > 0;
             });
         }
 

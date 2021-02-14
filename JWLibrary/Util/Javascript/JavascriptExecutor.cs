@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using JWLibrary.Core;
 using JWLibrary.Utils.Files;
+using NiL.JS;
 using NiL.JS.Core;
 
 namespace JWLibrary.Util
@@ -12,20 +14,29 @@ namespace JWLibrary.Util
         public static void ExecuteJavascriptSource(this string source, Action<Context> preaction, Action<Context> endaction)
         {
             Context context = new Context();
-            preaction(context);
+            if(preaction.jIsNotNull()) preaction(context);
             context.Eval(source);
-            endaction(context);
+            if(endaction.jIsNotNull()) endaction(context);
         }
+
+        public static void ExecuteJavascriptFile(this string fileName) {
+            ExecuteJavascriptFile(fileName, null, null);
+        }
+
+        public static void ExecuteJavascriptFile(this string fileName, Action<Context> endaction) {
+            ExecuteJavascriptFile(fileName, null, endaction);
+        }
+
         public static void ExecuteJavascriptFile(this string fileName, Action<Context> preaction, Action<Context> endaction)
         {
             if (fileName.jIsNull()) throw new FileNotFoundException("jsPath is empty");
             if (!fileName.jFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".js")) throw new FileLoadException("file is not support javascript");
-            
+
             Context context = new Context();
-            preaction(context);
-            context.Eval(string.Join(" ", fileName.jReadLines()));
-            endaction(context);
+            if(preaction.jIsNotNull()) preaction(context);
+            context.Eval(string.Join("\n", fileName.jReadLines()));
+            if(endaction.jIsNotNull()) endaction(context);
         }
     }
 }

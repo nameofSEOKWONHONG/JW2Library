@@ -43,9 +43,7 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public async Task OnExecutedAsync(Action<TIService> action) {
-            await Task.Factory.StartNew(() => {
-                this.OnExecuted(action);
-            });
+            await Task.Run(() => action(this.service));
         }
 
         public void Dispose() {

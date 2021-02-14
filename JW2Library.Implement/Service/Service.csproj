@@ -20,4 +20,23 @@
     <ProjectReference Include="..\Service.Data\Service.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Master\MigrationDatabaseService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Master\Query\CREATE_DATABASE.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Master\Query\CREATE_TABLE.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Master\Query\CREATE_USER.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Master\Query\EXISTS_TABLE.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

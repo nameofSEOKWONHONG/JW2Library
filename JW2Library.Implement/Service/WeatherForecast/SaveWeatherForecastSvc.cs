@@ -28,13 +28,12 @@
         }
 
         public override void Execute() {
-            this.Result =
                 JDataBase.Resolve<SqlConnection>()
-                    .DbContainer<int>(db => {
+                    .DbExecutor<int>(db => {
                         if (this._exists.jIsNotNull()) {
-                            return db.Update<WEATHER_FORECAST>(this.Request);
+                            this.Result = db.Update<WEATHER_FORECAST>(this.Request);
                         }
-                        return db.Insert<WEATHER_FORECAST>(this.Request).Value;
+                        this.Result = db.Insert<WEATHER_FORECAST>(this.Request).Value;
                     });
         }
 

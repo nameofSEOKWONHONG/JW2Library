@@ -18,13 +18,13 @@ namespace Service.WeatherForecast {
         public override void Execute() {
             //use sqlkata
             var query = new Query("WEATHER_FORECAST").Where("ID", this.Request.ID).Select("*");
-            this.Result = JDataBase.Resolve<SqlConnection>()
-                .DbContainer(con => {
+            JDataBase.Resolve<SqlConnection>()
+                .DbExecutor<WEATHER_FORECAST>(con => {
                     var compiler = new SqlServerCompiler();
                     var db = new QueryFactory(con, compiler);
                     var weather = db.Query("dbo.WEATHER_FORECAST").Where("ID", this.Request.ID).FirstOrDefault<WEATHER_FORECAST>();
                     weather.TEMPERATURE_F = 32 + (int)(weather.TEMPERATURE_C / 0.5556);
-                    return weather;
+                    this.Result = weather;
                 });
         }
         public class Validator : AbstractValidator<GetWeatherForecastSvc> {
