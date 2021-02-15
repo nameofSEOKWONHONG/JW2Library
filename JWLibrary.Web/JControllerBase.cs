@@ -28,7 +28,7 @@ namespace JWLibrary.Web {
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             await executor.SetRequest(o => o.Request = request)
                 .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
-                .OnExecutedAsync(o => {
+                .OnExecutedAsync(async o => {
                     result = o.Result;
                 });
             return result;

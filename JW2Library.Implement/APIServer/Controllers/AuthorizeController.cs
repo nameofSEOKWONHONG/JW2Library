@@ -26,7 +26,7 @@ namespace JWLibrary.ApiCore.Controllers {
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_svc);
             await executor.SetRequest(o => o.Request = account)
                 .AddFilter(o => o.Request.jIsNotNull())
-                .OnExecutedAsync(o => {
+                .OnExecutedAsync(async o => {
                     result = o.Result;
                 });
 

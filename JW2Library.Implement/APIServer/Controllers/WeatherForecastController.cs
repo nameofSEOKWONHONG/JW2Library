@@ -48,7 +48,7 @@ namespace JWLibrary.ApiCore.Controllers {
             WEATHER_FORECAST result = null;
             using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(this._getWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = new WeatherForecastRequestDto() { ID = idx })
-                .OnExecutedAsync(o => {
+                .OnExecutedAsync(async o => {
                     result = o.Result;
                 });
             return result;
@@ -65,7 +65,7 @@ namespace JWLibrary.ApiCore.Controllers {
             IEnumerable<WEATHER_FORECAST> result = null;
             using var executor = new ServiceExecutorManager<IGetAllWeatherForecastSvc>(this._getAllWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = new WeatherForecastRequestDto())
-                .OnExecutedAsync(o => result = o.Result);
+                .OnExecutedAsync(async o => result = o.Result);
             return result;
         }
 
@@ -80,7 +80,7 @@ namespace JWLibrary.ApiCore.Controllers {
             var result = 0;
             using var executor = new ServiceExecutorManager<ISaveWeatherForecastSvc>(this._saveWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = request.Data)
-                .OnExecutedAsync(o => result = o.Result);
+                .OnExecutedAsync(async o => result = o.Result);
             return result;
         }
 
@@ -95,7 +95,7 @@ namespace JWLibrary.ApiCore.Controllers {
             var result = false;
             using var executor = new ServiceExecutorManager<IDeleteWeatherForecastSvc>(this._deleteWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = request.Data)
-                .OnExecutedAsync(o => result = o.Result);
+                .OnExecutedAsync(async o => result = o.Result);
             return result;
         }
     }

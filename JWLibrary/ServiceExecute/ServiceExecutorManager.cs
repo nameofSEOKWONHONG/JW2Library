@@ -42,8 +42,20 @@ namespace JWLibrary.ServiceExecutor {
             action(this.service);
         }
 
-        public async Task OnExecutedAsync(Action<TIService> action) {
-            await Task.Run(() => action(this.service));
+        public async Task OnExecutedAsync(Func<TIService, Task> func) {
+            foreach (var filter in filters) {
+                var pass = filter(this.service);
+                if (pass.jIsFalse()) return;
+            }
+
+            this.service.Validate();
+            var preExecuted = this.service.PreExecute();
+            if (preExecuted) {
+                await this.service.ExecuteAsync();
+            }
+            this.service.PostExecute();
+
+            await func(this.service);
         }
 
         public void Dispose() {

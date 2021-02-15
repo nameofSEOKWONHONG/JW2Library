@@ -58,7 +58,7 @@ namespace JWLibrary.ApiCore.Config {
                 // attach account to context on successful jwt validation
                 using var executor = new ServiceExecutorManager<IGetAccountByIdSvc>(this._getAccountByIdSvc);
                 await executor.SetRequest(o => o.Request = new RequestDto<int>() { Data = accountId })
-                    .OnExecutedAsync(o => {
+                    .OnExecutedAsync(async o => {
                         context.Items["ACCOUNT"] = o.Result;
                     });
                 //await Task.Delay(1000);

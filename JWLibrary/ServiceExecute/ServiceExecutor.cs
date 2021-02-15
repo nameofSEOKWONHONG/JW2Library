@@ -25,6 +25,10 @@ namespace JWLibrary.ServiceExecutor {
 
         }
 
+        public override Task ExecuteAsync() {
+            return Task.CompletedTask;
+        }
+
         public override void PostExecute() {
 
         }

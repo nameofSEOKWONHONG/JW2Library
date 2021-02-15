@@ -119,22 +119,21 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static async Task DbExecutorAsync<T>(this IDbConnection connection, Action<IDbConnection> action){
+        public static async Task DbExecutorAsync<T>(this IDbConnection connection, Func<IDbConnection, Task> func){
             try {
                 connection.Open();
-                var task = new Task(() => action(connection));
-                await task;
+                await func(connection);
             } finally {
                 connection.Close();
             }
         }
 
         public static async void DbExecutorAsync<T>(this Tuple<IDbConnection, IDbConnection> connections,
-            Action<IDbConnection, IDbConnection> action) {
+            Func<IDbConnection, IDbConnection, Task> func) {
             try {
                 connections.Item1.Open();
                 connections.Item2.Open();
-                await Task.Run(() => action(connections.Item1, connections.Item2));
+                await func(connections.Item1, connections.Item2);
             }
             finally {
                 connections.Item1.Close();
