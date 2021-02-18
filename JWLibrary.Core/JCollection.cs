@@ -7,22 +7,6 @@ using System.Linq;
 namespace JWLibrary.Core {
 
     public static class JCollection {
-
-        #region [count & length method]
-
-        public static int jCount<T>(this IEnumerable<T> collection) {
-            if (collection.jIsNull()) return 0;
-            var result = 0;
-            using (var enumerator = collection.GetEnumerator()) {
-                while (enumerator.MoveNext())
-                    result++;
-            }
-
-            return result;
-        }
-
-        #endregion [count & length method]
-
         #region [for & foreach]
 
         /// <summary>

@@ -2,37 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using NetFabric.Hyperlinq;
+
 namespace JWLibrary.Core {
 
     public static class JLinq {
-
-        public static JList<T> jToList<T>(this IEnumerable<T> list) {
-            return new JList<T>(list.jIfNotNull(x => x, new JList<T>()));
+        public static int jCount<T>(this IEnumerable<T> enumerable) {
+            return enumerable.AsValueEnumerable().Count();
         }
 
-        public static T[] jToArray<T>(this IEnumerable<T> list) {
-            return list.jIsNull() ? new T[0] : list.ToArray();
+        public static IEnumerable<T> jToList<T>(this IEnumerable<T> enumerable) {
+            return enumerable.jIfNotNull(x => x, new JList<T>());
         }
 
-        public static T jFirst<T>(this IEnumerable<T> list, Func<T, bool> predicate = null) {
-            if (predicate.jIsNotNull()) return list.FirstOrDefault(predicate);
-            return list.FirstOrDefault();
+        public static T[] jToArray<T>(this IEnumerable<T> enumerable) where T : new() {
+            if (enumerable.jIsNull()) return new T[0];
+            return enumerable.AsValueEnumerable().ToArray();
         }
 
-        public static T jLast<T>(this IEnumerable<T> list, Func<T, bool> predicate = null) {
-            if (predicate.jIsNotNull()) return list.LastOrDefault(predicate);
-            return list.LastOrDefault();
+        public static T jFirst<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate = null) {
+            return enumerable.AsValueEnumerable().FirstOrDefault(predicate);
+        }
+
+        public static T jLast<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate = null) {
+            return enumerable.AsValueEnumerable().LastOrDefault(predicate);
         }
 
         public static string jIfNullOrEmpty(this string str, Func<string, string> func) {
-            var result = str;
-            if (str.jIsNullOrEmpty().jIsTrue()) result = func(str);
-            return result;
+            if (str.jIsNullOrEmpty()) return func(str);
+            return str;
         }
 
         public static T jIfNull<T>(this T obj, Func<T, T> predicate) {
-            if (obj.jIsNull()) obj = predicate(obj);
-
+            if (predicate.jIsNull()) return predicate(obj);
             return obj;
         }
 
@@ -47,18 +49,21 @@ namespace JWLibrary.Core {
         public static T jIfNotNull<T>(this T obj, Func<T, T> predicate, T defaultValue)
             where T : class {
             if (obj.jIsNotNull()) return predicate(obj);
-
             return defaultValue;
         }
 
-        public static IEnumerable<T> jWhere<T>(this IEnumerable<T> obj, Func<T, bool> predicate)
+        public static IEnumerable<T> jWhere<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
             where T : class {
-            var list = new JList<T>();
-            if (obj.jIsNull()) {
-                obj = new JList<T>();
+            if (enumerable.jIsEmpty()) {
+                enumerable = new JList<T>();
+                return enumerable;
             }
-            list = obj.Where(predicate).jToList();
-            return list;
+            return enumerable.AsValueEnumerable().Where(predicate);
+        }
+
+        public static IEnumerable<T> jSelect<T>(this IEnumerable<T> enumerable, Func<T, T> predicate) 
+        where T : class {
+            return enumerable.AsValueEnumerable().Select(predicate);
         }
     }
 }
