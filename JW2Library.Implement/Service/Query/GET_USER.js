@@ -1,1 +1,0 @@
-var sql = `SELECT * FROM DBO.USER`;

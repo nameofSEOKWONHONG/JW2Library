@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorClient.Client", "JW2L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWLibrary.NUnit.Test", "JWLibrary.NUnit.Test\JWLibrary.NUnit.Test.csproj", "{62AB8575-0821-49D3-88A7-3F2760B52045}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.QueryConst", "Service.QueryConst\Service.QueryConst.csproj", "{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{62AB8575-0821-49D3-88A7-3F2760B52045}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62AB8575-0821-49D3-88A7-3F2760B52045}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62AB8575-0821-49D3-88A7-3F2760B52045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{E542E614-6361-4D12-90C0-A6826385F265} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
 		{D6935CCC-8859-49FC-80A4-660BFD3CC44E} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
 		{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
+		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07} = {4CBF0C58-1163-4775-BE7B-1081F653612D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA4FE31B-843B-4816-B5F9-3592A7FF5240}

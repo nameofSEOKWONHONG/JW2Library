@@ -51,5 +51,9 @@ namespace JWLibrary.Core {
                 return Encoding.UTF8.GetString(mso.ToArray());
             }
         }
+
+        public static string jJoin(this string[] value, string separator) {
+            return string.Join(separator, value);
+        }
     }
 }

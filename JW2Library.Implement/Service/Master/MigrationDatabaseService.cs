@@ -6,6 +6,7 @@ using RepoDb;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Service.QueryConst.Master;
 
 namespace Service {
     public interface IMigrationDatabaseService : IServiceExecutor<bool, bool> { }
@@ -14,7 +15,7 @@ namespace Service {
         #region [private]
         private void InitDatabase(IDbConnection con) {
             var sql = string.Empty;
-            "./Master/Query/CREATE_DATABASE.js".ExecuteJavascriptFile(pre => {
+            MasterQueryFiles.Self.CREATE_DATABASE.Execute(pre => {
                 pre.DefineVariable("DBNAME").Assign("JWLIBRARY");
             }, end => {
                 sql = end.GetVariable("sql").As<string>();
@@ -25,7 +26,7 @@ namespace Service {
 
         private async Task InitDatabaseAsync(IDbConnection con) {
             var sql = string.Empty;
-            "./Master/Query/CREATE_DATABASE.js".ExecuteJavascriptFile(pre => {
+            MasterQueryFiles.Self.CREATE_DATABASE.Execute(pre => {
                 pre.DefineVariable("DBNAME").Assign("JWLIBRARY");
             }, end => {
                 sql = end.GetVariable("sql").As<string>();
@@ -38,11 +39,11 @@ namespace Service {
             var createUserSql = string.Empty;
             var createTableSql = string.Empty;
 
-            "./Master/Query/CREATE_USER.js".ExecuteJavascriptFile(null, end => {
+            MasterQueryFiles.Self.CREATE_USER.Execute(null, end => {
                 createUserSql = end.GetVariable("sql").As<string>();
             });
 
-            "./Master/Query/CREATE_TABLE.js".ExecuteJavascriptFile(pre => {
+            MasterQueryFiles.Self.CREATE_TABLE.Execute(pre => {
                 pre.DefineVariable("CREATE_USER").Assign(createUserSql);
             }, end => {
                 createTableSql = end.GetVariable("sql").As<string>();
@@ -55,11 +56,11 @@ namespace Service {
             var createUserSql = string.Empty;
             var createTableSql = string.Empty;
 
-            "./Master/Query/CREATE_USER.js".ExecuteJavascriptFile(null, end => {
+            MasterQueryFiles.Self.CREATE_USER.Execute(null, end => {
                 createUserSql = end.GetVariable("sql").As<string>();
             });
 
-            "./Master/Query/CREATE_TABLE.js".ExecuteJavascriptFile(pre => {
+            MasterQueryFiles.Self.CREATE_TABLE.Execute(pre => {
                 pre.DefineVariable("CREATE_USER").Assign(createUserSql);
             }, end => {
                 createTableSql = end.GetVariable("sql").As<string>();
@@ -70,7 +71,7 @@ namespace Service {
 
         private bool IsExistsTable(IDbConnection con) {
             var existsSql = string.Empty;
-            "./Master/Query/EXISTS_TABLE.js".ExecuteJavascriptFile(end => {
+            MasterQueryFiles.Self.EXISTS_TABLE.Execute(end => {
                 existsSql = end.GetVariable("sql").As<string>();
             });
 
@@ -80,7 +81,7 @@ namespace Service {
 
         private async Task<int> IsExistsTableAsync(IDbConnection con) {
             var existsSql = string.Empty;
-            "./Master/Query/EXISTS_TABLE.js".ExecuteJavascriptFile(end => {
+            MasterQueryFiles.Self.EXISTS_TABLE.Execute(end => {
                 existsSql = end.GetVariable("sql").As<string>();
             });
 

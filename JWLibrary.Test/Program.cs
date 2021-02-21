@@ -93,7 +93,7 @@ if(age > 0)
 if(v != '')
     sql += ` AND VALUE = '${v}' `;
 ";
-            sql.ExecuteJavascriptSource((c) =>
+            sql.Execute((c) =>
             {
                 c.DefineVariable("name").Assign("seokwon");
                 c.DefineVariable("age").Assign(18);
@@ -105,7 +105,7 @@ if(v != '')
             } );
 
             var sqlfile = "./query.js";
-            sqlfile.ExecuteJavascriptFile((c) =>
+            sqlfile.ExecuteFile((c) =>
             {
                 c.DefineVariable("name").Assign("seokwon");
                 c.DefineVariable("age").Assign(18);
