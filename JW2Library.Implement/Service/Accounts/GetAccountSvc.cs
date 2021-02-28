@@ -10,13 +10,10 @@ namespace Service.Accounts {
             base.SetValidator(new Validator());
         }
 
-        public override void Execute()
-        {
-            var account = LiteDbSafeFlexer<Account>.Instance.Value.Execute(litedb => {
-                return litedb.Get(m => m.UserId == this.Request.UserId &&
-                          m.Passwd == this.Request.Passwd)
-                .GetResult<Account>();
-            });
+        public override void Execute() {
+            var flexer = new JLiteDBFlex.JLiteDbFlexerManager<Account>();
+            var account = flexer.Create().LiteCollection
+                .FindOne(m => m.UserId == this.Request.UserId && m.Passwd == this.Request.Passwd);
 
             this.Result = account;
         }

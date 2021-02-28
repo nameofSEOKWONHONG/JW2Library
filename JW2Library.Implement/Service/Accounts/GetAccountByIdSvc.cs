@@ -12,10 +12,8 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            this.Result = LiteDbFlex.LiteDbSafeFlexer<Account>.Instance.Value.Execute<Account>(litedb => {
-                return litedb.Get(this.Request.Data)
-                    .GetResult<Account>();
-            });
+            var flexer = new JLiteDBFlex.JLiteDbFlexerManager<Account>();
+            this.Result = flexer.Create().LiteCollection.FindById(this.Request.Data);
         }
 
         public class GetAccountByIdSvcValidator : AbstractValidator<GetAccountByIdSvc> {

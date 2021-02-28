@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using JLiteDBFlex;
 using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
 using JWService.Data.Models;
@@ -25,11 +26,9 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            this.Result = LiteDbFlex.LiteDbSafeFlexer<Account>.Instance.Value.Execute(litedb => {
-                return litedb.BeginTrans()
-                    .Delete(m => m.Id == this.Request.Data)
-                    .GetResult<int>() > 0;
-            });
+            var flexer = new JLiteDbFlexerManager<Account>();
+            flexer.Create().LiteDatabase.BeginTrans();
+            this.Result = flexer.Create().LiteCollection.Delete(this.Request.Data);
         }
 
         public class DeleteAccountServiceValidator : AbstractValidator<DeleteAccountSvc> {

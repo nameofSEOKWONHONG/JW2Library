@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "JW2Library.Imple
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Data", "JW2Library.Implement\Service.Data\Service.Data.csproj", "{D6935CCC-8859-49FC-80A4-660BFD3CC44E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorClient.Client", "JW2Library.Implement\BlazorClient\Client\BlazorClient.Client.csproj", "{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorClient", "JW2Library.Implement\BlazorClient\Client\BlazorClient.csproj", "{E8867EBE-8D2E-4B07-8AE4-9FF63DF833F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWLibrary.NUnit.Test", "JWLibrary.NUnit.Test\JWLibrary.NUnit.Test.csproj", "{62AB8575-0821-49D3-88A7-3F2760B52045}"
 EndProject

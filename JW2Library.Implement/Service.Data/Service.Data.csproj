@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\JW2Library\JWLibrary.Core\JWLibrary.Core.csproj" />
     <ProjectReference Include="..\..\..\JW2Library\JWLibrary\JWLibrary.csproj" />
+    <ProjectReference Include="..\..\JLiteDBFlex\JLiteDBFlex.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorClient.Client.Extensions {
+namespace BlazorClient.Extensions {
     public static class ServiceExtensions {
         public static async Task<T> GetJsonAsync<T>(this HttpClient httpClient, string url, AuthenticationHeaderValue authorization) {
             var requestMessage = new HttpRequestMessage() {

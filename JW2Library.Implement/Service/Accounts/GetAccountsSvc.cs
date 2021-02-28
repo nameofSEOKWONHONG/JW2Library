@@ -16,28 +16,20 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            using (var db = LiteDbResolver.Resolve<Account>()) {
-                var col = db.jGetCollection<Account>();
-                var query = col.Query();
-                var request = this.Request.Data.jIfNull(x => x = new Account());
-                if(request.Id > 0) {
-                    query = query.Where(m => m.Id >= request.Id);
-                }
-                if(request.UserId.jIsNullOrEmpty().jIsFalse()) {
-                    query = query.Where(m => m.UserId == request.UserId);
-                }
-                var accounts = query.Limit(this.Request.Size).Offset((this.Request.Page - 1) * this.Request.Page).ToList();
+            var flexer = new JLiteDBFlex.JLiteDbFlexerManager<Account>();
+            var collection = flexer.Create().LiteCollection;
+            var query = collection.Query();
+            if (this.Request.Data.jIsNotNull()) {
+                if (this.Request.Data.Id > 0) query = query.Where(m => m.Id >= this.Request.Data.Id);
+                if (this.Request.Data.UserId.jIsNullOrEmpty())
+                    query = query.Where(m => m.UserId == this.Request.Data.UserId);
 
+                var accounts = query.Limit(this.Request.Size).Offset((this.Request.Page - 1) * this.Request.Page)
+                    .ToList();
+                
                 var result = this.Request.Adapt<PagingResultDto<IEnumerable<Account>>>();
-                result.TotalCount = col.Count();
+                result.TotalCount = collection.Count();
                 result.Data = accounts;
-                //var result = new PagingResultDto<IEnumerable<Account>>() {
-                //    Page = this.Request.Page,
-                //    Size = this.Request.Size,
-                //    PageNumber = this.Request.PageNumber,
-                //    TotalPageNumber = col.Count(),
-                //    ResultDto = accounts
-                //};
                 this.Result = result;
             }
         }

@@ -4,9 +4,10 @@ using LiteDbFlex;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using JLiteDBFlex;
 
 namespace JWService.Data.Models {
-    [LiteDbTable("account.db", "accounts")]
+    [JLiteDbTable("account.db", "accounts")]
     public class Account {
         /// <summary>
         /// Id
