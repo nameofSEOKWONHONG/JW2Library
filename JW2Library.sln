@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWLibrary.NUnit.Test", "JWL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.QueryConst", "Service.QueryConst\Service.QueryConst.csproj", "{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JLiteDBFlex", "JLiteDBFlex\JLiteDBFlex.csproj", "{B337A6E0-EAAB-4EE2-94C9-383F48DF40A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BCFA712-2D37-4D69-B1B0-BAF196BE9E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B337A6E0-EAAB-4EE2-94C9-383F48DF40A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B337A6E0-EAAB-4EE2-94C9-383F48DF40A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B337A6E0-EAAB-4EE2-94C9-383F48DF40A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B337A6E0-EAAB-4EE2-94C9-383F48DF40A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

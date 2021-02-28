@@ -1,14 +1,43 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using FluentValidation;
 using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Util;
+using NetFabric.Hyperlinq;
 using NiL.JS.Extensions;
 
 namespace JCoreSvcTest {
+    class Test1 {
+        public string GUID = string.Empty; 
+        public Test1() {
+            GUID = Guid.NewGuid().ToString();
+            Console.WriteLine($"ctor test {GUID}");
+        }
+        public void Run() {
+            Console.WriteLine("run...");
+        }
+    }
     class Program {
+        private static Lazy<JLKList<Test1>> _instance =
+            new Lazy<JLKList<Test1>>(() => new JLKList<Test1>());
+
+        private static Test1 Self(string name) {
+            return _instance.Value.Where(m => m.GUID == name).FirstOrDefault();
+        }
         static void Main(string[] args) {
+            _instance.Value.Add(new Test1());
+            _instance.Value.Add(new Test1());
+            _instance.Value.Add(new Test1());
+            _instance.Value.Add(new Test1());
+            _instance.Value.Add(new Test1());
+            var guid = Console.ReadLine();
+
+            var instance = Self(guid);
+            instance.Run();
+            
             // ITestService service = new TestService();
             //
             // var result = string.Empty;
@@ -83,38 +112,38 @@ namespace JCoreSvcTest {
 //                 Console.WriteLine(result.Is<int>());
 //                 Console.WriteLine(result.ValueType);
 //             });
-            var sql = @"
-var sql = '';
-sql += 'SELECT * FROM CUSTOMER WHERE 1=1';
-if(name != '')
-    sql += ` AND NAME = '${name}' `;
-if(age > 0)
-    sql += ` AND AGE > ${age} `;
-if(v != '')
-    sql += ` AND VALUE = '${v}' `;
-";
-            sql.Execute((c) =>
-            {
-                c.DefineVariable("name").Assign("seokwon");
-                c.DefineVariable("age").Assign(18);
-                c.DefineVariable("v").Assign("str");
-            }, (c) =>
-            {
-                var result = c.GetVariable("sql");
-                Console.WriteLine(result);
-            } );
-
-            var sqlfile = "./query.js";
-            sqlfile.ExecuteFile((c) =>
-            {
-                c.DefineVariable("name").Assign("seokwon");
-                c.DefineVariable("age").Assign(18);
-                c.DefineVariable("v").Assign("str");
-            }, (c) =>
-            {
-                var result = c.GetVariable("sql");
-                Console.WriteLine(result);
-            } );
+//             var sql = @"
+// var sql = '';
+// sql += 'SELECT * FROM CUSTOMER WHERE 1=1';
+// if(name != '')
+//     sql += ` AND NAME = '${name}' `;
+// if(age > 0)
+//     sql += ` AND AGE > ${age} `;
+// if(v != '')
+//     sql += ` AND VALUE = '${v}' `;
+// ";
+//             sql.Execute((c) =>
+//             {
+//                 c.DefineVariable("name").Assign("seokwon");
+//                 c.DefineVariable("age").Assign(18);
+//                 c.DefineVariable("v").Assign("str");
+//             }, (c) =>
+//             {
+//                 var result = c.GetVariable("sql");
+//                 Console.WriteLine(result);
+//             } );
+//
+//             var sqlfile = "./query.js";
+//             sqlfile.ExecuteFile((c) =>
+//             {
+//                 c.DefineVariable("name").Assign("seokwon");
+//                 c.DefineVariable("age").Assign(18);
+//                 c.DefineVariable("v").Assign("str");
+//             }, (c) =>
+//             {
+//                 var result = c.GetVariable("sql");
+//                 Console.WriteLine(result);
+//             } );
         }
     }
 
