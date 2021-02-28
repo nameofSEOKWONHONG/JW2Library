@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>Service.Const</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
