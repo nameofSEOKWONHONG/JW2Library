@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using JLiteDBFlex;
 using JWLibrary.Core;
 using JWService.Data.Models;
 using Service.Data;
@@ -12,8 +13,8 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var flexer = new JLiteDBFlex.JLiteDbFlexerManager<Account>();
-            this.Result = flexer.Create().LiteCollection.FindById(this.Request.Data);
+            var litedb = JLiteDbFlexerManager<Account>.Create();
+            this.Result = litedb.LiteCollection.FindById(this.Request.Data);
         }
 
         public class GetAccountByIdSvcValidator : AbstractValidator<GetAccountByIdSvc> {

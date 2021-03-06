@@ -29,8 +29,8 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var flexer = new JLiteDbFlexerManager<Account>();
-            var result= flexer.Create().LiteCollection.Insert(this.Request);
+            var litedb = JLiteDbFlexerManager<Account>.Create();
+            var result= litedb.LiteCollection.Insert(this.Request);
             this.Result = (int) result > 0;
         }
 

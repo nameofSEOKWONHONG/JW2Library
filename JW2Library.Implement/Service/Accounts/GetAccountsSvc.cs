@@ -6,6 +6,7 @@ using LiteDbFlex;
 using Mapster;
 using Service.Data;
 using System.Collections.Generic;
+using JLiteDBFlex;
 
 namespace Service.Accounts {
     public class GetAccountsSvc : AccountServiceBase<GetAccountsSvc, PagingRequestDto<Account>, PagingResultDto<IEnumerable<Account>>>,
@@ -16,9 +17,8 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var flexer = new JLiteDBFlex.JLiteDbFlexerManager<Account>();
-            var collection = flexer.Create().LiteCollection;
-            var query = collection.Query();
+            var litedb = JLiteDbFlexerManager<Account>.Create();
+            var query = litedb.LiteCollection.Query();
             if (this.Request.Data.jIsNotNull()) {
                 if (this.Request.Data.Id > 0) query = query.Where(m => m.Id >= this.Request.Data.Id);
                 if (this.Request.Data.UserId.jIsNullOrEmpty())
@@ -28,7 +28,7 @@ namespace Service.Accounts {
                     .ToList();
                 
                 var result = this.Request.Adapt<PagingResultDto<IEnumerable<Account>>>();
-                result.TotalCount = collection.Count();
+                result.TotalCount = litedb.LiteCollection.Count();
                 result.Data = accounts;
                 this.Result = result;
             }

@@ -26,9 +26,10 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var flexer = new JLiteDbFlexerManager<Account>();
-            flexer.Create().LiteDatabase.BeginTrans();
-            this.Result = flexer.Create().LiteCollection.Delete(this.Request.Data);
+            var litedb = JLiteDbFlexerManager<Account>.Create(); 
+            litedb.LiteDatabase.BeginTrans();
+            this.Result = litedb.LiteCollection.Delete(this.Request.Data);
+            litedb.LiteDatabase.Commit();
         }
 
         public class DeleteAccountServiceValidator : AbstractValidator<DeleteAccountSvc> {

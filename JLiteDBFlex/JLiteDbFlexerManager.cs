@@ -7,12 +7,13 @@ namespace JLiteDBFlex {
         private static Lazy<JHDictionary<Type, JLiteDbFlexer<T>>> _instance =
             new Lazy<JHDictionary<Type, JLiteDbFlexer<T>>>();
         
-        public JLiteDbFlexer<T> Create(string additionalDbFileName = "") {
+        public static JLiteDbFlexer<T> Create() {
             var exists = _instance.Value.FirstOrDefault(m => m.Key == typeof(T));
             if (exists.jIsNotNull()) {
                 return exists.Value;
             }
-            var newInstance = new JLiteDbFlexer<T>(additionalDbFileName);
+            
+            var newInstance = new JLiteDbFlexer<T>();
             if (newInstance.jIsNotNull()) {
                 _instance.Value.Add(typeof(T), newInstance);
             }
@@ -20,18 +21,4 @@ namespace JLiteDBFlex {
             return newInstance;
         }
     }
-
-    // public class Test {
-    //     public void Run() {
-    //         JLiteDbFlexerManager.Instace.Create<TestDto>().LiteCollection.FindAll();
-    //         var instance = flexer.Create<TestDto>();
-    //         var all = instance.LiteCollection.FindAll();
-    //         
-    //     }
-    // }
-    //
-    // [JLiteDbTable("./test.db", "test", null, null)]
-    // public class TestDto {
-    //     
-    // }
 }

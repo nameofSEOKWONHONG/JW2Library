@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using JLiteDBFlex;
 using JWLibrary.ServiceExecutor;
 using JWService.Data.Models;
 using LiteDbFlex;
@@ -11,8 +12,8 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var flexer = new JLiteDBFlex.JLiteDbFlexerManager<Account>();
-            var account = flexer.Create().LiteCollection
+            var litedb = JLiteDbFlexerManager<Account>.Create();
+            var account = litedb.LiteCollection
                 .FindOne(m => m.UserId == this.Request.UserId && m.Passwd == this.Request.Passwd);
 
             this.Result = account;
