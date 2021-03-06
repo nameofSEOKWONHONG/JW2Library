@@ -20,6 +20,7 @@ namespace JCoreSvcTest {
             Console.WriteLine("run...");
         }
     }
+    
     class Program {
         private static Lazy<JLKList<Test1>> _instance =
             new Lazy<JLKList<Test1>>(() => new JLKList<Test1>());
@@ -27,16 +28,30 @@ namespace JCoreSvcTest {
         private static Test1 Self(string name) {
             return _instance.Value.Where(m => m.GUID == name).FirstOrDefault();
         }
-        static void Main(string[] args) {
-            _instance.Value.Add(new Test1());
-            _instance.Value.Add(new Test1());
-            _instance.Value.Add(new Test1());
-            _instance.Value.Add(new Test1());
-            _instance.Value.Add(new Test1());
-            var guid = Console.ReadLine();
-
-            var instance = Self(guid);
-            instance.Run();
+        
+        /// <summary>
+        /// JWLibrary.Test (DragonFruit-Test)
+        /// </summary>
+        /// <param name="intOption">An option whose argument will bind to an int</param>
+        /// <param name="boolOption">An option whose argument will bind to a bool</param>
+        /// <param name="fileOption">An option whose argument will bind to a FileInfo</param>           
+        static void Main(int intOption = 42, bool boolOption = false, FileInfo fileOption = null) {
+            if (fileOption != null && !fileOption.Exists) {
+                fileOption.Create();
+            }
+            Console.WriteLine($"The value of intOption is: {intOption}");
+            Console.WriteLine($"The value of boolOption is: {boolOption}");
+            Console.WriteLine($"The value of fileOption is: {fileOption?.FullName ?? "null"}");
+            
+            // _instance.Value.Add(new Test1());
+            // _instance.Value.Add(new Test1());
+            // _instance.Value.Add(new Test1());
+            // _instance.Value.Add(new Test1());
+            // _instance.Value.Add(new Test1());
+            // var guid = Console.ReadLine();
+            //
+            // var instance = Self(guid);
+            // instance.Run();
             
             // ITestService service = new TestService();
             //
