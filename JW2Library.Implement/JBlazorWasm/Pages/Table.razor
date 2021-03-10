@@ -1,0 +1,181 @@
+﻿@page "/table"
+@using System.Threading.Tasks
+@using System.Collections.ObjectModel
+@using System.Linq
+@using System
+@using JBlazorWasm.Component
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime;
+
+<h1>Table Example</h1>
+
+<div>
+    <img src="https://www.meziantou.net/assets/blazor-component-lifecycle-1.png?v=0e27&utm_medium=social&utm_source=web"/>    
+</div>
+<div>
+    <a href="https://www.meziantou.net/asp-net-core-blazor-components-lifecycle.htm">blazor component lifecycle</a>
+    <a href="https://blazor-tutorial.net/lifecycle-methods">blazor lifecycle 1</a>
+    <a href="https://www.thinktecture.com/en/blazor/blazor-components-lifecycle-is-not-always-straightforward/#blazor-component-lifecycle">blazor lifecycle 2</a>
+</div>
+<div>
+    <a href="https://swimburger.net/blog/dotnet/how-to-deploy-aspnet-blazor-webassembly-to-github-pages">publish github page blazor wasm</a>    
+</div>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>c1</th>
+        <th>c2</th>
+        <th>c3</th>
+        <th>c4</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var row in TestTables) {
+        <tr @key="@row">
+            <td>@row.Column1</td>
+            <td>@row.Column2</td>
+            <td>@row.Column3</td>
+            <td>@row.Column4</td>
+            <td><button @onclick="@(() => EditTable(row))">Edit</button></td>
+            <td><button @onclick="@(() => TestTables.Remove(row))">Remove</button></td>
+            <td><button @onclick="@(() => AddRow())">Add</button></td>
+
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+@code {
+    public class TestTable {
+        public string Column1 {get;set;}
+        public string Column2 {get;set;}
+        public string Column3 {get;set;}
+        public string Column4 {get;set;}
+    }
+
+    //private ObservableCollection<TestTable> TestTables = new ObservableCollection<TestTable>();
+    private List<TestTable> TestTables = new List<TestTable>();
+
+    private bool _firstRender = true;
+    #region [blazor life cycle]
+    
+    // SetParametersAsync-start
+    //
+    //     OnInitialized-start
+    //     OnInitialized-end
+    //
+    //     OnInitializedAsync-start
+    //
+    //         OnAfterRender(True)-start
+    //         OnAfterRender(True)-end
+    //
+    //             OnAfterRenderAsync(True)-start
+    //             OnAfterRenderAsync(True)-end
+    //
+    //     OnInitializedAsync-end
+    //
+    //     OnParametersSet-start
+    //     OnParametersSet-end
+    //
+    //     OnParametersSetAsync-start
+    //     OnParametersSetAsync-end
+    //
+    //     OnAfterRender(False)-start
+    //     OnAfterRender(False)-end
+    //
+    //     OnAfterRenderAsync(False)-start
+    //     OnAfterRenderAsync(False)-end
+    //
+    // SetParametersAsync-end    
+
+    #region [SetParametersAsync]
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        Console.WriteLine("SetParametersAsync");
+        await base.SetParametersAsync(parameters);
+    }
+    #endregion
+
+    #region [OnInitalized]
+    // protected override void OnInitialized()
+    // {
+    //     Console.WriteLine("OnInitialized");
+    // }
+
+    protected override Task OnInitializedAsync() {
+        return Task.Factory.StartNew(() => {
+            Console.WriteLine("OnInitializedAsync");
+            if(TestTables.Count > 0) return;
+            Enumerable.Range(1, 5).ToList().ForEach(item => {
+                TestTables.Add(new TestTable() {
+                    Column1 = $"{item}-c1",
+                    Column2 = $"{item}-c2",
+                    Column3 = $"{item}-c3",
+                    Column4 = $"{item}-c4",
+                });            
+            });
+        });
+    }
+    #endregion
+
+    #region [OnParametersSet]
+    // protected override void OnParametersSet()
+    // {
+    //     Console.WriteLine("OnParametersSet");
+    // }
+
+    protected override Task OnParametersSetAsync() {
+        return Task.Factory.StartNew(() => Console.WriteLine("OnParametersSetAsync"));
+    }
+    #endregion
+
+    #region [OnAfterRender]
+    // protected override void OnAfterRender(bool firstRender) {
+    //     Console.WriteLine("OnAfterRender");
+    //     _isFirst = firstRender;
+    // }
+
+    // UI 이벤트시에 최초 1회 발생함.
+    protected override Task OnAfterRenderAsync(bool firstRender) {
+        return Task.Factory.StartNew(() => {
+            Console.WriteLine("OnAfterRenderAsync");
+            Console.WriteLine($"{nameof(firstRender)}:{firstRender}");
+            return _firstRender = firstRender;
+        });
+    }
+    #endregion
+
+    #region [ShouldRender]
+    protected override bool ShouldRender()
+    {
+        Console.WriteLine("shouldRender");
+        //Console.WriteLine(_firstRender);
+        Console.WriteLine(base.ShouldRender());
+        return base.ShouldRender();
+        //return _firstRender;
+    }
+    #endregion
+    #endregion
+
+    #region [event]
+    public void EditTable(TestTable row) {
+        row.Column1 = "edited";
+    }
+
+    public async Task AddRow() {
+        var rowNum = TestTables.Count - 1;
+        TestTables.Add(new TestTable() {
+            Column1 = $"{rowNum}-c1",
+            Column2 = $"{rowNum}-c2",
+            Column3 = $"{rowNum}-c3",
+            Column4 = $"{rowNum}-c4",
+        });
+        //this.StateHasChanged();
+        var message = "addrow";
+        await JsRuntime.InvokeAsync<string>("Alert", message);
+    }
+    #endregion
+}
