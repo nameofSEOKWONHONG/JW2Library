@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
 namespace JWLibrary.ApiCore {
     public class Startup {
@@ -110,7 +111,7 @@ namespace JWLibrary.ApiCore {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApplicationLifetime applicationLifetime) {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
@@ -141,6 +142,12 @@ namespace JWLibrary.ApiCore {
             });
 
             app.SwaggerConfigure("../swagger/v1/swagger.json", "jwlibrary.apicore v1");
+            
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+        }
+
+        private void OnShutdown() {
+            JLiteDBFlex.JLiteDbFlexerManager.Distroy();
         }
     }
 

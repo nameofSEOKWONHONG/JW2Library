@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Autofac;
 
 namespace JWLibrary.ApiCore.Util {
+    
+    /// <summary>
+    /// autofac service register(don't remove)
+    /// </summary>
     public class ServiceModule : Module {
         protected override void Load(ContainerBuilder builder)
         {

@@ -26,7 +26,7 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var litedb = JLiteDbFlexerManager<Account>.Create(); 
+            var litedb = JLiteDbFlexerManager.Create<Account>(); 
             litedb.LiteDatabase.BeginTrans();
             this.Result = litedb.LiteCollection.Delete(this.Request.Data);
             litedb.LiteDatabase.Commit();

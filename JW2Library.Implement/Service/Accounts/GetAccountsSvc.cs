@@ -17,7 +17,7 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var litedb = JLiteDbFlexerManager<Account>.Create();
+            var litedb = JLiteDbFlexerManager.Create<Account>();
             var query = litedb.LiteCollection.Query();
             if (this.Request.Data.jIsNotNull()) {
                 if (this.Request.Data.Id > 0) query = query.Where(m => m.Id >= this.Request.Data.Id);

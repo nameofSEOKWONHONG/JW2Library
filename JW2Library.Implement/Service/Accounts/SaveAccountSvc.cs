@@ -29,7 +29,7 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var litedb = JLiteDbFlexerManager<Account>.Create();
+            var litedb = JLiteDbFlexerManager.Create<Account>();
             var result= litedb.LiteCollection.Insert(this.Request);
             this.Result = (int) result > 0;
         }

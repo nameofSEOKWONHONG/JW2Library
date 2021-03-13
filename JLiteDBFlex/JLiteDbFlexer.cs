@@ -5,12 +5,16 @@ using JWLibrary.Core;
 using LiteDB;
 
 namespace JLiteDBFlex {
-    public class JLiteDbFlexer<T>
+    public interface IJLiteDbFlexer {
+        ILiteDatabase LiteDatabase { get; }
+    }
+
+    public class JLiteDbFlexer<T> : IJLiteDbFlexer
     where T : class {
         public ILiteDatabase LiteDatabase { get; }
         public ILiteCollection<T> LiteCollection { get; }
-        public string TableName { get; }
-        public string FileName { get; }
+        public string TableName { get; private set; }
+        public string FileName { get; private set; }
         
         public JLiteDbFlexer(string additionalDbFileName = "") {
             var resolveInfo = JLiteDbResolver.Resolve<T>(additionalDbFileName);
