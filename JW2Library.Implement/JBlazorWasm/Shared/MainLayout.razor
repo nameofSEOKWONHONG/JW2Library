@@ -1,17 +1,57 @@
 ﻿@inherits LayoutComponentBase
+@inject ISnackbar Snackbar
 
-<div class="page">
-    <div class="sidebar">
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudAppBarSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">Application</MudText>
+        </MudDrawerHeader>
         <NavMenu/>
-    </div>
-
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-        </div>
-
-        <div class="content px-4">
+    </MudDrawer>
+    <MudMainContent>
+        @* 방법1 *@
+        @* <CascadingValue Value="this" Name="MainLayout"> *@
+        @*     @Body *@
+        @* </CascadingValue> *@
+        @* 방법2 *@
+        <CascadingValue Value="SetAlertEvent" Name="SetAlertEvent">
             @Body
-        </div>
-    </div>
-</div>
+        </CascadingValue>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    public EventCallback<string> SetAlertEvent => EventCallback.Factory.Create<string>(this, SetAlert);
+
+    public void SetAlert(string message) {
+        ShowSnackbarAlert(message);
+    }
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+    
+    public void ShowSnackbarAlert(string message)
+    {
+        Snackbar.Add(message, Severity.Normal, config =>
+        {
+            config.Onclick = snackbar =>
+            {
+                SayHello();
+                return Task.CompletedTask;
+            };
+        });
+    }
+    
+    public void SayHello()
+    {
+        Snackbar.Add("Hello World!");
+    }
+}
