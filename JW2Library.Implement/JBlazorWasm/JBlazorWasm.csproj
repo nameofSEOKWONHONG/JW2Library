@@ -5,9 +5,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="blazor-dragdrop" Version="2.2.2" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.4" PrivateAssets="all" />
         <PackageReference Include="MudBlazor" Version="5.0.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Component\JTable.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\JBlazorWasm.Data\JBlazorWasm.Data.csproj" />
     </ItemGroup>
 
 </Project>

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using MudBlazor.Services;
+using Plk.Blazor.DragDrop;
 
 namespace JBlazorWasm {
     public class Program {
@@ -20,6 +21,7 @@ namespace JBlazorWasm {
                 sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
             
             builder.Services.AddMudServices();
+            builder.Services.AddBlazorDragDrop();
 
             await builder.Build().RunAsync();
         }

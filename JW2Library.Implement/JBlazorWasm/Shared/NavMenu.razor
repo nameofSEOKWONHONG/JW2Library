@@ -1,42 +1,16 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">JBlazorWasm</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="table">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Table
-            </NavLink>
-        </li>        
-    </ul>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu() {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
-}
+﻿<MudPaper Width="250px" Class="d-inline-flex py-3" Square="true">
+    <MudNavMenu Class="mud-width-full">
+        <MudText Typo="Typo.h6" Class="px-4">Material</MudText>
+        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Icons</MudText>
+        <MudDivider Class="my-2" />
+        <MudNavLink Href="/index" Icon="fas fa-chart-line">Home</MudNavLink>
+        <MudNavLink Href="/counter" Icon="fas fa-server">Counter</MudNavLink>
+        <MudNavLink Href="/fetchdata" Icon="fas fa-receipt">Fetch Data</MudNavLink>
+        <MudNavLink Href="/table" Icon="fal fa-analytics">Table</MudNavLink>
+        <MudNavLink Href="/draganddrop" Icon="fal fa-analytics">Drag and Drop</MudNavLink>
+        <MudNavGroup Title="" Icon="fas fa-cogs" Expanded="true">
+            <MudNavLink Href="/users" Icon="fas fa-users" IconColor="Color.Success">Users</MudNavLink>
+            <MudNavLink Href="/security" Icon="fas fa-user-shield" IconColor="Color.Info">Security</MudNavLink>
+        </MudNavGroup>
+    </MudNavMenu>
+</MudPaper>
