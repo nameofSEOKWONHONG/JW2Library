@@ -1,4 +1,8 @@
 ﻿@page "/fetchdata"
+@inject GrpcChannel Channel
+@using Google.Protobuf.WellKnownTypes
+@using WeatherForecastService
+@using System.Net.Http
 @inject HttpClient Http
 
 <h1>Weather forecast</h1>
@@ -34,13 +38,20 @@ else {
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+    private WeatherForecastData[] forecasts;
 
     protected override async Task OnInitializedAsync() {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        // The port number(5001) must match the port of the gRPC server.
+        var client = new WeatherForecastor.WeatherForecastorClient(Channel);
+        WeatherForecastService.WeatherForecastResponse reply = await client.GetWeatherForecastAsync(new WeatherForecastRequest() {Id = 1});
+        Console.WriteLine("Id: " + reply.Id);
+        Console.WriteLine("Date: " + reply.Date);
+        Console.WriteLine("TemperatureC: " + reply.TemperatureC);
+        Console.WriteLine("TemperatureF: " + reply.TemperatureF);
+        forecasts = await Http.GetFromJsonAsync<WeatherForecastData[]>("sample-data/weather.json");
     }
 
-    public class WeatherForecast {
+    public class WeatherForecastData {
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }

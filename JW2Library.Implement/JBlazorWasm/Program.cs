@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using Grpc.Net.Client;
+using Grpc.Net.Client.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,8 @@ using Microsoft.Extensions.Logging;
 
 using MudBlazor.Services;
 using Plk.Blazor.DragDrop;
+using Grpc.Core;
+using Microsoft.AspNetCore.Components;
 
 namespace JBlazorWasm {
     public class Program {
@@ -19,9 +23,28 @@ namespace JBlazorWasm {
 
             builder.Services.AddScoped(
                 sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
-            
+
             builder.Services.AddMudServices();
             builder.Services.AddBlazorDragDrop();
+            builder.Services.AddSingleton(services => {
+                // Get the service address from appsettings.json
+                var config = services.GetRequiredService<IConfiguration>();
+                var backendUrl = config["BackendUrl"];
+
+                // If no address is set then fallback to the current webpage URL
+                if (string.IsNullOrEmpty(backendUrl)) {
+                    var navigationManager = services.GetRequiredService<NavigationManager>();
+                    backendUrl = navigationManager.BaseUri;
+                }
+
+                // Create a channel with a GrpcWebHandler that is addressed to the backend server.
+                //
+                // GrpcWebText is used because server streaming requires it. If server streaming is not used in your app
+                // then GrpcWeb is recommended because it produces smaller messages.
+                var httpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWebText, new HttpClientHandler());
+
+                return GrpcChannel.ForAddress(backendUrl, new GrpcChannelOptions { HttpHandler = httpHandler });
+            });
 
             await builder.Build().RunAsync();
         }
