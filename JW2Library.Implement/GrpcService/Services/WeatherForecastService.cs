@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Grpc.Core;
+using JWLibrary.ServiceExecutor;
+using JWService.WeatherForecast;
 using Microsoft.Extensions.Logging;
+using Service.Data;
+using Service.WeatherForecast;
 using WeatherForecastService;
 
 namespace GrpcService {
@@ -12,11 +16,18 @@ namespace GrpcService {
             _logger.LogInformation("instance create");
         }
         public override Task<WeatherForecastResponse> GetWeatherForecast(WeatherForecastRequest request, ServerCallContext context) {
-            return Task.FromResult(new WeatherForecastResponse {
-                Date = DateTime.Now.ToString(),
-                Id = 1,
-                TemperatureC = 50.2,
-                TemperatureF = 32.2
+            WEATHER_FORECAST result = null;
+            using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(new GetWeatherForecastSvc());
+            executor.SetRequest(o => o.Request = new WeatherForecastRequestDto() { ID = request.Id })
+                .OnExecuted(o => {
+                    result = o.Result;
+                });
+            return Task.FromResult(new WeatherForecastResponse() {
+                Id = result.ID,
+                Date = result.DATE.ToString(),
+                TemperatureC = result.TEMPERATURE_C.Value,
+                TemperatureF = result.TEMPERATURE_F.Value,
+                Summary = result.SUMMARY
             });
         }
     }
