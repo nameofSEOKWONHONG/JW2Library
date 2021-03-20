@@ -9,6 +9,7 @@ using Service.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
+using APIServer.Config;
 
 namespace JWLibrary.ApiCore.Controllers {
     /// <summary>
@@ -26,9 +27,12 @@ namespace JWLibrary.ApiCore.Controllers {
             IGetWeatherForecastSvc getWeatherForecastSvc,
             IGetAllWeatherForecastSvc getAllWeatherForecastSvc,
             ISaveWeatherForecastSvc saveWeatherForecastSvc,
-            IDeleteWeatherForecastSvc deleteWeatherForecastSvc
+            IDeleteWeatherForecastSvc deleteWeatherForecastSvc,
+            ServiceLoader.ServiceResolver serviceAccessor
+
             )
             : base(logger) {
+            //_getWeatherForecastSvc = serviceAccessor("A");
             _getWeatherForecastSvc = getWeatherForecastSvc;
             _getAllWeatherForecastSvc = getAllWeatherForecastSvc;
             _saveWeatherForecastSvc = saveWeatherForecastSvc;

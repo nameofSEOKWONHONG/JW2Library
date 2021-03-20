@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JWLibrary.ServiceExecutor;
 
 namespace APIServer.Config {
     public static class ServiceLoader {
@@ -23,6 +24,18 @@ namespace APIServer.Config {
             services.AddScoped<IGetAllWeatherForecastSvc, GetAllWeatherForecastSvc>();
             services.AddScoped<ISaveWeatherForecastSvc, SaveWeatherForecastSvc>();
             services.AddScoped<IDeleteWeatherForecastSvc, DeleteWeatherForecastSvc>();
+            services.AddTransient<ServiceResolver>(serviceProvider => key => {
+                return _keyValuePair.First(m => m.Key == key).Value(serviceProvider);
+            });
         }
+        
+        public delegate IServiceBase ServiceResolver(string key);
+
+        public static Dictionary<string, Func<IServiceProvider, IServiceBase>> _keyValuePair =
+            new Dictionary<string, Func<IServiceProvider, IServiceBase>>() {
+                {
+                    "A", provider => { return provider.GetService<GetWeatherForecastSvc>(); }
+                }
+            };
     }
 }
