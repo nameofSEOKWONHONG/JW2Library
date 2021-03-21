@@ -16,6 +16,11 @@ namespace MultiInterfaceContainerExample {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddTransient<ICompanyService, CompanyService>();
+            services.AddTransient<IReserveService, ReserveService>();
+            services.AddTransient<ITheaterService<CgvService>, CgvService>();
+            services.AddTransient<ITheaterService<LotteService>, LotteService>();
+            
             services.AddTransient<IBaseService<Hello1Service>, Hello1Service>();
             services.AddTransient<IBaseService<Hello2Service>, Hello2Service>();
             services.AddControllers();

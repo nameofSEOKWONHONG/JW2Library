@@ -8,11 +8,36 @@ namespace MultiInterfaceContainerExample.Services {
      *                                                -> 계산 -> 알림 (my company)
      */
 
+    public enum TICKET_TYPE {
+        CGV,
+        LOTTE,
+        MEGABOX
+    }
+    
+    public class CompanyService : ICompanyService {
+        public TICKET_TYPE TicketType { get; set; } = TICKET_TYPE.CGV;
+        
+        public bool CheckUserInfo(string name) {
+            return true;
+        }
 
+        public bool CheckOut(string name) {
+            return true;
+        }
+
+        public void Notify(string name) {
+
+        }
+
+        public void Cancel(string name) {
+            
+        }
+    }
     /// <summary>
     ///     기본 B2C 서비스 인터페이스
     /// </summary>
     public interface ICompanyService {
+        TICKET_TYPE TicketType { get; set; }
         /// <summary>
         ///     주문자 정보 확인
         /// </summary>
@@ -32,13 +57,15 @@ namespace MultiInterfaceContainerExample.Services {
         /// </summary>
         /// <param name="name"></param>
         void Notify(string name);
+
+        void Cancel(string name);
     }
 
     /// <summary>
     ///     극장별 기본 인터페이스
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IOuterService<T> where T : class {
+    public interface ITheaterService<T> where T : class {
         /// <summary>
         ///     선점
         /// </summary>
@@ -56,12 +83,14 @@ namespace MultiInterfaceContainerExample.Services {
         /// </summary>
         /// <param name="name"></param>
         void PostAction(string name);
+
+        void Cancel(string name);
     }
 
     /// <summary>
     ///     CGV 극장 인터페이스 구현
     /// </summary>
-    public class CgvOuterService : IOuterService<CgvOuterService> {
+    public class CgvService : ITheaterService<CgvService> {
         public void PreAction(string name) {
             Console.WriteLine($"pre reservce : {name}");
         }
@@ -72,13 +101,17 @@ namespace MultiInterfaceContainerExample.Services {
 
         public void PostAction(string name) {
             Console.WriteLine($"post reserve : {name}");
+        }
+
+        public void Cancel(string name) {
+            Console.WriteLine($"cancel : {name}");
         }
     }
 
     /// <summary>
     ///     롯데시네마 극장 인터페이스 구현
     /// </summary>
-    public class LotteOuterService : IOuterService<LotteOuterService> {
+    public class LotteService : ITheaterService<LotteService> {
         public void PreAction(string name) {
             Console.WriteLine($"pre reservce : {name}");
         }
@@ -89,6 +122,10 @@ namespace MultiInterfaceContainerExample.Services {
 
         public void PostAction(string name) {
             Console.WriteLine($"post reserve : {name}");
+        }
+
+        public void Cancel(string name) {
+            Console.WriteLine($"cancel : {name}");
         }
     }
 }
