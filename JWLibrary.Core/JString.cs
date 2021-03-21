@@ -3,9 +3,7 @@ using System.IO.Compression;
 using System.Text;
 
 namespace JWLibrary.Core {
-
     public static class JString {
-
         public static int jToCount(this string str) {
             return str.jIsNull() ? 0 : str.Length;
         }

@@ -1,31 +1,28 @@
-﻿using JWLibrary.Core.Data;
-using JWLibrary.Database;
-using LiteDbFlex;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using JLiteDBFlex;
+﻿using JLiteDBFlex;
 
 namespace JWService.Data.Models {
     [JLiteDbTable("account.db", "accounts")]
     public class Account {
         /// <summary>
-        /// Id
+        ///     Id
         /// </summary>
         /// <value></value>
         public int Id { get; set; }
+
         /// <summary>
-        /// hashId
+        ///     hashId
         /// </summary>
         /// <value></value>
         public string HashId { get; set; }
+
         /// <summary>
-        /// userId
+        ///     userId
         /// </summary>
         /// <value></value>
         public string UserId { get; set; }
+
         /// <summary>
-        /// password
+        ///     password
         /// </summary>
         /// <value></value>
         public string Passwd { get; set; }

@@ -7,9 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace JWLibrary.Utils {
-
     public static class CrytoFile {
-
         public static void EncryptFile(string inputFile, string outputFile, string sKey) {
             var UE = new UnicodeEncoding();
             var key = UE.GetBytes(sKey);
@@ -23,7 +21,7 @@ namespace JWLibrary.Utils {
                     using (var fsIn = new FileStream(inputFile, FileMode.Open)) {
                         int data;
                         while ((data = fsIn.ReadByte()) != -1)
-                            cs.WriteByte((byte)data);
+                            cs.WriteByte((byte) data);
 
                         fsIn.Close();
                     }
@@ -46,7 +44,7 @@ namespace JWLibrary.Utils {
                     using (var fsOut = new FileStream(outputFile, FileMode.Create)) {
                         int data;
                         while ((data = cs.ReadByte()) != -1)
-                            fsOut.WriteByte((byte)data);
+                            fsOut.WriteByte((byte) data);
 
                         fsOut.Close();
                     }

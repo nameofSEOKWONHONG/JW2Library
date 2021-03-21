@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using SqlKata.Compilers;
 
-namespace JWLibrary.Database
-{
+namespace JWLibrary.Database {
     public class JDatabaseConst {
         public static readonly Dictionary<SQL_COMPILER_TYPE, Compiler> COMPILER_MAP =
-            new Dictionary<SQL_COMPILER_TYPE, Compiler>
-            {
+            new() {
                 {SQL_COMPILER_TYPE.MSSQL, new SqlServerCompiler()},
                 {SQL_COMPILER_TYPE.MYSQL, new MySqlCompiler()},
                 {SQL_COMPILER_TYPE.ORACLE, new OracleCompiler()},
@@ -14,7 +12,7 @@ namespace JWLibrary.Database
                 {SQL_COMPILER_TYPE.SQLLITE, new SqliteCompiler()}
             };
     }
-    
+
     public enum SQL_COMPILER_TYPE {
         MSSQL,
         MYSQL,
@@ -22,5 +20,5 @@ namespace JWLibrary.Database
         FIREBIRD,
         SQLLITE,
         POSTGRESQL
-    }       
+    }
 }

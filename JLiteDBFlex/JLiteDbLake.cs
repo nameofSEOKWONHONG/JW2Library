@@ -9,43 +9,40 @@ namespace JLiteDBFlex {
         JHDictionary<string, bool> Indexes { get; set; }
         Type DatabaseType { get; }
     }
+
     public class JLiteDbLakeOption<T> : IJLiteDbLakeOption {
         public string FileName { get; set; }
         public JHDictionary<string, bool> Indexes { get; set; }
-        public Type DatabaseType {
-            get { return typeof(T); }
-        }
+
+        public Type DatabaseType => typeof(T);
     }
-    
+
     public class JLiteDbLake : IDisposable {
-        private static JHDictionary<IJLiteDbLakeOption, LiteDatabase> _litedbKeyValuePairs =
-            new JHDictionary<IJLiteDbLakeOption, LiteDatabase>();
-        
-        public JLiteDbLake() {
-            
+        private static readonly JHDictionary<IJLiteDbLakeOption, LiteDatabase> _litedbKeyValuePairs =
+            new();
+
+        public void Dispose() {
+            _litedbKeyValuePairs.jForEach(item => { item.Value.Dispose(); });
+
+            _litedbKeyValuePairs.Clear();
         }
 
         ~JLiteDbLake() {
-            Dispose();            
+            Dispose();
         }
 
-        public static LiteDatabase GetOrAdd<T>(JLiteDbLakeOption<T> option) 
+        public static LiteDatabase GetOrAdd<T>(JLiteDbLakeOption<T> option)
             where T : class {
             if (option.jIsNull()) throw new Exception("option is null");
             if (option.FileName.jIsEmpty()) throw new Exception("filename is empty");
 
             var exists = _litedbKeyValuePairs.jFirst(m => m.Key.FileName == option.FileName);
-            if (exists.Key.jIsEmpty() == false) {
-                return exists.Value;
-            }
-            
+            if (exists.Key.jIsEmpty() == false) return exists.Value;
+
             var litedb = new LiteDatabase(option.FileName);
             if (litedb.jIsNotNull()) {
-                if (option.Indexes.jIsNotNull()) {
-                    option.Indexes.jForEach(item => {
-                        litedb.GetCollection<T>().EnsureIndex(item.Key, item.Value);
-                    });
-                }
+                if (option.Indexes.jIsNotNull())
+                    option.Indexes.jForEach(item => { litedb.GetCollection<T>().EnsureIndex(item.Key, item.Value); });
 
                 _litedbKeyValuePairs.Add(option, litedb);
             }
@@ -63,15 +60,6 @@ namespace JLiteDBFlex {
                 exists.Value.Dispose();
                 _litedbKeyValuePairs.Remove(exists.Key);
             }
-        }
-
-        public void Dispose() {
-            _litedbKeyValuePairs.jForEach(item =>
-            {
-                item.Value.Dispose();
-            });
-            
-            _litedbKeyValuePairs.Clear();
         }
     }
 }

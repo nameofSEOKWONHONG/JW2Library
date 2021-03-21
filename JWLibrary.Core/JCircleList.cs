@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 
 namespace JWLibrary.Core {
-
     public class JCircleList<T> : JList<T>
         where T : class, new() {
-
         public JCircleList() {
         }
 

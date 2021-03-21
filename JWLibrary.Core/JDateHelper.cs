@@ -1,9 +1,7 @@
 ﻿using System;
 
 namespace JWLibrary.Core {
-
     public static class JDateHelper {
-
         public static DateTime jToDateTime(this string date) {
             var datetime = DateTime.MinValue;
             DateTime.TryParse(date, out datetime);

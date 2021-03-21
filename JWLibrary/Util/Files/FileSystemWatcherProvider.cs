@@ -1,9 +1,8 @@
-﻿using JWLibrary.Core;
-using System;
+﻿using System;
 using System.IO;
+using JWLibrary.Core;
 
 namespace JWLibrary.Utils.Files {
-
     public class FileSystemWatcherProvider : IDisposable {
         private FileSystemWatcher _watcher;
 

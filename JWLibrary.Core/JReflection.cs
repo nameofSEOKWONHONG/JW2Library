@@ -2,9 +2,7 @@
 using System.Linq;
 
 namespace JWLibrary.Core {
-
     public static class JReflection {
-
         public static TValue jGetAttributeValue<TAttribute, TValue>(
             this Type type,
             Func<TAttribute, TValue> valueSelector)

@@ -1,10 +1,8 @@
-﻿using JWLibrary.Core;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Linq;
+using JWLibrary.Core;
 
 namespace JWLibrary.Utils {
-
     /// <summary>
     ///     execute command line base
     ///     (this method execute cmd.exe base)
@@ -13,27 +11,26 @@ namespace JWLibrary.Utils {
         private readonly Process _process;
 
         public ProcessSimpleHandler(string[] killProcessNames = null) {
-            if (this._process.jIsNull()) this._process = new Process();
-        }
-
-        public void Run(string fileName, string args, string workingDir) {
-            this._process.StartInfo = new ProcessStartInfo();
-            this._process.StartInfo.FileName = "cmd";
-            this._process.StartInfo.Arguments = string.Format("/{0} {1}", "k", fileName, args);
-            this._process.StartInfo.WorkingDirectory = workingDir;
-            this._process.Start();
-        }
-
-        public void Stop() {
-            if (this._process.jIsNotNull())
-            {
-                this._process.CloseMainWindow();
-                this._process.Close();
-            }
+            if (_process.jIsNull()) _process = new Process();
         }
 
         public void Dispose() {
             Stop();
+        }
+
+        public void Run(string fileName, string args, string workingDir) {
+            _process.StartInfo = new ProcessStartInfo();
+            _process.StartInfo.FileName = "cmd";
+            _process.StartInfo.Arguments = string.Format("/{0} {1}", "k", fileName, args);
+            _process.StartInfo.WorkingDirectory = workingDir;
+            _process.Start();
+        }
+
+        public void Stop() {
+            if (_process.jIsNotNull()) {
+                _process.CloseMainWindow();
+                _process.Close();
+            }
         }
     }
 }

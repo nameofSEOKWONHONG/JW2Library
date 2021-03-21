@@ -3,9 +3,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace JWLibrary.Core {
-
     public static class JPath {
-
         /// <summary>
         ///     executable app root path
         ///     c:\development\MyApp

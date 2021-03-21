@@ -1,6 +1,8 @@
-using APIServer.Config;
+using System;
+using System.IO;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using JLiteDBFlex;
 using JWLibrary.ApiCore.Config;
 using JWLibrary.ApiCore.Util;
 using JWLibrary.Web;
@@ -11,8 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
+using Service.Accounts;
+using Service.WeatherForecast;
 using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
 namespace JWLibrary.ApiCore {
@@ -50,13 +52,10 @@ namespace JWLibrary.ApiCore {
                             "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\""
                     }
                 },
-                SettingSecurityReq = new OpenApiSecurityRequirement
-                {
+                SettingSecurityReq = new OpenApiSecurityRequirement {
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
@@ -111,7 +110,8 @@ namespace JWLibrary.ApiCore {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApplicationLifetime applicationLifetime) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime) {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
@@ -123,7 +123,7 @@ namespace JWLibrary.ApiCore {
             app.UseMiddleware<JErrorHandlingMiddleware>();
 
             //set autofac container
-            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
             // ********************
             // USE CORS
@@ -142,12 +142,12 @@ namespace JWLibrary.ApiCore {
             });
 
             app.SwaggerConfigure("../swagger/v1/swagger.json", "jwlibrary.apicore v1");
-            
+
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
         }
 
         private void OnShutdown() {
-            JLiteDBFlex.JLiteDbFlexerManager.Distroy();
+            JLiteDbFlexerManager.Distroy();
         }
     }
 

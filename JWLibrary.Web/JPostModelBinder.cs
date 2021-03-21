@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
 
 namespace JWLibrary.Web {
     //public class JModelBinder<T> : IModelBinder
@@ -25,7 +25,6 @@ namespace JWLibrary.Web {
     //}
     public class JPostModelBinder<T> : IModelBinder
         where T : class, new() {
-
         public async Task BindModelAsync(ModelBindingContext bindingContext) {
             if (bindingContext == null)
                 throw new ArgumentNullException(nameof(bindingContext));

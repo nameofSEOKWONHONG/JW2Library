@@ -3,9 +3,9 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudAppBarSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(e => DrawerToggle())"/>
+        <MudAppBarSpacer/>
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>
@@ -31,27 +31,24 @@
     public void SetAlert(string message) {
         ShowSnackbarAlert(message);
     }
+
     bool _drawerOpen = true;
 
-    void DrawerToggle()
-    {
+    void DrawerToggle() {
         _drawerOpen = !_drawerOpen;
     }
-    
-    public void ShowSnackbarAlert(string message)
-    {
-        Snackbar.Add(message, Severity.Normal, config =>
-        {
-            config.Onclick = snackbar =>
-            {
+
+    public void ShowSnackbarAlert(string message) {
+        Snackbar.Add(message, Severity.Normal, config => {
+            config.Onclick = snackbar => {
                 SayHello();
                 return Task.CompletedTask;
             };
         });
     }
-    
-    public void SayHello()
-    {
+
+    public void SayHello() {
         Snackbar.Add("Hello World!");
     }
+
 }

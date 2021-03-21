@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JWLibrary.Web {
-
     public static class VersionConfig {
-
         public static void AddVersionConfig(this IServiceCollection services) {
             services.AddApiVersioning(x => {
                 x.DefaultApiVersion = new ApiVersion(1, 0);

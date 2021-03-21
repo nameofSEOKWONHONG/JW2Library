@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MultiInterfaceContainerExample.Services;
 
@@ -11,9 +7,11 @@ namespace MultiInterfaceContainerExample.Controllers {
     [Microsoft.AspNetCore.Components.Route("[controller]")]
     public class HelloController : ControllerBase {
         private ILogger _logger;
-        private IBaseService<Hello1Service> _service;
-        private IBaseService<Hello2Service> _service2;
-        public HelloController(ILogger<HelloController> logger, IBaseService<Hello1Service> service, IBaseService<Hello2Service> service2) {
+        private readonly IBaseService<Hello1Service> _service;
+        private readonly IBaseService<Hello2Service> _service2;
+
+        public HelloController(ILogger<HelloController> logger, IBaseService<Hello1Service> service,
+            IBaseService<Hello2Service> service2) {
             _logger = logger;
             _service = service;
             _service2 = service2;

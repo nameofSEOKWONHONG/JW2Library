@@ -5,13 +5,11 @@ using System.Threading;
 using JWLibrary.Core;
 
 namespace JWLibrary.Utils {
-
     /// <summary>
     ///     execute command line base
     ///     (this method execute target fileName (process name) and repeated event)
     /// </summary>
     public class ProcessHandler : IDisposable {
-
         #region variables
 
         private bool disposed;

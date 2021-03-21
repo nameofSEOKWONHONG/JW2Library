@@ -1,10 +1,8 @@
-﻿using C5;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using C5;
 
 namespace JWLibrary.Core {
-
     public class JList<T> : ArrayList<T> {
-
         public JList() : base(100) {
         }
 
@@ -25,7 +23,6 @@ namespace JWLibrary.Core {
     }
 
     public class JHList<T> : HashedArrayList<T> {
-
         public JHList() {
         }
 
@@ -37,7 +34,6 @@ namespace JWLibrary.Core {
     }
 
     public class JHLKList<T> : HashedLinkedList<T> {
-
         public JHLKList() {
         }
 

@@ -1,13 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace JWLibrary.Utils {
-
     public class HttpRequest {
         private readonly string _address;
         private readonly Uri _uri;

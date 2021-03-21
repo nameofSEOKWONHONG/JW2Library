@@ -1,9 +1,7 @@
-﻿@if (isLoaded)
-{
+﻿@if (isLoaded) {
     @ChildContent
 }
-else
-{
+else {
     <div>Loading screen...</div>
 }
 
@@ -13,9 +11,9 @@ else
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         await Task.Delay(4000); // TODO actual initialization job
         isLoaded = true;
     }
+
 }

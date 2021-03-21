@@ -7,29 +7,30 @@
 
 <div>
     @* <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => MainLayout.ShowSnackbarAlert(Text)"> *@
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => SetAlertEvent.InvokeAsync(Text)">     
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => SetAlertEvent.InvokeAsync(Text)">
         Open Clickable Snackbar
     </MudButton>
 </div>
+
 @code {
     // 방법1
     // [CascadingParameter(Name = "MainLayout")]
     // public MainLayout MainLayout { get; set; }
-    
+
     // 방법2
     [CascadingParameter(Name = "SetAlertEvent")]
     protected EventCallback<string> SetAlertEvent { get; set; }
-    
+
     public string Text { get; set; } = "????";
-    
+
     public string ButtonText { get; set; } = "Click Me";
-    
+
     public int ButtonClicked { get; set; }
-  
-    void ButtonOnClick()
-    {
+
+    void ButtonOnClick() {
         ButtonClicked += 1;
         Text = $"Awesome x {ButtonClicked}";
         ButtonText = "Click Me Again";
     }
+
 }

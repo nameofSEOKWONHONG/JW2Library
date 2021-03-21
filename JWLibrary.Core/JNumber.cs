@@ -2,19 +2,15 @@
 using System.Text.RegularExpressions;
 
 namespace JWLibrary.Core {
-
     public static class JNumber {
-
         public static string jToFormatNumber<T>(this T val, ENUM_NUMBER_FORMAT_TYPE type, ENUM_GET_ALLOW_TYPE allow) {
             if (val.GetType() == typeof(DateTime)) throw new NotSupportedException("DateTime is not support.");
             if (val.GetType() == typeof(float)) throw new NotSupportedException("float is not support.");
 
-            var result = type switch
-            {
+            var result = type switch {
                 ENUM_NUMBER_FORMAT_TYPE.Comma => string.Format("{0:#,###}", val),
                 ENUM_NUMBER_FORMAT_TYPE.Rate => string.Format("{0:##.##}", val),
-                ENUM_NUMBER_FORMAT_TYPE.Mobile => allow switch
-                {
+                ENUM_NUMBER_FORMAT_TYPE.Mobile => allow switch {
                     ENUM_GET_ALLOW_TYPE.Allow => string.Format("{0}-{1}-{2}", val.ToString().jFirstGetByLength(3),
                         val.ToString().jMiddleGetByLength(3, 4),
                         val.ToString().jLastGetByLength(4)),
@@ -51,7 +47,8 @@ namespace JWLibrary.Core {
                 return string.Format("{0}-{1}-{2}", temp.jFirstGetByLength(3),
                     temp.jMiddleGetByLength(3, 3),
                     temp.jLastGetByLength(4));
-            } else {
+            }
+            else {
                 var temp = val.ToString();
                 if (temp.jFirstGetByLength(2) == "02") {
                     if (temp.Length == 10)

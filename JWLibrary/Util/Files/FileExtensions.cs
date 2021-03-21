@@ -1,14 +1,12 @@
-﻿using JWLibrary.Core;
-using System;
+﻿using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using JWLibrary.Core;
 
 namespace JWLibrary.Utils.Files {
-
     public static class FileExtensions {
-
         public static string[] jReadLines(this string fileName) {
             if (!File.Exists(fileName)) throw new Exception($"not exists {fileName}");
             return File.ReadAllLines(fileName);

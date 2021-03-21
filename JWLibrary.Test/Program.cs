@@ -1,48 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FluentValidation;
 using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
-using JWLibrary.Util;
-using NetFabric.Hyperlinq;
-using NiL.JS.Extensions;
 
 namespace JCoreSvcTest {
-    class Test1 {
-        public string GUID = string.Empty; 
+    internal class Test1 {
+        public string GUID = string.Empty;
+
         public Test1() {
             GUID = Guid.NewGuid().ToString();
             Console.WriteLine($"ctor test {GUID}");
         }
+
         public void Run() {
             Console.WriteLine("run...");
         }
     }
-    
-    class Program {
-        private static Lazy<JLKList<Test1>> _instance =
-            new Lazy<JLKList<Test1>>(() => new JLKList<Test1>());
+
+    internal class Program {
+        private static readonly Lazy<JLKList<Test1>> _instance =
+            new(() => new JLKList<Test1>());
 
         private static Test1 Self(string name) {
             return _instance.Value.Where(m => m.GUID == name).FirstOrDefault();
         }
-        
+
         /// <summary>
-        /// JWLibrary.Test (DragonFruit-Test)
+        ///     JWLibrary.Test (DragonFruit-Test)
         /// </summary>
         /// <param name="intOption">An option whose argument will bind to an int</param>
         /// <param name="boolOption">An option whose argument will bind to a bool</param>
-        /// <param name="fileOption">An option whose argument will bind to a FileInfo</param>           
-        static void Main(int intOption = 42, bool boolOption = false, FileInfo fileOption = null) {
-            if (fileOption != null && !fileOption.Exists) {
-                fileOption.Create();
-            }
+        /// <param name="fileOption">An option whose argument will bind to a FileInfo</param>
+        private static void Main(int intOption = 42, bool boolOption = false, FileInfo fileOption = null) {
+            if (fileOption != null && !fileOption.Exists) fileOption.Create();
             Console.WriteLine($"The value of intOption is: {intOption}");
             Console.WriteLine($"The value of boolOption is: {boolOption}");
             Console.WriteLine($"The value of fileOption is: {fileOption?.FullName ?? "null"}");
-            
+
             // _instance.Value.Add(new Test1());
             // _instance.Value.Add(new Test1());
             // _instance.Value.Add(new Test1());
@@ -52,7 +48,7 @@ namespace JCoreSvcTest {
             //
             // var instance = Self(guid);
             // instance.Run();
-            
+
             // ITestService service = new TestService();
             //
             // var result = string.Empty;
@@ -162,7 +158,8 @@ namespace JCoreSvcTest {
         }
     }
 
-    public interface ITestService : IServiceExecutor<string, string> { }
+    public interface ITestService : IServiceExecutor<string, string> {
+    }
 
     public class TestService : ServiceExecutor<TestService, string, string>, ITestService {
         public TestService() {
@@ -170,7 +167,7 @@ namespace JCoreSvcTest {
         }
 
         public override void Execute() {
-            this.Result = $"{this.Request}_Hello_World";
+            Result = $"{Request}_Hello_World";
         }
 
         private class TestServiceValidator : AbstractValidator<TestService> {

@@ -1,10 +1,8 @@
 ﻿namespace JWLibrary.Core.Data.TUI {
-
     /// <summary>
     ///     ref : https://github.com/nhn/tui.pagination/blob/production/docs/getting-started.md
     /// </summary>
     public interface ITUIPagingBase {
-
         /// <summary>
         ///     Total number of items
         /// </summary>
@@ -27,7 +25,6 @@
     }
 
     public interface ITUIPagingOption {
-
         /// <summary>
         ///     Whether the page is moved to centered or not
         /// </summary>

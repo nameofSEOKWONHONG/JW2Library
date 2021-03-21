@@ -1,28 +1,25 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace JWLibrary.Utils {
-
     public class LanguageHandler<T>
         where T : class, new() {
-
         private static readonly Lazy<LanguageHandler<T>> _instance =
-            new Lazy<LanguageHandler<T>>(() => new LanguageHandler<T>());
+            new(() => new LanguageHandler<T>());
 
-        private readonly Dictionary<string, string> _keyValues = new Dictionary<string, string>
-        {
+        private readonly Dictionary<string, string> _keyValues = new() {
             {"ko-KR", "./Resource/Lang/ko-KR.json"},
             {"en-US", "./Resource/Lang/en-US.json"}
         };
 
-        private T _languageResource;
+        private readonly Dictionary<string, T> _languageResources = new();
 
-        private readonly Dictionary<string, T> _languageResources = new Dictionary<string, T>();
+        private T _languageResource;
 
         private LanguageHandler() {
             if (_languageResources.Count <= 0) {
@@ -65,7 +62,8 @@ namespace JWLibrary.Utils {
             if (language == "ko-KR") {
                 cultureInfo.DateTimeFormat.DateSeparator = "-";
                 cultureInfo.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
-            } else {
+            }
+            else {
                 cultureInfo.DateTimeFormat.DateSeparator = "/";
                 cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
             }

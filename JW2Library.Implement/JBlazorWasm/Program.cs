@@ -1,19 +1,14 @@
 using System;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
 using MudBlazor.Services;
 using Plk.Blazor.DragDrop;
-using Grpc.Core;
-using Microsoft.AspNetCore.Components;
 
 namespace JBlazorWasm {
     public class Program {
@@ -43,7 +38,7 @@ namespace JBlazorWasm {
                 // then GrpcWeb is recommended because it produces smaller messages.
                 var httpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWebText, new HttpClientHandler());
 
-                return GrpcChannel.ForAddress(backendUrl, new GrpcChannelOptions { HttpHandler = httpHandler });
+                return GrpcChannel.ForAddress(backendUrl, new GrpcChannelOptions {HttpHandler = httpHandler});
             });
 
             await builder.Build().RunAsync();

@@ -5,16 +5,14 @@ using System.Text;
 using System.Xml;
 
 namespace JWLibrary.Utils {
-
     public static class WebRequest {
-
         public static string GetToken(
             string fullUrl,
             string userName, string password,
             string userNameKeyword, string passwordKeyword) {
             HttpWebResponse response = null;
 
-            var request = (HttpWebRequest)System.Net.WebRequest.Create(fullUrl);
+            var request = (HttpWebRequest) System.Net.WebRequest.Create(fullUrl);
             request.Method = "POST";
             request.ContentType = "application/json; charset=utf-8";
             //request.AllowAutoRedirect = false;
@@ -31,13 +29,14 @@ namespace JWLibrary.Utils {
             }
 
             try {
-                response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse) request.GetResponse();
                 using (var stream = response.GetResponseStream()) {
                     var reader = new StreamReader(stream, Encoding.GetEncoding(response.CharacterSet));
                     var responseString = reader.ReadToEnd();
                     return responseString;
                 }
-            } finally {
+            }
+            finally {
                 if (response != null)
                     response.Close();
             }
@@ -46,19 +45,20 @@ namespace JWLibrary.Utils {
         public static string GetResponse(string fullUrl, string method, string token) {
             HttpWebResponse response = null;
 
-            var request = (HttpWebRequest)System.Net.WebRequest.Create(fullUrl);
+            var request = (HttpWebRequest) System.Net.WebRequest.Create(fullUrl);
             request.Method = method;
             request.ContentType = "application/json; charset=utf-8";
             request.Headers.Add("Token", token);
 
             try {
-                response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse) request.GetResponse();
                 using (var stream = response.GetResponseStream()) {
                     var reader = new StreamReader(stream, Encoding.GetEncoding(response.CharacterSet));
                     var responseString = reader.ReadToEnd();
                     return responseString;
                 }
-            } finally {
+            }
+            finally {
                 if (response != null)
                     response.Close();
             }
@@ -69,13 +69,13 @@ namespace JWLibrary.Utils {
             var isRet = false;
 
             var uri = new Uri(url);
-            var wReq = (HttpWebRequest)System.Net.WebRequest.Create(uri);
+            var wReq = (HttpWebRequest) System.Net.WebRequest.Create(uri);
             wReq.Method = method;
             wReq.ServicePoint.Expect100Continue = false;
             wReq.CookieContainer = new CookieContainer();
             wReq.CookieContainer.SetCookies(uri, cookie);
 
-            using (var wRes = (HttpWebResponse)wReq.GetResponse()) {
+            using (var wRes = (HttpWebResponse) wReq.GetResponse()) {
                 var resPostStream = wRes.GetResponseStream();
                 var readerPost = new StreamReader(resPostStream, Encoding.GetEncoding(encodingName), true);
 
@@ -96,13 +96,13 @@ namespace JWLibrary.Utils {
             try {
                 //admin, media
                 //Create Request
-                myHttpWebRequest = (HttpWebRequest)System.Net.WebRequest.Create(inURL);
+                myHttpWebRequest = (HttpWebRequest) System.Net.WebRequest.Create(inURL);
                 myHttpWebRequest.Method = "GET";
                 myHttpWebRequest.ContentType = "text/xml; encoding='utf-8'";
                 myHttpWebRequest.AllowAutoRedirect = false;
 
                 //Get Response
-                myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+                myHttpWebResponse = (HttpWebResponse) myHttpWebRequest.GetResponse();
 
                 //Now load the XML Document
                 myXMLDocument = new XmlDocument();
@@ -110,9 +110,11 @@ namespace JWLibrary.Utils {
                 //Load response stream into XMLReader
                 myXMLReader = new XmlTextReader(myHttpWebResponse.GetResponseStream());
                 myXMLDocument.Load(myXMLReader);
-            } catch (Exception myException) {
+            }
+            catch (Exception myException) {
                 throw new Exception("Error Occurred in AuditAdapter.getXMLDocumentFromXMLTemplate()", myException);
-            } finally {
+            }
+            finally {
                 myHttpWebRequest = null;
                 myHttpWebResponse = null;
                 myXMLReader = null;
@@ -125,7 +127,7 @@ namespace JWLibrary.Utils {
             HttpWebResponse response = null;
             string result = null;
 
-            var request = (HttpWebRequest)System.Net.WebRequest.Create(url);
+            var request = (HttpWebRequest) System.Net.WebRequest.Create(url);
             request.Method = "GET";
             request.AllowAutoRedirect = false;
             //request.Proxy = new WebProxy("203.236.20.219", 8086);
@@ -133,12 +135,13 @@ namespace JWLibrary.Utils {
             request.ContentType = "application/x-www-form-urlencoded";
 
             try {
-                response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse) request.GetResponse();
                 using (var stream = response.GetResponseStream()) {
                     var reader = new StreamReader(stream, Encoding.GetEncoding(response.CharacterSet));
                     var responseString = reader.ReadToEnd();
                 }
-            } finally {
+            }
+            finally {
                 if (response != null)
                     response.Close();
             }
@@ -150,7 +153,7 @@ namespace JWLibrary.Utils {
             HttpWebResponse response = null;
             string result = null;
 
-            var request = (HttpWebRequest)System.Net.WebRequest.Create(url);
+            var request = (HttpWebRequest) System.Net.WebRequest.Create(url);
             request.Method = "GET";
             request.AllowAutoRedirect = false;
             //request.Proxy = new WebProxy("203.236.20.219", 8086);
@@ -158,12 +161,13 @@ namespace JWLibrary.Utils {
             request.ContentType = "application/x-www-form-urlencoded";
 
             try {
-                response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse) request.GetResponse();
                 using (var stream = response.GetResponseStream()) {
                     var reader = new StreamReader(stream, Encoding.GetEncoding(response.CharacterSet));
                     var responseString = reader.ReadToEnd();
                 }
-            } finally {
+            }
+            finally {
                 if (response != null)
                     response.Close();
             }

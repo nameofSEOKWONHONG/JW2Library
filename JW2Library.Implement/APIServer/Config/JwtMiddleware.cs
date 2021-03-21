@@ -1,4 +1,10 @@
-﻿using JWLibrary.Core;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using JWLibrary.Core;
 using JWLibrary.Core.Data;
 using JWLibrary.ServiceExecutor;
 using JWService.Data.Models;
@@ -6,29 +12,25 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
-using Service.Accounts;
 using Service.Data;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JWLibrary.ApiCore.Config {
     /// <summary>
     ///     mvc : https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api
-    ///     api : https://jasonwatmore.com/post/2020/07/21/aspnet-core-3-create-and-validate-jwt-tokens-use-custom-jwt-middleware
+    ///     api :
+    ///     https://jasonwatmore.com/post/2020/07/21/aspnet-core-3-create-and-validate-jwt-tokens-use-custom-jwt-middleware
     /// </summary>
     public class JwtMiddleware {
         public static readonly Lazy<JWTSettings> JwtSettings =
-            new Lazy<JWTSettings>(() => new JWTSettings());
+            new(() => new JWTSettings());
+
+        private readonly IGetAccountByIdSvc _getAccountByIdSvc;
 
         private readonly RequestDelegate _next;
-        private readonly IGetAccountByIdSvc _getAccountByIdSvc;
+
         public JwtMiddleware(RequestDelegate next, IGetAccountByIdSvc svc) {
             _next = next;
-            this._getAccountByIdSvc = svc;
+            _getAccountByIdSvc = svc;
         }
 
         public async Task Invoke(HttpContext context) {
@@ -52,17 +54,16 @@ namespace JWLibrary.ApiCore.Config {
                     ClockSkew = TimeSpan.Zero
                 }, out var validatedToken);
 
-                var jwtToken = (JwtSecurityToken)validatedToken;
+                var jwtToken = (JwtSecurityToken) validatedToken;
                 var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
                 // attach account to context on successful jwt validation
-                using var executor = new ServiceExecutorManager<IGetAccountByIdSvc>(this._getAccountByIdSvc);
-                await executor.SetRequest(o => o.Request = new RequestDto<int>() { Data = accountId })
-                    .OnExecutedAsync(async o => {
-                        context.Items["ACCOUNT"] = o.Result;
-                    });
+                using var executor = new ServiceExecutorManager<IGetAccountByIdSvc>(_getAccountByIdSvc);
+                await executor.SetRequest(o => o.Request = new RequestDto<int> {Data = accountId})
+                    .OnExecutedAsync(async o => { context.Items["ACCOUNT"] = o.Result; });
                 //await Task.Delay(1000);
-            } catch {
+            }
+            catch {
                 // do nothing if jwt validation fails
                 // account is not attached to context so request won't have access to secure routes
             }
@@ -74,7 +75,7 @@ namespace JWLibrary.ApiCore.Config {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(JwtMiddleware.JwtSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", accountId.ToString()) }),
+                Subject = new ClaimsIdentity(new[] {new Claim("id", accountId.ToString())}),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
@@ -96,12 +97,13 @@ namespace JWLibrary.ApiCore.Config {
                     ClockSkew = TimeSpan.Zero
                 }, out var validatedToken);
 
-                var jwtToken = (JwtSecurityToken)validatedToken;
+                var jwtToken = (JwtSecurityToken) validatedToken;
                 var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
                 // return account id from JWT token if validation successful
                 return accountId;
-            } catch {
+            }
+            catch {
                 // return null if validation fails
                 return null;
             }
@@ -111,9 +113,10 @@ namespace JWLibrary.ApiCore.Config {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter {
         public void OnAuthorization(AuthorizationFilterContext context) {
-            var account = (Account)context.HttpContext.Items["ACCOUNT"];
+            var account = (Account) context.HttpContext.Items["ACCOUNT"];
             if (account == null) // not logged in
-                context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+                context.Result = new JsonResult(new {message = "Unauthorized"})
+                    {StatusCode = StatusCodes.Status401Unauthorized};
         }
     }
 }

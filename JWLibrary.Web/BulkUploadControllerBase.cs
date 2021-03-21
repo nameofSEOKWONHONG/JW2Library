@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
-using JWLibrary.Core;
+﻿using JWLibrary.Core;
 using JWLibrary.Core.Data.BulkUpload;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
@@ -9,7 +7,7 @@ namespace JWLibrary.Web {
         public BulkUploadControllerBase(ILogger<BulkUploadControllerBase> logger) : base(logger) {
         }
 
-        public virtual bool Upload<T>(BulkUploadDto<T>[] items) 
+        public virtual bool Upload<T>(BulkUploadDto<T>[] items)
             where T : class {
             IBulkUploadValidator<T> validator = new BulkUploadValidator<T>();
             items.jForEach(item => {
@@ -30,7 +28,7 @@ namespace JWLibrary.Web {
         }
     }
 
-    public interface IBulkUploadValidator<T> 
+    public interface IBulkUploadValidator<T>
         where T : class {
         void Validate(BulkUploadDto<T> item);
     }

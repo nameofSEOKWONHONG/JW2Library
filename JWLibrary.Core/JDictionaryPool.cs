@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 
 namespace JWLibrary.Core {
-
     public class JDictionaryPool<TKey, TValue> {
         private readonly ConcurrentQueue<TKey> _keyQueue;
         private readonly ConcurrentDictionary<TKey, ConcurrentQueue<TValue>> _pool;
@@ -10,7 +9,7 @@ namespace JWLibrary.Core {
 
         public JDictionaryPool(byte maxPoolSize) {
             if (maxPoolSize <= 0)
-                maxPoolSize = (byte)Math.Min(Environment.ProcessorCount, byte.MaxValue);
+                maxPoolSize = (byte) Math.Min(Environment.ProcessorCount, byte.MaxValue);
 
             _poolSize = maxPoolSize;
             _keyQueue = new ConcurrentQueue<TKey>();
@@ -37,7 +36,8 @@ namespace JWLibrary.Core {
                     TValue localValue;
                     q.TryDequeue(out localValue);
                 }
-            } else {
+            }
+            else {
                 return false;
             }
 

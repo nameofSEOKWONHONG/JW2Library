@@ -17,6 +17,4 @@
             return $"I'am hello2 service: {str}";
         }
     }
-    
-    
 }

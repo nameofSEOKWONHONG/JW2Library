@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
     /// <summary>
-    /// base controller
+    ///     base controller
     /// </summary>
     [ApiController]
     //[Route("api/[controller]/[action]")] //normal route
@@ -16,26 +16,37 @@ namespace JWLibrary.Web {
         where TController : class {
         protected ILogger<TController> Logger;
 
-        public JControllerBase(ILogger<TController> logger)
-        {
+        public JControllerBase(ILogger<TController> logger) {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
-            this.Logger = logger;
-        }
-
-        protected async Task<TResult> ExecuteServiceAsync<TServiceExecutor, TRequest, TResult>
-            (TServiceExecutor serviceExecutor, TRequest request, Func<TServiceExecutor, bool> func = null) where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
-            TResult result = default(TResult);
-            using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
-            await executor.SetRequest(o => o.Request = request)
-                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
-                .OnExecutedAsync(async o => {
-                    result = o.Result;
-                });
-            return result;
+            Logger = logger;
         }
 
         public void Dispose() {
+        }
 
+        protected TResult CreateService<TServiceExecutor, TRequest, TResult>
+            (TServiceExecutor serviceExecutor, TRequest request, Func<TServiceExecutor, bool> func = null)
+            where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
+            var result = default(TResult);
+            using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
+            executor.SetRequest(o => o.Request = request)
+                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
+                .OnExecuted(o => { result = o.Result; });
+            return result;
+        }
+
+        protected async Task<TResult> CreateServiceAsync<TServiceExecutor, TRequest, TResult>
+            (TServiceExecutor serviceExecutor, TRequest request, Func<TServiceExecutor, bool> func = null)
+            where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
+            var result = default(TResult);
+            using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
+            await executor.SetRequest(o => o.Request = request)
+                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
+                .OnExecutedAsync(o => {
+                    result = o.Result;
+                    return Task.CompletedTask;
+                });
+            return result;
         }
     }
 }

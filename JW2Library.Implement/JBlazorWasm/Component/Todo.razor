@@ -1,7 +1,6 @@
 ﻿@using JBlazorWasm.Data
-
 <div style="border: 2px solid @BorderColor;">
-    <button  @onclick="@(()=> OnRemoveClick.InvokeAsync(Item))" class="btn btn-secondary m-1">
+    <button @onclick="@(() => OnRemoveClick.InvokeAsync(Item))" class="btn btn-secondary m-1">
         <span class="oi oi-trash"></span>
     </button>
     <span class="ml-3 oi oi-sun"></span>
@@ -18,9 +17,11 @@
     [Parameter]
     public EventCallback<TodoItem> OnRemoveClick { get; set; }
 
-    public string BorderColor { get {
-        if (Item.IsNew) return "gold";
-        return "black";
-    } }
+    public string BorderColor {
+        get {
+            if (Item.IsNew) return "gold";
+            return "black";
+        }
+    }
 
 }

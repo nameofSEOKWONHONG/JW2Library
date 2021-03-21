@@ -2,9 +2,7 @@
 using System.Text;
 
 namespace JWLibrary.Utils {
-
     public static class CryptoSHA256 {
-
         /// <summary>
         ///     SHA256 Encrypt (Decrypt is not support.)
         /// </summary>

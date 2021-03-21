@@ -6,12 +6,10 @@ using JWLibrary.Core;
 using JWLibrary.Utils.Files;
 using Microsoft.Scripting.Hosting;
 
-namespace JWLibrary.Util
-{
-    public static class PythonExecutor
-    {
-        public static async Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction, Action<ScriptScope> endaction)
-        {
+namespace JWLibrary.Util {
+    public static class PythonExecutor {
+        public static async Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction,
+            Action<ScriptScope> endaction) {
             if (script.jIsNullOrEmpty()) throw new Exception("script is empty.");
 
             var engine = Python.CreateEngine();
@@ -19,14 +17,14 @@ namespace JWLibrary.Util
             var scope = engine.CreateScope();
             var paths = engine.GetSearchPaths();
             engine.SetSearchPaths(paths);
-            
+
             preaction(scope);
             src.Execute(scope);
             endaction(scope);
         }
-        
-        public static async Task Execute_Python_File_Async(this string fileName, Action<ScriptScope> preaction, Action<ScriptScope> endaction)
-        {
+
+        public static async Task Execute_Python_File_Async(this string fileName, Action<ScriptScope> preaction,
+            Action<ScriptScope> endaction) {
             if (fileName.jIsNull()) throw new FileNotFoundException("pytho_file_path is empty");
             if (!fileName.jFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".py")) throw new FileLoadException("file is not support python");
@@ -38,7 +36,7 @@ namespace JWLibrary.Util
             var scope = engine.CreateScope();
             var paths = engine.GetSearchPaths();
             engine.SetSearchPaths(paths);
-            
+
             preaction(scope);
             src.Execute(scope);
             endaction(scope);

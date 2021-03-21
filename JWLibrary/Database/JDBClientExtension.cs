@@ -1,18 +1,13 @@
-using Dapper;
-using JWLibrary.Core;
-using SqlKata;
-using SqlKata.Compilers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
+using JWLibrary.Core;
 
 namespace JWLibrary.Database {
-
     /// <summary>
-    /// Database Client Extension
+    ///     Database Client Extension
     /// </summary>
     public static partial class JdbClientExtension {
         /// <summary>
@@ -31,7 +26,7 @@ namespace JWLibrary.Database {
                 var entity = new T();
                 var dt = bulkDatas.jToDataTable();
 
-                using (var bulkCopy = new SqlBulkCopy((SqlConnection)connection, SqlBulkCopyOptions.Default, null)) {
+                using (var bulkCopy = new SqlBulkCopy((SqlConnection) connection, SqlBulkCopyOptions.Default, null)) {
                     bulkCopy.DestinationTableName = tableName.jIsNullOrEmpty() ? entity.GetType().Name : tableName;
                     foreach (var property in entity.GetType().GetProperties())
                         bulkCopy.ColumnMappings.Add(property.Name, property.Name);
@@ -39,7 +34,8 @@ namespace JWLibrary.Database {
                     connection.Open();
                     bulkCopy.WriteToServer(dt);
                 }
-            } finally {
+            }
+            finally {
                 connection.Close();
             }
         }
@@ -53,7 +49,7 @@ namespace JWLibrary.Database {
                 var entity = new T();
                 var dt = bulkDatas.jToDataTable();
 
-                using (var bulkCopy = new SqlBulkCopy((SqlConnection)connection, SqlBulkCopyOptions.Default, null)) {
+                using (var bulkCopy = new SqlBulkCopy((SqlConnection) connection, SqlBulkCopyOptions.Default, null)) {
                     bulkCopy.DestinationTableName = tableName.jIsNullOrEmpty() ? entity.GetType().Name : tableName;
                     foreach (var property in entity.GetType().GetProperties())
                         bulkCopy.ColumnMappings.Add(property.Name, property.Name);
@@ -61,17 +57,17 @@ namespace JWLibrary.Database {
                     connection.Open();
                     await bulkCopy.WriteToServerAsync(dt);
                 }
-            } finally {
+            }
+            finally {
                 connection.Close();
             }
         }
     }
 
     /// <summary>
-    /// create dbconnection only
+    ///     create dbconnection only
     /// </summary>
-    public static partial class JdbClientExtension
-    {
+    public static partial class JdbClientExtension {
         #region [self impletment func method]
 
         /// <summary>
@@ -85,7 +81,8 @@ namespace JWLibrary.Database {
             try {
                 connection.Open();
                 action(connection);
-            } finally {
+            }
+            finally {
                 connection.Close();
             }
         }
@@ -100,7 +97,8 @@ namespace JWLibrary.Database {
             }
         }
 
-        public static void DbExecutor<T>(this Tuple<IDbConnection, IDbConnection> connections, Action<IDbConnection, IDbConnection> action) {
+        public static void DbExecutor<T>(this Tuple<IDbConnection, IDbConnection> connections,
+            Action<IDbConnection, IDbConnection> action) {
             try {
                 connections.Item1.Open();
                 connections.Item2.Open();
@@ -119,11 +117,12 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static async Task DbExecutorAsync<T>(this IDbConnection connection, Func<IDbConnection, Task> func){
+        public static async Task DbExecutorAsync<T>(this IDbConnection connection, Func<IDbConnection, Task> func) {
             try {
                 connection.Open();
                 await func(connection);
-            } finally {
+            }
+            finally {
                 connection.Close();
             }
         }
@@ -143,5 +142,4 @@ namespace JWLibrary.Database {
 
         #endregion [self impletment func method]
     }
-
 }

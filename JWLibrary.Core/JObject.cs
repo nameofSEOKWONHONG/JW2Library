@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 
 namespace JWLibrary.Core {
-
     public static class JObject {
-
         public static void jIfTrue(this bool obj, Action action) {
             if (obj) action();
         }
@@ -33,9 +31,9 @@ namespace JWLibrary.Core {
 
         public static bool jIsEmpty(this object obj) {
             if (obj.jIsNull()) return true;
-            if (obj is ICollection) {
-                if ((obj as ICollection).Count > 0) return true;
-            }
+            if (obj is ICollection)
+                if ((obj as ICollection).Count > 0)
+                    return true;
 
             return false;
         }

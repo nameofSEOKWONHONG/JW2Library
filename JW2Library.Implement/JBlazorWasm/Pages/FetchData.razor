@@ -1,8 +1,6 @@
 ﻿@page "/fetchdata"
-@inject GrpcChannel Channel
-@using Google.Protobuf.WellKnownTypes
 @using WeatherForecastService
-@using System.Net.Http
+@inject GrpcChannel Channel
 @inject HttpClient Http
 
 <h1>Weather forecast</h1>
@@ -41,9 +39,9 @@ else {
     private WeatherForecastData[] forecasts;
 
     protected override async Task OnInitializedAsync() {
-        // The port number(5001) must match the port of the gRPC server.
+    // The port number(5001) must match the port of the gRPC server.
         var client = new WeatherForecastor.WeatherForecastorClient(Channel);
-        WeatherForecastService.WeatherForecastResponse reply = await client.GetWeatherForecastAsync(new WeatherForecastRequest() {Id = 2003});
+        var reply = await client.GetWeatherForecastAsync(new WeatherForecastRequest {Id = 2003});
         Console.WriteLine("Id: " + reply.Id);
         Console.WriteLine("Date: " + reply.Date);
         Console.WriteLine("TemperatureC: " + reply.TemperatureC);

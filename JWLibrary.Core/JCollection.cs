@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 
 namespace JWLibrary.Core {
-
     public static class JCollection {
         #region [for & foreach]
 
@@ -42,7 +41,7 @@ namespace JWLibrary.Core {
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
             var index = 0;
-            iterator.jForEach<T>(item => {
+            iterator.jForEach(item => {
                 action(item, index);
                 index++;
             });
@@ -80,7 +79,7 @@ namespace JWLibrary.Core {
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
             var index = 0;
-            iterator.jForEach<T>(item => {
+            iterator.jForEach(item => {
                 var isBreak = !func(item, index);
                 index++;
 

@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace JWLibrary.Core {
-
     public class ResultDtoBase<TResultDto> {
         [JsonProperty("data")] public TResultDto Data { get; set; }
     }
@@ -15,6 +14,6 @@ namespace JWLibrary.Core {
         public int Size { get; set; }
         public int TotalCount { get; set; }
 
-        public int TotalPageNumber => (int)Math.Ceiling((double)TotalCount / Size);
+        public int TotalPageNumber => (int) Math.Ceiling((double) TotalCount / Size);
     }
 }

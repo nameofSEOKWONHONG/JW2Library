@@ -1,47 +1,48 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using JWLibrary.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using Npgsql;
+using RepoDb;
 
 namespace JWLibrary.Database {
-
     /// <summary>
     ///     Database Information Master
     /// </summary>
     internal class JDatabaseInfo {
-        private IConfiguration _configuration;
-        private readonly Dictionary<string, Func<string, IDbConnection>> _connectionMaps = new Dictionary<string, Func<string, IDbConnection>>
-        {
-            {"MSSQL", (connectionString) => {
-                    RepoDb.SqlServerBootstrap.Initialize();
+        private readonly Dictionary<string, Func<string, IDbConnection>> _connectionMaps = new() {
+            {
+                "MSSQL", connectionString => {
+                    SqlServerBootstrap.Initialize();
                     return new SqlConnection(connectionString);
                 }
-            },
-            {"MYSQL", (connectionString) => {
-                    RepoDb.MySqlBootstrap.Initialize();
+            }, {
+                "MYSQL", connectionString => {
+                    MySqlBootstrap.Initialize();
                     return new MySqlConnection(connectionString);
                 }
-            },
-            {"NPGSQL", (connectionString) => {
-                    RepoDb.PostgreSqlBootstrap.Initialize();
+            }, {
+                "NPGSQL", connectionString => {
+                    PostgreSqlBootstrap.Initialize();
                     return new NpgsqlConnection(connectionString);
                 }
             }
         };
 
-        public Dictionary<string, IDbConnection> Connections { get; private set; } =
-            new Dictionary<string, IDbConnection>();
+        private IConfiguration _configuration;
 
         public JDatabaseInfo() {
             var serviceCollection = new ServiceCollection();
             InitConfig(serviceCollection);
         }
-        
+
+        public Dictionary<string, IDbConnection> Connections { get; } =
+            new();
+
         private void InitConfig(IServiceCollection serviceCollection) {
             // Build configuration
             _configuration = new ConfigurationBuilder()

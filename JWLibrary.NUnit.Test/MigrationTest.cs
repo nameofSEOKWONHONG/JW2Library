@@ -1,12 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using JWLibrary.ServiceExecutor;
 using NUnit.Framework;
 using Service;
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace JWLibrary.NUnit.Test {
-
     public class MigrationTest {
         private IMigrationDatabaseService _initDatabaseService;
 
@@ -18,12 +16,11 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void UserMigrationTest() {
             var result = false;
-            using (var executor = new ServiceExecutorManager<IMigrationDatabaseService>(this._initDatabaseService)) {
+            using (var executor = new ServiceExecutorManager<IMigrationDatabaseService>(_initDatabaseService)) {
                 executor.SetRequest(o => o.Request = true)
-                    .OnExecuted(o => {
-                        result = o.Result;
-                    });
+                    .OnExecuted(o => { result = o.Result; });
             }
+
             Console.WriteLine(result);
 
             Assert.True(result);
@@ -32,7 +29,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public async Task UserMigrationTestAsync() {
             var result = false;
-            using (var executor = new ServiceExecutorManager<IMigrationDatabaseService>(this._initDatabaseService)) {
+            using (var executor = new ServiceExecutorManager<IMigrationDatabaseService>(_initDatabaseService)) {
                 await executor.SetRequest(o => o.Request = true)
                     .OnExecutedAsync(o => {
                         result = o.Result;

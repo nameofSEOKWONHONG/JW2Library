@@ -1,4 +1,7 @@
-﻿using JWLibrary.ApiCore.Config;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Transactions;
+using JWLibrary.ApiCore.Config;
 using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Web;
@@ -6,10 +9,6 @@ using JWService.WeatherForecast;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Data;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Transactions;
-using APIServer.Config;
 
 namespace JWLibrary.ApiCore.Controllers {
     /// <summary>
@@ -19,18 +18,16 @@ namespace JWLibrary.ApiCore.Controllers {
     /// </summary>
     [ApiVersion("0.0")]
     public class WeatherForecastController : JControllerBase<WeatherForecastController> {
-        private readonly IGetWeatherForecastSvc    _getWeatherForecastSvc;
-        private readonly IGetAllWeatherForecastSvc _getAllWeatherForecastSvc;
-        private readonly ISaveWeatherForecastSvc   _saveWeatherForecastSvc;
         private readonly IDeleteWeatherForecastSvc _deleteWeatherForecastSvc;
+        private readonly IGetAllWeatherForecastSvc _getAllWeatherForecastSvc;
+        private readonly IGetWeatherForecastSvc _getWeatherForecastSvc;
+        private readonly ISaveWeatherForecastSvc _saveWeatherForecastSvc;
+
         public WeatherForecastController(ILogger<WeatherForecastController> logger,
             IGetWeatherForecastSvc getWeatherForecastSvc,
             IGetAllWeatherForecastSvc getAllWeatherForecastSvc,
             ISaveWeatherForecastSvc saveWeatherForecastSvc,
-            IDeleteWeatherForecastSvc deleteWeatherForecastSvc,
-            ServiceLoader.ServiceResolver serviceAccessor
-
-            )
+            IDeleteWeatherForecastSvc deleteWeatherForecastSvc)
             : base(logger) {
             //_getWeatherForecastSvc = serviceAccessor("A");
             _getWeatherForecastSvc = getWeatherForecastSvc;
@@ -46,14 +43,15 @@ namespace JWLibrary.ApiCore.Controllers {
         /// <returns></returns>
         [Authorize]
         [HttpGet]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "idx" })]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] {"idx"})]
         [Transaction(TransactionScopeOption.Suppress)]
         public async Task<WEATHER_FORECAST> GetWeather(int idx = 1) {
             WEATHER_FORECAST result = null;
-            using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(this._getWeatherForecastSvc);
-            await executor.SetRequest(o => o.Request = new WeatherForecastRequestDto() { ID = idx })
-                .OnExecutedAsync(async o => {
+            using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(_getWeatherForecastSvc);
+            await executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = idx})
+                .OnExecutedAsync(o => {
                     result = o.Result;
+                    return Task.CompletedTask;
                 });
             return result;
         }
@@ -67,7 +65,7 @@ namespace JWLibrary.ApiCore.Controllers {
         [Transaction(TransactionScopeOption.Suppress)]
         public async Task<IEnumerable<WEATHER_FORECAST>> GetWeathers() {
             IEnumerable<WEATHER_FORECAST> result = null;
-            using var executor = new ServiceExecutorManager<IGetAllWeatherForecastSvc>(this._getAllWeatherForecastSvc);
+            using var executor = new ServiceExecutorManager<IGetAllWeatherForecastSvc>(_getAllWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = new WeatherForecastRequestDto())
                 .OnExecutedAsync(async o => result = o.Result);
             return result;
@@ -82,7 +80,7 @@ namespace JWLibrary.ApiCore.Controllers {
         [Transaction(TransactionScopeOption.Required)]
         public async Task<int> SaveWeather(RequestDto<WEATHER_FORECAST> request) {
             var result = 0;
-            using var executor = new ServiceExecutorManager<ISaveWeatherForecastSvc>(this._saveWeatherForecastSvc);
+            using var executor = new ServiceExecutorManager<ISaveWeatherForecastSvc>(_saveWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = request.Data)
                 .OnExecutedAsync(async o => result = o.Result);
             return result;
@@ -97,7 +95,7 @@ namespace JWLibrary.ApiCore.Controllers {
         [Transaction(TransactionScopeOption.Required)]
         public async Task<bool> RemoveWeather(RequestDto<WeatherForecastRequestDto> request) {
             var result = false;
-            using var executor = new ServiceExecutorManager<IDeleteWeatherForecastSvc>(this._deleteWeatherForecastSvc);
+            using var executor = new ServiceExecutorManager<IDeleteWeatherForecastSvc>(_deleteWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = request.Data)
                 .OnExecutedAsync(async o => result = o.Result);
             return result;

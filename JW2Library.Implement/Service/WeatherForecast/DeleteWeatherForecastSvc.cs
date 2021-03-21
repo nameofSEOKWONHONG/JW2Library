@@ -1,41 +1,35 @@
-﻿namespace JWService.WeatherForecast {
+﻿using System.Data.SqlClient;
+using Dapper;
+using FluentValidation;
+using JWLibrary.Core;
+using JWLibrary.Database;
+using JWLibrary.ServiceExecutor;
+using Service.Data;
 
-    using Dapper;
-    using FluentValidation;
-    using JWLibrary.Core;
-    using JWLibrary.Database;
-    using JWLibrary.ServiceExecutor;
-    using Service.Data;
-    using System.Data.SqlClient;
-
+namespace JWService.WeatherForecast {
     public class DeleteWeatherForecastSvc : ServiceExecutor<DeleteWeatherForecastSvc, WeatherForecastRequestDto, bool>,
         IDeleteWeatherForecastSvc {
-        IGetWeatherForecastSvc _getWeatherForecastSvc;
-        private WEATHER_FORECAST _removeObj = null;
+        private readonly IGetWeatherForecastSvc _getWeatherForecastSvc;
+        private WEATHER_FORECAST _removeObj;
 
         public DeleteWeatherForecastSvc(IGetWeatherForecastSvc getWeatherForecastSvc) {
-            this._getWeatherForecastSvc = getWeatherForecastSvc;
+            _getWeatherForecastSvc = getWeatherForecastSvc;
         }
 
         public override bool PreExecute() {
-            using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(this._getWeatherForecastSvc);
-            executor.SetRequest(o => o.Request = new WeatherForecastRequestDto() { ID = this.Request.ID })
-                .OnExecuted(o => this._removeObj = o.Result);
+            using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(_getWeatherForecastSvc);
+            executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = Request.ID})
+                .OnExecuted(o => _removeObj = o.Result);
 
-            if (this._removeObj.jIsNotNull()) return true;
+            if (_removeObj.jIsNotNull()) return true;
             return false;
         }
 
         public override void Execute() {
-            JDataBase.Resolve<SqlConnection>().DbExecutor<bool>(db => {
-                this.Result = db.Delete<WEATHER_FORECAST>(_removeObj) > 0;
-            });
+            JDataBase.Resolve<SqlConnection>().DbExecutor<bool>(db => { Result = db.Delete(_removeObj) > 0; });
         }
 
         public class Validator : AbstractValidator<DeleteWeatherForecastSvc> {
-            public Validator() {
-
-            }
         }
     }
 }

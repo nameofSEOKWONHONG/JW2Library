@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace JWLibrary.Core {
-
     /// <summary>
     ///     base request class
     /// </summary>
     /// <typeparam name="TRequestDto"></typeparam>
     public class RequestBase<TRequestDto> {
-        [JsonProperty("data")]
-        public TRequestDto Data { get; set; }
+        [JsonProperty("data")] public TRequestDto Data { get; set; }
     }
 
     /// <summary>

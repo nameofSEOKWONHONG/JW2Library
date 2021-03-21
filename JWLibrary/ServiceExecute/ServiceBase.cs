@@ -1,9 +1,5 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FluentValidation;
 
 namespace JWLibrary.ServiceExecutor {
     public abstract class ServiceBase<TOwner> : IServiceBase {
@@ -15,7 +11,5 @@ namespace JWLibrary.ServiceExecutor {
         public abstract bool PreExecute();
         public abstract void Validate();
         public abstract void SetValidator(IValidator<TOwner> validator);
-
-
     }
 }

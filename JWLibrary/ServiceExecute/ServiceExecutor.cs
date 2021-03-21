@@ -1,28 +1,21 @@
-﻿using FluentValidation;
-using JWLibrary.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
+using FluentValidation;
+using JWLibrary.Core;
 
 namespace JWLibrary.ServiceExecutor {
     public class ServiceExecutor<TOwner, TRequest, TResult> : ServiceBase<TOwner>, IServiceExecutor<TRequest, TResult>
         where TOwner : ServiceExecutor<TOwner, TRequest, TResult> {
-        public TOwner Owner { get; private set; }
+        public ServiceExecutor() {
+            Owner = (TOwner) this;
+        }
+
+        public TOwner Owner { get; }
+        public IValidator<TOwner> ServiceValidator { get; private set; }
         public TRequest Request { get; set; }
         public TResult Result { get; set; }
-        public IValidator<TOwner> ServiceValidator { get; private set; }
-
-        public ServiceExecutor() {
-            this.Owner = (TOwner)this;
-        }
-
-        public override void SetValidator(IValidator<TOwner> validator) {
-            this.ServiceValidator = validator;
-        }
 
         public override void Execute() {
-
         }
 
         public override Task ExecuteAsync() {
@@ -30,7 +23,6 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public override void PostExecute() {
-
         }
 
         public override bool PreExecute() {
@@ -38,18 +30,17 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public override void Validate() {
-            if(this.ServiceValidator.jIsNotNull()) {
-                var result = this.ServiceValidator.Validate(Owner);
-                if(result.IsValid.jIsFalse()) {
-                    throw new Exception(result.Errors.jFirst().ErrorMessage);
-                }
+            if (ServiceValidator.jIsNotNull()) {
+                var result = ServiceValidator.Validate(Owner);
+                if (result.IsValid.jIsFalse()) throw new Exception(result.Errors.jFirst().ErrorMessage);
             }
         }
 
         public override void Dispose() {
+        }
 
+        public override void SetValidator(IValidator<TOwner> validator) {
+            ServiceValidator = validator;
         }
     }
-
-
 }

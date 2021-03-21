@@ -1,10 +1,8 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace JWLibrary.Core {
-
     public static class JSerializer {
-
         public static T jToObject<T>(this string jsonString)
             where T : class {
             return JsonConvert.DeserializeObject<T>(jsonString);

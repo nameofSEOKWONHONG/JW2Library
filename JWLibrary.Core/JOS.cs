@@ -1,9 +1,7 @@
 using System.Runtime.InteropServices;
 
 namespace JWLibrary.Core {
-
     public class JOS {
-
         public static bool IsWindows() {
             return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         }

@@ -1,11 +1,9 @@
-﻿using JWLibrary.Utils.Files;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using JWLibrary.Utils.Files;
 
 namespace JCoreSvcTest {
-    class FileWatchSample {
-        static void Test() {
+    internal class FileWatchSample {
+        private static void Test() {
             var fswProvider = new FileSystemWatcherProvider(@"D:\database");
             fswProvider.Created((s, e, fi) => {
                 Console.WriteLine(e.ChangeType.ToString());
@@ -19,7 +17,6 @@ namespace JCoreSvcTest {
 
             fswProvider.Stop();
             fswProvider.Dispose();
-
         }
     }
 }

@@ -1,19 +1,21 @@
-﻿using FluentValidation;
-using JWLibrary.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
+using JWLibrary.Core;
 
 namespace JWLibrary.ServiceExecutor {
     public class ServiceExecutorManager<TIService> : IDisposable
         where TIService : IServiceBase {
-        private TIService service;
-        private JList<Func<TIService, bool>> filters = new JList<Func<TIService, bool>>();
         private bool disposed;
+        private readonly JList<Func<TIService, bool>> filters = new();
+        private TIService service;
 
         public ServiceExecutorManager(TIService service) {
             this.service = service;
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public ServiceExecutorManager<TIService> SetRequest(Action<TIService> action) {
@@ -27,47 +29,36 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public void OnExecuted(Action<TIService> action) {
-            foreach(var filter in filters) {
-                var pass = filter(this.service);
+            foreach (var filter in filters) {
+                var pass = filter(service);
                 if (pass.jIsFalse()) return;
             }
 
-            this.service.Validate();
-            var preExecuted = this.service.PreExecute();
-            if(preExecuted) {
-                this.service.Execute();
-            }
-            this.service.PostExecute();
+            service.Validate();
+            var preExecuted = service.PreExecute();
+            if (preExecuted) service.Execute();
+            service.PostExecute();
 
-            action(this.service);
+            action(service);
         }
 
         public async Task OnExecutedAsync(Func<TIService, Task> func) {
             foreach (var filter in filters) {
-                var pass = filter(this.service);
+                var pass = filter(service);
                 if (pass.jIsFalse()) return;
             }
 
-            this.service.Validate();
-            var preExecuted = this.service.PreExecute();
-            if (preExecuted) {
-                await this.service.ExecuteAsync();
-            }
-            this.service.PostExecute();
+            service.Validate();
+            var preExecuted = service.PreExecute();
+            if (preExecuted) await service.ExecuteAsync();
+            service.PostExecute();
 
-            await func(this.service);
-        }
-
-        public void Dispose() {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            await func(service);
         }
 
         protected virtual void Dispose(bool disposing) {
             if (disposed) return;
-            if (disposing) {
-                this.service.Dispose();
-            }
+            if (disposing) service.Dispose();
 
             disposed = true;
         }

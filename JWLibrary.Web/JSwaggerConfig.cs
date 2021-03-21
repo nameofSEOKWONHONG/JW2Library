@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace JWLibrary.Web {
-
     public class SwaggerConfigSetting {
         public SwaggerConfigSettingDoc SettingDoc { get; set; }
         public SwaggerConfigSettingSecurityDef SettingSecurityDef { get; set; }
@@ -26,7 +25,6 @@ namespace JWLibrary.Web {
     ///     &tabs=visual-studio
     /// </summary>
     public static class SwaggerConfig {
-
         /// <summary>
         ///     configure services on use startup
         /// </summary>

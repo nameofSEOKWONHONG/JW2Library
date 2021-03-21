@@ -3,9 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace JWLibrary.Utils {
-
     public static class CryptoHMAC {
-
         public static string ToHMACString(this string encData, string encKey,
             DeconvertCipherFormat deconvertCipherFormat) {
             var encoding = new UTF8Encoding();
@@ -44,7 +42,8 @@ namespace JWLibrary.Utils {
                 for (var i = 0; i < bytes.Length; i++) bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
 
                 return bytes;
-            } catch {
+            }
+            catch {
                 return null;
             }
         }

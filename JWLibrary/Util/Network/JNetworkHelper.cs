@@ -1,11 +1,10 @@
-﻿using JWLibrary.Core;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
+using JWLibrary.Core;
 using JWLibrary.Util.CLI;
 
 namespace JWLibrary.Utils {
-
     /// <summary>
     ///     firewall port type
     /// </summary>
