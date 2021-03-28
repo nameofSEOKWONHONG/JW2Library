@@ -19,11 +19,19 @@ namespace JWLibrary.Core {
         }
 
         public static T jFirst<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate = null) {
-            return enumerable.AsValueEnumerable().FirstOrDefault(predicate);
+            if (predicate.jIsNotNull()) {
+                return enumerable.AsValueEnumerable().FirstOrDefault(predicate);
+            }
+
+            return enumerable.AsValueEnumerable().FirstOrDefault();
         }
 
         public static T jLast<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate = null) {
-            return enumerable.AsValueEnumerable().LastOrDefault(predicate);
+            if (predicate.jIsNotNull()) {
+                return enumerable.AsValueEnumerable().LastOrDefault(predicate);
+            }
+
+            return enumerable.AsValueEnumerable().LastOrDefault();
         }
 
         public static string jIfNullOrEmpty(this string str, Func<string, string> func) {

@@ -34,6 +34,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiInterfaceContainerExample", "JW2Library.Implement\MultiInterfaceContainerExample\MultiInterfaceContainerExample.csproj", "{0B492EE4-238B-4B7F-B903-15E364D84F7B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PlugIn.Implement", "PlugIn.Implement", "{EC4F20E2-D2E6-4296-9E86-21575C4AC06F}"
+ProjectSection(SolutionItems) = preProject
+	PlugIn.Implement\.gitignore = PlugIn.Implement\.gitignore
+EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlugInAbstract", "PlugIn.Implement\PlugInAbstract\PlugInAbstract.csproj", "{68C7C2FB-6342-40EF-95DD-476B20A4534B}"
 EndProject
