@@ -29,7 +29,7 @@ namespace JWLibrary.Util {
             if (!fileName.jFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".py")) throw new FileLoadException("file is not support python");
 
-            var lines = await fileName.jReadLinesAsync();
+            var lines = await fileName.jFileReadLineAsync();
 
             var engine = Python.CreateEngine();
             var src = engine.CreateScriptSourceFromFile(fileName);

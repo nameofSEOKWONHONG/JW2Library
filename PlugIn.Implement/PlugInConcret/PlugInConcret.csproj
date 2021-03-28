@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PlugInAbstract\PlugInAbstract.csproj" />
+    </ItemGroup>
+
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+        <Copy SourceFiles="$(ProjectDir)bin\debug\net5.0\PlugInConcret.dll" DestinationFolder="D:\workspace\JW2Library\PlugIn.Implement\PlugInConsole\plugins\PlugInConcret" />
+    </Target>
+
+</Project>

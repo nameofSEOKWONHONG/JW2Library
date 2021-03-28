@@ -34,12 +34,13 @@ namespace JWLibrary.ServiceExecutor {
                 if (pass.jIsFalse()) return;
             }
 
-            service.Validate();
-            var preExecuted = service.PreExecute();
-            if (preExecuted) service.Execute();
-            service.PostExecute();
+            if (service.Validate()) {
+                var preExecuted = service.PreExecute();
+                if (preExecuted) service.Execute();
+                service.PostExecute();
 
-            action(service);
+                action(service);               
+            }
         }
 
         public async Task OnExecutedAsync(Func<TIService, Task> func) {
@@ -48,12 +49,13 @@ namespace JWLibrary.ServiceExecutor {
                 if (pass.jIsFalse()) return;
             }
 
-            service.Validate();
-            var preExecuted = service.PreExecute();
-            if (preExecuted) await service.ExecuteAsync();
-            service.PostExecute();
+            if (service.Validate()) {
+                var preExecuted = service.PreExecute();
+                if (preExecuted) await service.ExecuteAsync();
+                service.PostExecute();
 
-            await func(service);
+                await func(service);               
+            }
         }
 
         protected virtual void Dispose(bool disposing) {

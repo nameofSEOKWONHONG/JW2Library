@@ -79,7 +79,9 @@ namespace JWLibrary.Database {
         /// <returns></returns>
         public static void DbExecutor<T>(this IDbConnection connection, Action<IDbConnection> action) {
             try {
-                connection.Open();
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
+                
                 action(connection);
             }
             finally {
@@ -89,7 +91,9 @@ namespace JWLibrary.Database {
 
         public static void DbExecutor(this IDbConnection connection, Action<IDbConnection> action) {
             try {
-                connection.Open();
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
+                
                 action(connection);
             }
             finally {
@@ -100,8 +104,12 @@ namespace JWLibrary.Database {
         public static void DbExecutor<T>(this Tuple<IDbConnection, IDbConnection> connections,
             Action<IDbConnection, IDbConnection> action) {
             try {
-                connections.Item1.Open();
-                connections.Item2.Open();
+                if(connections.Item1.State != ConnectionState.Open)
+                    connections.Item1.Open();
+
+                if(connections.Item2.State != ConnectionState.Open)
+                    connections.Item2.Open();
+                
                 action(connections.Item1, connections.Item2);
             }
             finally {
@@ -119,7 +127,9 @@ namespace JWLibrary.Database {
         /// <returns></returns>
         public static async Task DbExecutorAsync<T>(this IDbConnection connection, Func<IDbConnection, Task> func) {
             try {
-                connection.Open();
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
+                
                 await func(connection);
             }
             finally {
@@ -130,8 +140,12 @@ namespace JWLibrary.Database {
         public static async void DbExecutorAsync<T>(this Tuple<IDbConnection, IDbConnection> connections,
             Func<IDbConnection, IDbConnection, Task> func) {
             try {
-                connections.Item1.Open();
-                connections.Item2.Open();
+                if(connections.Item1.State != ConnectionState.Open)
+                    connections.Item1.Open();
+
+                if(connections.Item2.State != ConnectionState.Open)
+                    connections.Item2.Open();
+                
                 await func(connections.Item1, connections.Item2);
             }
             finally {

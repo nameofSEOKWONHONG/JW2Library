@@ -9,7 +9,7 @@ namespace JWLibrary.ServiceExecutor {
 
         public abstract void PostExecute();
         public abstract bool PreExecute();
-        public abstract void Validate();
+        public abstract bool Validate();
         public abstract void SetValidator(IValidator<TOwner> validator);
     }
 }

@@ -7,6 +7,6 @@ namespace JWLibrary.ServiceExecutor {
         void Execute();
         Task ExecuteAsync();
         void PostExecute();
-        void Validate();
+        bool Validate();
     }
 }

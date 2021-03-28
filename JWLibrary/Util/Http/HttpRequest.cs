@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -8,16 +9,14 @@ using Newtonsoft.Json;
 
 namespace JWLibrary.Utils {
     public class HttpRequest {
-        private readonly string _address;
         private readonly Uri _uri;
 
         public HttpRequest(string baseAddress) {
-            _address = baseAddress;
-            _uri = new Uri(_address);
+            _uri = new Uri(baseAddress);
         }
 
         public async Task<T> GetSingleDataAsync<T>(string apiUrl, string token = null) {
-            if (string.IsNullOrEmpty(_address)) throw new Exception("Base url is empty.");
+            if (string.IsNullOrEmpty(_uri.AbsoluteUri)) throw new Exception("Base url is empty.");
 
             using (var client = new HttpClient()) {
                 client.BaseAddress = _uri;
@@ -132,6 +131,14 @@ namespace JWLibrary.Utils {
             }
 
             return false;
+        }
+
+        public async Task DownloadAsync(string remoteFileName, string localFileName) {
+            using var httpClient = new HttpClient();
+            httpClient.BaseAddress = _uri;
+            var url = remoteFileName;
+            byte[] bytes = await httpClient.GetByteArrayAsync(url);
+            File.WriteAllBytes(localFileName, bytes);
         }
     }
 }

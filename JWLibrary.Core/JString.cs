@@ -24,7 +24,7 @@ namespace JWLibrary.Core {
             while ((cnt = src.Read(bytes, 0, bytes.Length)) != 0) dest.Write(bytes, 0, cnt);
         }
 
-        public static byte[] jZip(this string str) {
+        public static byte[] jStringZip(this string str) {
             var bytes = Encoding.UTF8.GetBytes(str);
 
             using (var msi = new MemoryStream(bytes))
@@ -38,7 +38,7 @@ namespace JWLibrary.Core {
             }
         }
 
-        public static string jUnzip(this byte[] bytes) {
+        public static string jStringUnzip(this byte[] bytes) {
             using (var msi = new MemoryStream(bytes))
             using (var mso = new MemoryStream()) {
                 using (var gs = new GZipStream(msi, CompressionMode.Decompress)) {

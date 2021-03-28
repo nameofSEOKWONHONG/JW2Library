@@ -46,7 +46,7 @@ namespace JWLibrary.Util {
 
             var context = new Context();
             if (preaction.jIsNotNull()) preaction(context);
-            context.Eval(string.Join("\n", fileName.jReadLines()));
+            context.Eval(string.Join("\n", fileName.jFileReadLines()));
             if (endaction.jIsNotNull()) endaction(context);
         }
     }
