@@ -15,7 +15,7 @@ namespace JWLibrary.Utils {
                 return JsonConvert.DeserializeObject<T>(json);
             }
             catch (Exception e) {
-                Debug.Assert(false);
+                Debug.WriteLine(e.Message);
             }
 
             return null;
@@ -31,7 +31,7 @@ namespace JWLibrary.Utils {
                 sw.Write(json);
             }
             catch (Exception e) {
-                Debug.Assert(false);
+                Debug.WriteLine(e.Message);
                 return false;
             }
 

@@ -8,7 +8,7 @@ using Microsoft.Scripting.Hosting;
 
 namespace JWLibrary.Util {
     public static class PythonExecutor {
-        public static async Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction,
+        public static Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction,
             Action<ScriptScope> endaction) {
             if (script.jIsNullOrEmpty()) throw new Exception("script is empty.");
 
@@ -21,6 +21,8 @@ namespace JWLibrary.Util {
             preaction(scope);
             src.Execute(scope);
             endaction(scope);
+
+            return Task.CompletedTask;
         }
 
         public static async Task Execute_Python_File_Async(this string fileName, Action<ScriptScope> preaction,

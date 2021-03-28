@@ -4,10 +4,12 @@ using JWLibrary.ServiceExecutor;
 
 namespace JWUpdator {
     class Program {
+
         /// <summary>
-        /// 진입점
+        /// updator entry point
         /// </summary>
-        /// <param name="debug">0:release, 1:debug</param>
+        /// <param name="version">version no</param>
+        /// <param name="debug">0:debug, 1:release</param>
         static void Main(int version = 0, int debug = 0) {
             UpdatorDto updatorDto = null;
             using var svc = new ServiceExecutorManager<IUpdatorExistsService>(new UpdatorExistsService());

@@ -18,7 +18,7 @@ namespace JWLibrary.Utils {
                 settings = (T) xs.Deserialize(fs);
             }
             catch (Exception e) {
-                Debug.Assert(false);
+                Debug.WriteLine(e.Message);
             }
 
             return settings;
@@ -34,7 +34,7 @@ namespace JWLibrary.Utils {
                 xs.Serialize(tw, settings);
             }
             catch (Exception e) {
-                Debug.Assert(false);
+                Debug.WriteLine(e.Message);
                 return false;
             }
 

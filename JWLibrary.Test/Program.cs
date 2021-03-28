@@ -158,19 +158,37 @@ namespace JCoreSvcTest {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ITestService : IServiceExecutor<string, string> {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class TestService : ServiceExecutor<TestService, string, string>, ITestService {
+        /// <summary>
+        /// 
+        /// </summary>
         public TestService() {
             base.SetValidator(new TestServiceValidator());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Execute() {
             Result = $"{Request}_Hello_World";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private class TestServiceValidator : AbstractValidator<TestService> {
+            /// <summary>
+            /// 
+            /// </summary>
             public TestServiceValidator() {
                 RuleFor(o => o.Request).NotNull();
             }
