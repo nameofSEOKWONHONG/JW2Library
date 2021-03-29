@@ -15,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Service.Accounts;
 using Service.WeatherForecast;
-using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
 namespace JWLibrary.ApiCore {
     public class Startup {

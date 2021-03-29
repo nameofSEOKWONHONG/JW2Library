@@ -53,5 +53,25 @@ namespace JWLibrary.Core {
         public static string jJoin(this string[] value, string separator) {
             return string.Join(separator, value);
         }
+
+        public static int jIndexOf(this string src, string value) {
+            if (value.jIsNullOrEmpty()) return -1;
+            return src.IndexOf(value);
+        }
+
+        public static int jIndexOfAny(this string src, string value) {
+            if (value.jIsNullOrEmpty()) return -1;
+            return src.IndexOfAny(value.ToCharArray());
+        }
+
+        public static int jLastIndexOf(this string src, string value) {
+            if (value.jIsNullOrEmpty()) return -1;
+            return src.LastIndexOf(value);
+        }
+
+        public static int jLastIndexOfAny(this string src, string value) {
+            if (value.jIsNullOrEmpty()) return -1;
+            return src.LastIndexOfAny(value.ToCharArray());
+        }
     }
 }

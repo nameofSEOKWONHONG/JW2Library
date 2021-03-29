@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace MultiInterfaceContainerExample.Services {
@@ -10,38 +6,39 @@ namespace MultiInterfaceContainerExample.Services {
         bool Reserve(string name);
         bool Cancel(string name);
     }
-    
+
     public class ReserveService : IReserveService {
-        public ICompanyService CompanyService;
         public ITheaterService<CgvService> CgvService;
+        public ICompanyService CompanyService;
         public ITheaterService<LotteService> LotteService;
+
         public ReserveService(ICompanyService companyService, CgvService cgvService, LotteService lotteService) {
-            this.CompanyService = companyService;
-            this.CgvService = cgvService;
-            this.LotteService = lotteService;
+            CompanyService = companyService;
+            CgvService = cgvService;
+            LotteService = lotteService;
         }
 
         public bool Reserve(string name) {
             name = "hsw";
             try {
-                if (this.CompanyService.CheckUserInfo(name)) {
-                    this.CompanyService.CheckOut(name);
+                if (CompanyService.CheckUserInfo(name)) {
+                    CompanyService.CheckOut(name);
 
-                    if (this.CompanyService.TicketType == TICKET_TYPE.CGV) {
-                        this.CgvService.PreAction(name);
-                        this.CgvService.DoAction(name);
-                        this.CgvService.PostAction(name);
+                    if (CompanyService.TicketType == TICKET_TYPE.CGV) {
+                        CgvService.PreAction(name);
+                        CgvService.DoAction(name);
+                        CgvService.PostAction(name);
                     }
-                    else if (this.CompanyService.TicketType == TICKET_TYPE.LOTTE) {
-                        this.LotteService.PreAction(name);
-                        this.LotteService.DoAction(name);
-                        this.LotteService.PostAction(name);
+                    else if (CompanyService.TicketType == TICKET_TYPE.LOTTE) {
+                        LotteService.PreAction(name);
+                        LotteService.DoAction(name);
+                        LotteService.PostAction(name);
                     }
-                    else if (this.CompanyService.TicketType == TICKET_TYPE.MEGABOX) {
+                    else if (CompanyService.TicketType == TICKET_TYPE.MEGABOX) {
                         throw new NotImplementedException();
                     }
 
-                    this.CompanyService.Notify(name);
+                    CompanyService.Notify(name);
                 }
             }
             catch (Exception e) {
@@ -54,16 +51,12 @@ namespace MultiInterfaceContainerExample.Services {
 
         public bool Cancel(string name) {
             name = "hsw";
-            this.CompanyService.Cancel(name);
-            if (this.CompanyService.TicketType == TICKET_TYPE.CGV) {
-                this.CgvService.Cancel(name);
-            }
-            else if (this.CompanyService.TicketType == TICKET_TYPE.LOTTE) {
-                this.LotteService.Cancel(name);
-            }
-            else if (this.CompanyService.TicketType == TICKET_TYPE.MEGABOX) {
-                throw new NotImplementedException();
-            }
+            CompanyService.Cancel(name);
+            if (CompanyService.TicketType == TICKET_TYPE.CGV)
+                CgvService.Cancel(name);
+            else if (CompanyService.TicketType == TICKET_TYPE.LOTTE)
+                LotteService.Cancel(name);
+            else if (CompanyService.TicketType == TICKET_TYPE.MEGABOX) throw new NotImplementedException();
 
             return true;
         }

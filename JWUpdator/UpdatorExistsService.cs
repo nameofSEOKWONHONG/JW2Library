@@ -6,27 +6,28 @@ using JWLibrary.ServiceExecutor;
 
 namespace JWUpdator {
     /// <summary>
-    /// update dto, 필요한 설정정보 dto
+    ///     update dto, 필요한 설정정보 dto
     /// </summary>
     public class UpdatorDto {
         /// <summary>
-        /// version no
+        ///     version no
         /// </summary>
         public int Version { get; set; }
+
         /// <summary>
-        /// update file list
+        ///     update file list
         /// </summary>
         public JLKList<string> FileList { get; set; }
     }
 
     /// <summary>
-    /// UpdatorExistsService interface
+    ///     UpdatorExistsService interface
     /// </summary>
     public interface IUpdatorExistsService : IServiceExecutor<int, UpdatorDto> {
     }
 
     /// <summary>
-    /// IUpdatorExistsService implement
+    ///     IUpdatorExistsService implement
     /// </summary>
     public class UpdatorExistsService : ServiceExecutor<UpdatorExistsService, int, UpdatorDto>, IUpdatorExistsService {
         private readonly string _baseUrl = "https://raw.githubusercontent.com";
@@ -34,14 +35,13 @@ namespace JWUpdator {
         private UpdatorDto _updatorDto;
 
         /// <summary>
-        /// creator
+        ///     creator
         /// </summary>
         public UpdatorExistsService() {
             base.SetValidator(new Validator());
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         public override bool PreExecute() {
@@ -58,18 +58,16 @@ namespace JWUpdator {
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Execute() {
             if (Request < _updatorDto.Version) Result = _updatorDto;
         }
 
         /// <summary>
-        /// validator
+        ///     validator
         /// </summary>
         public class Validator : AbstractValidator<UpdatorExistsService> {
             /// <summary>
-            /// 
             /// </summary>
             public Validator() {
                 RuleFor(m => m.Request).GreaterThanOrEqualTo(0);

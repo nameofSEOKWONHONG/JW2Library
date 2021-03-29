@@ -36,7 +36,8 @@ namespace JWLibrary.Utils.Files {
             File.WriteAllLines(fileName, lines);
         }
 
-        public static async Task jFileWriteAllLinesAsync(this string fileName, string[] lines, Encoding encoding = null) {
+        public static async Task
+            jFileWriteAllLinesAsync(this string fileName, string[] lines, Encoding encoding = null) {
             if (encoding.jIsNotNull())
                 await File.WriteAllLinesAsync(fileName, lines, encoding);
 
@@ -65,19 +66,19 @@ namespace JWLibrary.Utils.Files {
             }
         }
 
-        public static bool jIsFileExtension(this string fileName, string pattern = @"^.*\.(zip|ZIP|jpg|JPG|gif|GIF|doc|DOC|pdf|PDF)$") {
+        public static bool jIsFileExtension(this string fileName,
+            string pattern = @"^.*\.(zip|ZIP|jpg|JPG|gif|GIF|doc|DOC|pdf|PDF)$") {
             var match = Regex.Match(fileName, pattern);
             return match.Success;
         }
 
-        public static void jFileZip(this string srcDir, string destZipFileName, CompressionLevel compressionLevel = CompressionLevel.Fastest) {
-            System.IO.Compression.ZipFile.CreateFromDirectory(srcDir, destZipFileName, compressionLevel, false);
+        public static void jFileZip(this string srcDir, string destZipFileName,
+            CompressionLevel compressionLevel = CompressionLevel.Fastest) {
+            ZipFile.CreateFromDirectory(srcDir, destZipFileName, compressionLevel, false);
         }
 
         public static void jFileUnzip(this string srcFileName, string destdir) {
-            if (srcFileName.jIsFileExtension()) {
-                System.IO.Compression.ZipFile.ExtractToDirectory(srcFileName, destdir, entryNameEncoding:null, overwriteFiles:true);
-            }
+            if (srcFileName.jIsFileExtension()) ZipFile.ExtractToDirectory(srcFileName, destdir, null, true);
         }
     }
 }

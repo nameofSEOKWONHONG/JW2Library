@@ -6,9 +6,9 @@ namespace MultiInterfaceContainerExample.Controllers {
     [ApiController]
     [Microsoft.AspNetCore.Components.Route("[controller]")]
     public class HelloController : ControllerBase {
-        private ILogger _logger;
         private readonly IBaseService<Hello1Service> _service;
         private readonly IBaseService<Hello2Service> _service2;
+        private ILogger _logger;
 
         public HelloController(ILogger<HelloController> logger, IBaseService<Hello1Service> service,
             IBaseService<Hello2Service> service2) {

@@ -20,7 +20,7 @@ namespace MultiInterfaceContainerExample {
             services.AddTransient<IReserveService, ReserveService>();
             services.AddTransient<ITheaterService<CgvService>, CgvService>();
             services.AddTransient<ITheaterService<LotteService>, LotteService>();
-            
+
             services.AddTransient<IBaseService<Hello1Service>, Hello1Service>();
             services.AddTransient<IBaseService<Hello2Service>, Hello2Service>();
             services.AddControllers();

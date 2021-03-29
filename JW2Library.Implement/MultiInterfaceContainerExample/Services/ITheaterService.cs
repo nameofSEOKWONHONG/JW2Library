@@ -13,10 +13,10 @@ namespace MultiInterfaceContainerExample.Services {
         LOTTE,
         MEGABOX
     }
-    
+
     public class CompanyService : ICompanyService {
         public TICKET_TYPE TicketType { get; set; } = TICKET_TYPE.CGV;
-        
+
         public bool CheckUserInfo(string name) {
             return true;
         }
@@ -26,18 +26,18 @@ namespace MultiInterfaceContainerExample.Services {
         }
 
         public void Notify(string name) {
-
         }
 
         public void Cancel(string name) {
-            
         }
     }
+
     /// <summary>
     ///     기본 B2C 서비스 인터페이스
     /// </summary>
     public interface ICompanyService {
         TICKET_TYPE TicketType { get; set; }
+
         /// <summary>
         ///     주문자 정보 확인
         /// </summary>

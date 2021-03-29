@@ -6,5 +6,4 @@
         bool PostContract(IUser user, IGoods goods, ICompany company);
         bool CancelContract(IUser user, IGoods goods, ICompany company);
     }
-
 }

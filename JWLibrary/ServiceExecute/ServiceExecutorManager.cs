@@ -5,8 +5,8 @@ using JWLibrary.Core;
 namespace JWLibrary.ServiceExecutor {
     public class ServiceExecutorManager<TIService> : IDisposable
         where TIService : IServiceBase {
-        private bool disposed;
         private readonly JList<Func<TIService, bool>> filters = new();
+        private bool disposed;
         private TIService service;
 
         public ServiceExecutorManager(TIService service) {
@@ -39,7 +39,7 @@ namespace JWLibrary.ServiceExecutor {
                 if (preExecuted) service.Execute();
                 service.PostExecute();
 
-                action(service);               
+                action(service);
             }
         }
 
@@ -54,7 +54,7 @@ namespace JWLibrary.ServiceExecutor {
                 if (preExecuted) await service.ExecuteAsync();
                 service.PostExecute();
 
-                await func(service);               
+                await func(service);
             }
         }
 

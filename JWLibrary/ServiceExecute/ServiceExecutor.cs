@@ -1,10 +1,8 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using JWLibrary.Core;
-using Microsoft.Extensions.Logging;
-using NiL.JS.BaseLibrary;
 
 namespace JWLibrary.ServiceExecutor {
     public class ServiceExecutor<TOwner, TRequest, TResult> : ServiceBase<TOwner>, IServiceExecutor<TRequest, TResult>
@@ -36,8 +34,8 @@ namespace JWLibrary.ServiceExecutor {
             if (ServiceValidator.jIsNotNull()) {
                 var result = ServiceValidator.Validate(Owner);
                 if (result.IsValid.jIsFalse()) {
-                    System.Diagnostics.Debug.WriteLine($"service : {Owner.GetType().Name}");
-                    System.Diagnostics.Debug.WriteLine($"error : {result.Errors.First().ErrorMessage}");
+                    Debug.WriteLine($"service : {Owner.GetType().Name}");
+                    Debug.WriteLine($"error : {result.Errors.First().ErrorMessage}");
                     return false;
                 }
             }

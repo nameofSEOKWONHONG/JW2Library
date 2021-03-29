@@ -10,8 +10,8 @@ using Service.Data;
 namespace Service.WeatherForecast {
     public class SaveWeatherForecastSvc : ServiceExecutor<SaveWeatherForecastSvc, WEATHER_FORECAST, int>,
         ISaveWeatherForecastSvc {
-        private WEATHER_FORECAST _exists;
         private readonly IGetWeatherForecastSvc _getWeatherForecastSvc;
+        private WEATHER_FORECAST _exists;
 
         public SaveWeatherForecastSvc(IGetWeatherForecastSvc getWeatherForecastSvc) {
             base.SetValidator(new Validator());

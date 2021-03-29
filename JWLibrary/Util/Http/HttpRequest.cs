@@ -137,7 +137,7 @@ namespace JWLibrary.Utils {
             using var httpClient = new HttpClient();
             httpClient.BaseAddress = _uri;
             var url = remoteFileName;
-            byte[] bytes = await httpClient.GetByteArrayAsync(url);
+            var bytes = await httpClient.GetByteArrayAsync(url);
             File.WriteAllBytes(localFileName, bytes);
         }
     }
