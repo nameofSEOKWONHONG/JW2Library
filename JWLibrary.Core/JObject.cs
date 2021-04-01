@@ -30,10 +30,16 @@ namespace JWLibrary.Core {
         }
 
         public static bool jIsEmpty(this object obj) {
-            if (obj.jIsNull()) return true;
-            if (obj is ICollection)
+            if (obj.jIsNull()) {
+                return true;
+            }
+            else if (obj is string) {
+                if ((obj as string).jIsNullOrEmpty()) return true;    
+            }
+            else if (obj is ICollection) {
                 if ((obj as ICollection).Count > 0)
                     return true;
+            }
 
             return false;
         }

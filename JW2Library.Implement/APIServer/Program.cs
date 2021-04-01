@@ -7,9 +7,7 @@ namespace JWLibrary.ApiCore {
     /// <summary>
     ///     program
     /// </summary>
-#pragma warning disable RCS1102 // Make class static.
     public class Program
-#pragma warning restore RCS1102 // Make class static.
     {
         /// <summary>
         ///     program main

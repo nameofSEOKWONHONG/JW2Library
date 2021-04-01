@@ -7,10 +7,8 @@ namespace JWLibrary.Core {
             this Type type,
             Func<TAttribute, TValue> valueSelector)
             where TAttribute : Attribute {
-            var att = type.GetCustomAttributes(
-                typeof(TAttribute), true
-            ).FirstOrDefault() as TAttribute;
-            if (att != null) return valueSelector(att);
+            var att = type.GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() as TAttribute;
+            if (att.jIsNotNull()) return valueSelector(att);
             return default;
         }
     }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JWLibrary.Core {
     public class JDictionaryPool<TKey, TValue> {
@@ -85,6 +87,50 @@ namespace JWLibrary.Core {
 
         public bool Release(TKey key, TValue value) {
             return Add(key, value); //just adds it back to key's queue
+        }
+    }
+
+    public static class JDictionaryUtil {
+        /// <summary>
+        /// dictionary concat.
+        /// if same key exists, throw error. 
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IDictionary<string, T> jConcat<T>(this IDictionary<string, T> first, IDictionary<string, T> second) {
+            return first.Concat(second)
+                .ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        /// <summary>
+        /// dictionary concat and update.
+        /// if same key exists, update from second value.
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IDictionary<string, T> jConcatUpdate<T>(this IDictionary<string, T> first, IDictionary<string, T> second) {
+            var result = new Dictionary<string, T>();
+            first.jForEach(firstPair => {
+                result.Add(firstPair.Key, firstPair.Value);
+            });
+            
+            second.jForEach(secondPair => {
+                var exists = result.ContainsKey(secondPair.Key);
+                if (exists) {
+                    if (result[secondPair.Key].jIsEmpty()) {
+                        result[secondPair.Key] = secondPair.Value;
+                    }
+                }
+                else {
+                    result.Add(secondPair.Key, secondPair.Value);
+                }
+            });
+
+            return result;
         }
     }
 }
