@@ -2,6 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JWLibrary.Web {
+    /// <summary>
+    /// 서비스 로케이터
+    /// 사용자 지정 DI를 수행합니다.(남용하지 마세요...)
+    /// </summary>
     public class ServiceLocator
     {
         private ServiceProvider _currentServiceProvider;

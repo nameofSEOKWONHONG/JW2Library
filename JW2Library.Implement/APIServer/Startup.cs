@@ -16,7 +16,7 @@ using Microsoft.OpenApi.Models;
 using Service.Accounts;
 using Service.WeatherForecast;
 
-namespace APIServer {
+namespace JWLibrary.ApiCore {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
@@ -149,7 +149,10 @@ namespace APIServer {
 
         private void OnShutdown() {
             JLiteDbFlexerManager.Distroy();
-            ServiceLocator.Current.GetInstance<ISessionContext>().Dispose();
+            
+            #if DEBUG
+            ServiceLocator.Current.GetInstance<ISessionContext>().CacheManager.Dispose();
+            #endif
         }
     }
 
