@@ -47,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JLiteDBFlex\JLiteDBFlex.csproj" />
     <ProjectReference Include="..\JWLibrary.Core\JWLibrary.Core.csproj" />
   </ItemGroup>
 

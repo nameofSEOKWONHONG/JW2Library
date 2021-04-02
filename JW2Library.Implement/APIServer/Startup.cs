@@ -78,6 +78,8 @@ namespace JWLibrary.ApiCore {
             //register manual service
             services.AccountServiceLoader();
             services.WeatherServiceLoader();
+            services.AddSingleton<ISessionContext, SessionContext>();
+            ServiceLocator.SetLocatorProvider(services.BuildServiceProvider());
 
             // ********************
             // USE CORS
@@ -147,6 +149,7 @@ namespace JWLibrary.ApiCore {
 
         private void OnShutdown() {
             JLiteDbFlexerManager.Distroy();
+            ServiceLocator.Current.GetInstance<ISessionContext>().CacheManager.Dispose();
         }
     }
 

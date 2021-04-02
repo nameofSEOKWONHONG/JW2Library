@@ -45,5 +45,9 @@
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Cache" />
+  </ItemGroup>
+
 
 </Project>

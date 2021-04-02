@@ -21,17 +21,15 @@ namespace JLiteDBFlex {
         private static readonly JHDictionary<IJLiteDbLakeOption, LiteDatabase> _litedbKeyValuePairs =
             new();
 
-        public void Dispose() {
-            _litedbKeyValuePairs.jForEach(item => { item.Value.Dispose(); });
-
-            _litedbKeyValuePairs.Clear();
+        public JLiteDbLake() {
+            
         }
 
         ~JLiteDbLake() {
             Dispose();
         }
 
-        public static LiteDatabase GetOrAdd<T>(JLiteDbLakeOption<T> option)
+        public LiteDatabase GetOrAdd<T>(JLiteDbLakeOption<T> option)
             where T : class {
             if (option.jIsNull()) throw new Exception("option is null");
             if (option.FileName.jIsEmpty()) throw new Exception("filename is empty");
@@ -50,16 +48,22 @@ namespace JLiteDBFlex {
             return litedb;
         }
 
-        public static IEnumerable<IJLiteDbLakeOption> GetOptions() {
+        public IEnumerable<IJLiteDbLakeOption> GetOptions() {
             return _litedbKeyValuePairs.Keys;
         }
 
-        public static void Remove(IJLiteDbLakeOption option) {
+        public void Remove(IJLiteDbLakeOption option) {
             var exists = _litedbKeyValuePairs.jFirst(m => m.Key.FileName == option.FileName);
             if (exists.Key.FileName.jIsEmpty() == false) {
                 exists.Value.Dispose();
                 _litedbKeyValuePairs.Remove(exists.Key);
             }
+        }
+        
+        public void Dispose() {
+            _litedbKeyValuePairs.jForEach(item => { item.Value.Dispose(); });
+
+            _litedbKeyValuePairs.Clear();
         }
     }
 }

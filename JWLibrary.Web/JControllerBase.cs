@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
+using JWLibrary.Util.Cache;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -15,10 +16,11 @@ namespace JWLibrary.Web {
     public class JControllerBase<TController> : ControllerBase, IDisposable
         where TController : class {
         protected ILogger<TController> Logger;
+        protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
 
         public JControllerBase(ILogger<TController> logger) {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
-            Logger = logger;
+            this.Logger = logger;
         }
 
         public void Dispose() {
@@ -48,5 +50,13 @@ namespace JWLibrary.Web {
                 });
             return result;
         }
+    }
+
+    public interface ISessionContext {
+        CacheManager CacheManager { get; set; }
+    }
+
+    public class SessionContext : ISessionContext {
+        public CacheManager CacheManager { get; set; } = new CacheManager();
     }
 }

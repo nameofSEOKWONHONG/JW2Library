@@ -1,4 +1,6 @@
-﻿using JWLibrary.Web;
+﻿using System;
+using JWLibrary.Core;
+using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +14,13 @@ namespace JWLibrary.ApiCore.Controllers {
 
         [HttpGet]
         public string Hello() {
-            return "hello version 0.0";
+            var str = "hello version 0.0" + DateTime.Now.ToString();
+            var exists = Context.CacheManager.Get<string>(str);
+            if (!exists.jIsNullOrEmpty()) {
+                return str;
+            }
+
+            return str;
         }
 
         [HttpGet]
