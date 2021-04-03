@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Contract;
 
-namespace JWLibrary.ApiCore.Controllers {
+namespace APIServer.Controllers {
     public class ContractController : JControllerBase<ContractController> {
         public ContractController(ILogger<ContractController> logger) : base(logger) {
         }

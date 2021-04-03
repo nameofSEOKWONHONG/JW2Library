@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using JWLibrary.ApiCore.Config;
+using APIServer.Config;
 using JWLibrary.Core;
 using JWLibrary.Web;
 using JWService.Data.Models;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Data;
 
-namespace JWLibrary.ApiCore.Controllers {
+namespace APIServer.Controllers {
     public class MemberController : JControllerBase<MemberController> {
         private readonly IDeleteAccountSvc _deleteAccountSvc;
         private readonly IGetAccountByIdSvc _getAccountByIdSvc;

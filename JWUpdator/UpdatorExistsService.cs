@@ -51,7 +51,7 @@ namespace JWUpdator {
             if (result.IsSuccessStatusCode) {
                 result.EnsureSuccessStatusCode();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                _updatorDto = content.jToObject<UpdatorDto>();
+                _updatorDto = content.jToConvert<UpdatorDto>();
             }
 
             return true;

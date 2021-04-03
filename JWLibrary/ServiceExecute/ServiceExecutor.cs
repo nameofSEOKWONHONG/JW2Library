@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -48,6 +50,30 @@ namespace JWLibrary.ServiceExecutor {
 
         public override void SetValidator(IValidator<TOwner> validator) {
             ServiceValidator = validator;
+        }
+
+        public sealed override void SetValidator<T>() {
+            ServiceValidator = new T();
+        }
+    }
+
+    public class BulkServiceExecutor<TOwner, TRequest, TResult> 
+        where TOwner : ServiceExecutor<TOwner, TRequest, TResult> {
+        protected IEnumerable<ServiceExecutor<TOwner, TRequest, TResult>> ServiceExecutors;
+        private IEnumerable<TRequest> _requests;
+        public BulkServiceExecutor() {
+            this.ServiceExecutors = new JLKList<ServiceExecutor<TOwner, TRequest, TResult>>();
+        }
+
+        public void SetReqeust(IEnumerable<TRequest> requests) {
+            
+        }
+
+        public void Run() {
+            this.ServiceExecutors.jForEach(serviceExecutor => {
+                serviceExecutor.Execute();
+                return true;
+            });
         }
     }
 }

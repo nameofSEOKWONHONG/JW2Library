@@ -24,5 +24,27 @@ namespace JWLibrary.NUnit.Test {
 
             Console.WriteLine(result2.jToString());
         }
+
+        [Test]
+        public void JDictionaryPoolTest() {
+            JDictionaryPool<string, string> jDictionaryPool = new JDictionaryPool<string, string>();
+            jDictionaryPool.Add("A", "A");
+            jDictionaryPool.Add("B", "B");
+            jDictionaryPool.Add("C", "C");
+
+            // Assert.AreEqual(jDictionaryPool.GetValue("A"), "A");
+
+            IDictionary<string, string> copy = jDictionaryPool.ToDictionary();
+            Assert.AreEqual(copy["A"], "A");
+            copy["A"] = "AA";
+            Assert.AreEqual(jDictionaryPool.GetValue("A"), "A");
+            Assert.AreEqual(copy["A"], "AA");
+
+            jDictionaryPool.Release("C", "C");
+            jDictionaryPool.Clear();
+            
+            Console.WriteLine(jDictionaryPool.jToString());
+            
+        }
     }
 }

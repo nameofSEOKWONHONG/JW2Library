@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
-using JWLibrary.ApiCore.Config;
+using APIServer.Config;
 using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Web;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Data;
 
-namespace JWLibrary.ApiCore.Controllers {
+namespace APIServer.Controllers {
     /// <summary>
     ///     WeatherForecastController
     ///     **no more use biner**

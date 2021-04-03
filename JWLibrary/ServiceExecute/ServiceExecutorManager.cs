@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using JWLibrary.Core;
+using NetFabric.Hyperlinq;
 
 namespace JWLibrary.ServiceExecutor {
     public class ServiceExecutorManager<TIService> : IDisposable
@@ -20,6 +24,11 @@ namespace JWLibrary.ServiceExecutor {
 
         public ServiceExecutorManager<TIService> SetRequest(Action<TIService> action) {
             action(service);
+            return this;
+        }
+
+        public ServiceExecutorManager<TIService> SetRequest<TRequest>(TRequest request, Action<TIService, TRequest> action) {
+            action(service, request);
             return this;
         }
 

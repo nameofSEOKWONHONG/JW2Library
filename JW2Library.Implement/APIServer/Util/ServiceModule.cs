@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace JWLibrary.ApiCore.Util {
+namespace APIServer.Util {
     /// <summary>
     ///     autofac service register(don't remove)
     /// </summary>

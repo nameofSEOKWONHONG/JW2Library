@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace JWLibrary.ApiCore {
+namespace APIServer {
     /// <summary>
     ///     program
     /// </summary>

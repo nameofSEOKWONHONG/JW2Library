@@ -14,8 +14,7 @@ namespace JWLibrary.Core {
         /// <typeparam name="T"></typeparam>
         /// <param name="iterator"></param>
         /// <param name="action"></param>
-        public static void jForEach<T>(this IEnumerable<T> iterator, Action<T> action)
-            where T : struct {
+        public static void jForEach<T>(this IEnumerable<T> iterator, Action<T> action) {
             if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
@@ -35,8 +34,7 @@ namespace JWLibrary.Core {
         /// <typeparam name="T"></typeparam>
         /// <param name="iterator"></param>
         /// <param name="action"></param>
-        public static void jForEach<T>(this IEnumerable<T> iterator, Action<T, int> action)
-            where T : struct {
+        public static void jForEach<T>(this IEnumerable<T> iterator, Action<T, int> action) {
             if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
@@ -67,25 +65,21 @@ namespace JWLibrary.Core {
                 index++;
             }
         }
-
-        /// <summary>
-        ///     use class, allow break;
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="iterator"></param>
-        /// <param name="func"></param>
+        
+        
         public static void jForEach<T>(this IEnumerable<T> iterator, Func<T, int, bool> func) {
             if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
             var index = 0;
-            iterator.jForEach(item => {
+            foreach (var item in iterator) {
                 var isBreak = !func(item, index);
-                index++;
+                if (isBreak) break;
 
-                if (isBreak) return true;
-                return true;
-            });
+                if (index % JConst.LOOP_LIMIT == 0)
+                    JConst.SetInterval(JConst.SLEEP_INTERVAL);
+                index++;
+            }
         }
 
         #endregion [for & foreach]

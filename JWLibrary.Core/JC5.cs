@@ -20,6 +20,9 @@ namespace JWLibrary.Core {
     }
 
     public class JLKList<T> : C5.LinkedList<T> {
+        public JLKList() {
+            
+        }
     }
 
     public class JHList<T> : HashedArrayList<T> {

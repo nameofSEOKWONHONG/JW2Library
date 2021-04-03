@@ -20,7 +20,6 @@ namespace JWService.WeatherForecast {
                     var weathers = db.Query("dbo.WEATHER_FORECAST").Get<WEATHER_FORECAST>();
                     weathers.jForEach(item => {
                         item.TEMPERATURE_F = 32 + (int) (item.TEMPERATURE_C / 0.5556);
-                        return true;
                     });
 
                     Result = weathers;

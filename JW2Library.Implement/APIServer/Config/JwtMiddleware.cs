@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
 using Service.Data;
 
-namespace JWLibrary.ApiCore.Config {
+namespace APIServer.Config {
     /// <summary>
     ///     mvc : https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api
     ///     api :

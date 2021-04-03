@@ -1,23 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Community.CsharpSqlite;
-using JLiteDBFlex;
+using System.IO;
 using JWLibrary.Core;
 using LiteDB;
 using Newtonsoft.Json;
-using JsonSerializer = LiteDB.JsonSerializer;
 
 namespace JWLibrary.Util.Cache {
-    public class CacheManager : IDisposable{
-        private readonly LiteDatabase _liteDatabase;
-        private const string CACHE_DB_FILE_NAME = "./Cache/cache.db";
+    public class CacheManager : IDisposable {
+        private const string PREFIX_DIR = "Cache";
+        private const string CACHE_DB_FILE_NAME = "cache.db";
         private const string CACHE_DB_TABLE_NAME = "cacheinfo";
-        public CacheManager(string alias = null) {
-            _liteDatabase = new LiteDatabase(CACHE_DB_FILE_NAME);
+        private readonly LiteDatabase _liteDatabase;
+
+        public CacheManager() {
+            if (!Directory.Exists(PREFIX_DIR.jToAppPath())) Directory.CreateDirectory(PREFIX_DIR.jToAppPath());
+            _liteDatabase = new LiteDatabase($"{PREFIX_DIR}/{CACHE_DB_FILE_NAME}");
             var col = _liteDatabase.GetCollection(CACHE_DB_TABLE_NAME);
             col.EnsureIndex("Key");
+        }
+
+        public void Dispose() {
+            _liteDatabase.Dispose();
         }
 
         ~CacheManager() {
@@ -25,20 +27,20 @@ namespace JWLibrary.Util.Cache {
         }
 
         public T Get<T>(object obj) {
-            var result = default(T);
-            this.GetOrAdd<T>(obj, out result);
+            T result;
+            GetOrAdd(obj, out result);
             return result;
         }
 
         private void GetOrAdd<T>(object obj, out T result) {
-            result = default(T);
-            
+            result = default;
+
             var col = _liteDatabase.GetCollection(CACHE_DB_TABLE_NAME);
             var cacheKey = obj.GetHashCode().ToString();
             var exists = col.FindOne($"$.Key='{cacheKey}'");
 
             if (exists == null) {
-                var cacheInfo = new CacheInfo() {
+                var cacheInfo = new CacheInfo {
                     Key = obj.GetHashCode().ToString(),
                     Value = JsonConvert.SerializeObject(obj)
                 };
@@ -46,12 +48,8 @@ namespace JWLibrary.Util.Cache {
                 col.Insert(bsonDoc);
             }
             else {
-                result = JsonConvert.DeserializeObject<T>(exists["Value"].AsString);
+                result = exists["Value"].AsString.jToConvert<T>();
             }
-        }
-
-        public void Dispose() {
-            _liteDatabase.Dispose();
         }
     }
 

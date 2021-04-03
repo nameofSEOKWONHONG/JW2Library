@@ -16,7 +16,8 @@ namespace JWLibrary.Core {
             var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
             var appRoot = appPathMatcher.Match(exePath).Value;
-            appRoot = appRoot + "/" + addPath;
+            if(!addPath.jIsNullOrEmpty())
+                appRoot = appRoot + @"\" + addPath;
             return Path.Combine(appRoot, fileName);
         }
     }

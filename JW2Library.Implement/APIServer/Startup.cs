@@ -1,10 +1,10 @@
 using System;
 using System.IO;
+using APIServer.Config;
+using APIServer.Util;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using JLiteDBFlex;
-using JWLibrary.ApiCore.Config;
-using JWLibrary.ApiCore.Util;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +16,7 @@ using Microsoft.OpenApi.Models;
 using Service.Accounts;
 using Service.WeatherForecast;
 
-namespace JWLibrary.ApiCore {
+namespace APIServer {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
@@ -149,7 +149,7 @@ namespace JWLibrary.ApiCore {
 
         private void OnShutdown() {
             JLiteDbFlexerManager.Distroy();
-            ServiceLocator.Current.GetInstance<ISessionContext>().CacheManager.Dispose();
+            ServiceLocator.Current.GetInstance<ISessionContext>().Dispose();
         }
     }
 

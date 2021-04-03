@@ -52,11 +52,16 @@ namespace JWLibrary.Web {
         }
     }
 
-    public interface ISessionContext {
+    public interface ISessionContext : IDisposable {
         CacheManager CacheManager { get; set; }
     }
 
     public class SessionContext : ISessionContext {
         public CacheManager CacheManager { get; set; } = new CacheManager();
+
+        public void Dispose() {
+            if (CacheManager.jIsNotNull())
+                CacheManager.Dispose();
+        }
     }
 }

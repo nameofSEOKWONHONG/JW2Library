@@ -11,5 +11,6 @@ namespace JWLibrary.ServiceExecutor {
         public abstract bool PreExecute();
         public abstract bool Validate();
         public abstract void SetValidator(IValidator<TOwner> validator);
+        public abstract void SetValidator<T>() where T : AbstractValidator<TOwner>, new();
     }
 }

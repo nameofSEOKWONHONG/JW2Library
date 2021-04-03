@@ -4,7 +4,7 @@ using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace JWLibrary.ApiCore.Controllers {
+namespace APIServer.Controllers {
     [ApiVersion("1.0", Deprecated = true)] //비추천 공지함.
     [ApiVersion("1.1")]
     [ApiVersion("2.0")]

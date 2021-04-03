@@ -51,7 +51,7 @@ namespace JWLibrary.Database {
                 .Build();
             var section = _configuration.GetSection("DbConnections");
 
-            _connectionMaps.jForEach(item => {
+            _connectionMaps.jForEach((item, index) => {
                 if (section.GetValue<string>(item.Key).jIsNullOrEmpty()) return true;
                 Connections.Add(item.Key, item.Value(section.GetValue<string>(item.Key)));
                 return true;
