@@ -5,6 +5,7 @@ using APIServer.Util;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using JLiteDBFlex;
+using JWLibrary.DI;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +17,7 @@ using Microsoft.OpenApi.Models;
 using Service.Accounts;
 using Service.WeatherForecast;
 
-namespace JWLibrary.ApiCore {
+namespace APIServer {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;

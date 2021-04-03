@@ -16,7 +16,9 @@ namespace JWLibrary.ServiceExecutor {
         public TOwner Owner { get; }
         public IValidator<TOwner> ServiceValidator { get; private set; }
         public TRequest Request { get; set; }
+        public TRequest Current { get; set; }
         public TResult Result { get; set; }
+        
 
         public override void Execute() {
         }

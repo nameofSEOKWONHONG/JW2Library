@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JWLibrary.Core;
+using JWLibrary.DI;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Util.Cache;
 using Microsoft.AspNetCore.Mvc;

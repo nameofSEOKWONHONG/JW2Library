@@ -30,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JW2Library.Implement\Service.Data\Service.Data.csproj" />
+    <ProjectReference Include="..\JW2Library.Implement\Service\Service.csproj" />
     <ProjectReference Include="..\JWLibrary.Core\JWLibrary.Core.csproj" />
     <ProjectReference Include="..\JWLibrary\JWLibrary.csproj" />
   </ItemGroup>

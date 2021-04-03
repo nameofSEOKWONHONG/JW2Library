@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace JWLibrary.Web {
+namespace JWLibrary.DI {
     /// <summary>
     /// 서비스 로케이터
     /// 사용자 지정 DI를 수행합니다.(남용하지 마세요...)
