@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using FluentValidation;
 using JWLibrary.Core;
+using NetFabric.Hyperlinq;
 
 namespace Service.Config {
-    public class GetListConfigSvc : ConfigSvcBase<GetListConfigSvc, IEnumerable<string>, IEnumerable<string>>, IGetListConfigSvc {
+    public class GetListConfigSvc : ConfigSvcBase<GetListConfigSvc, IEnumerable<GetConfigRequest>, IEnumerable<GetConfigResult>>, IGetListConfigSvc {
         public GetListConfigSvc() {
             this.SetValidator<Validator>();
         }
 
         public override void Execute() {
-            JLKList<string> list = new JLKList<string>();
+            JList<GetConfigResult> results = new JList<GetConfigResult>();
             this.Request.jForEach(item => {
-                var doc = this.Collection.FindOne(item);
-                list.Add(doc["value"].AsString);
+                var doc = this.Collection.FindOne($"$.key='{item.Key}'");
+                results.Add(new GetConfigResult() {
+                    Key = item.Key,
+                    Content = doc["value"].AsString,
+                });
             });
-
-            this.Result = list;
+            this.Result = results;
         }
 
         public class Validator : AbstractValidator<GetListConfigSvc> {

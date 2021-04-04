@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Service.Accounts;
+using Service.Config;
 using Service.WeatherForecast;
 
 namespace APIServer {
@@ -79,6 +80,7 @@ namespace APIServer {
             //register manual service
             services.AccountServiceLoader();
             services.WeatherServiceLoader();
+            services.ConfigServiceLoader();
             services.AddSingleton<ISessionContext, SessionContext>();
             ServiceLocator.SetLocatorProvider(services.BuildServiceProvider());
 

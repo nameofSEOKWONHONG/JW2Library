@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace JWLibrary.Utils {
-    public class HttpRequest {
+    public class JHttpRequest {
         private readonly Uri _uri;
 
-        public HttpRequest(string baseAddress) {
+        public JHttpRequest(string baseAddress) {
             _uri = new Uri(baseAddress);
         }
 

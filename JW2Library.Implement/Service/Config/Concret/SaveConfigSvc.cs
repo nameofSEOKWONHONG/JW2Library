@@ -4,23 +4,28 @@ using JWLibrary.Core;
 using LiteDB;
 
 namespace Service.Config {
-    public class SaveConfigSvc : ConfigSvcBase<SaveConfigSvc, string, Tuple<bool, string>>, ISaveConfigSvc{
+    public class SaveConfigSvc : ConfigSvcBase<SaveConfigSvc, SaveConfigRequest, SaveConfigResult>, ISaveConfigSvc{
         public SaveConfigSvc() {
             this.SetValidator<Validator>();
         }
 
         public override void Execute() {
-            var key = this.Request.GetHashCode().ToString();
+            var key = this.Request.Content.GetHashCode().ToString();
             var doc = new BsonDocument();
             doc["key"] = key;
-            doc["value"] = this.Request;
-            this.Collection.Insert(doc);
-            this.Result = new Tuple<bool, string>(key.jIsNullOrEmpty(), key);
+            doc["value"] = this.Request.Content;
+            doc["write_dt"] = this.Request.WriteDt;
+            doc["user_id"] = this.Request.UserId;
+            var bsonValue = this.Collection.Insert(doc);
+            this.Result = new SaveConfigResult() {
+                IsSuccess = bsonValue.AsInt32 > 0,
+                Key = key
+            };
         }
 
         public class Validator : AbstractValidator<SaveConfigSvc> {
             public Validator() {
-                RuleFor(m => m.Request).NotNull();
+                RuleFor(m => m.Request).SetValidator(new SaveConfigRequest.Validator());
             }
         }
     }

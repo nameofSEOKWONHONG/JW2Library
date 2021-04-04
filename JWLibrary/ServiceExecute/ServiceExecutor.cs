@@ -16,7 +16,6 @@ namespace JWLibrary.ServiceExecutor {
         public TOwner Owner { get; }
         public IValidator<TOwner> ServiceValidator { get; private set; }
         public TRequest Request { get; set; }
-        public TRequest Current { get; set; }
         public TResult Result { get; set; }
         
 
@@ -56,26 +55,6 @@ namespace JWLibrary.ServiceExecutor {
 
         public sealed override void SetValidator<T>() {
             ServiceValidator = new T();
-        }
-    }
-
-    public class BulkServiceExecutor<TOwner, TRequest, TResult> 
-        where TOwner : ServiceExecutor<TOwner, TRequest, TResult> {
-        protected IEnumerable<ServiceExecutor<TOwner, TRequest, TResult>> ServiceExecutors;
-        private IEnumerable<TRequest> _requests;
-        public BulkServiceExecutor() {
-            this.ServiceExecutors = new JLKList<ServiceExecutor<TOwner, TRequest, TResult>>();
-        }
-
-        public void SetReqeust(IEnumerable<TRequest> requests) {
-            
-        }
-
-        public void Run() {
-            this.ServiceExecutors.jForEach(serviceExecutor => {
-                serviceExecutor.Execute();
-                return true;
-            });
         }
     }
 }

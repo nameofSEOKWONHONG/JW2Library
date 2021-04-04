@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 
 namespace JWLibrary.Utils {
-    public static class WebRequest {
+    public static class JWebRequest {
         public static string GetToken(
             string fullUrl,
             string userName, string password,

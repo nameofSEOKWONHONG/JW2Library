@@ -13,8 +13,16 @@ namespace Service.Config {
             if (!Directory.Exists(dir)) {
                 Directory.CreateDirectory(dir);
             }
-            this.LiteDatabase = new LiteDatabase($"{ConfigConst.PRE_CONFIG_DIR}/{ConfigConst.CONFIG_DB_FILE_NAME}");
-            this.Collection = LiteDatabase.GetCollection(ConfigConst.DB_NAME);
+
+            var connectionString =
+                new LiteDB.ConnectionString($"{ConfigConst.PRE_CONFIG_DIR}/{ConfigConst.CONFIG_DB_FILE_NAME}") {
+                    Connection = ConnectionType.Shared
+                };
+            if(this.LiteDatabase.jIsNull())
+                this.LiteDatabase = new LiteDatabase(connectionString);
+            
+            if(this.Collection.jIsNull())
+                this.Collection = LiteDatabase.GetCollection(ConfigConst.DB_NAME);
         }
 
         public override void Dispose() {

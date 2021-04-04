@@ -34,7 +34,7 @@ namespace JWUpdator {
             Request.jForEach(file => {
                 var downloadFile = $"{_prefixUrl}{file}";
                 var localFileName = $"{"".jToAppPath()}{file}";
-                var request = new HttpRequest(_baseUrl);
+                var request = new JHttpRequest(_baseUrl);
                 request.DownloadAsync(downloadFile, localFileName).GetAwaiter().GetResult();
 
                 if (localFileName.jFileExists()) localFileName.jFileUnzip($"{"".jToAppPath()}{_unzipPath}");

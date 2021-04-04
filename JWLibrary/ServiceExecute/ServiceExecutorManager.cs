@@ -7,7 +7,7 @@ using JWLibrary.Core;
 using NetFabric.Hyperlinq;
 
 namespace JWLibrary.ServiceExecutor {
-    public class ServiceExecutorManager<TIService> : IDisposable
+    public sealed class ServiceExecutorManager<TIService> : IDisposable
         where TIService : IServiceBase {
         private readonly JList<Func<TIService, bool>> filters = new();
         private bool disposed;
@@ -67,7 +67,7 @@ namespace JWLibrary.ServiceExecutor {
             }
         }
 
-        protected virtual void Dispose(bool disposing) {
+        protected void Dispose(bool disposing) {
             if (disposed) return;
             if (disposing) service.Dispose();
 

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace JWLibrary.ServiceExecutor {
     
-    public class BulkServiceExecutorManager<TIService, TRequest> : IDisposable 
+    public sealed class BulkServiceExecutorManager<TIService, TRequest> : IDisposable 
         where TIService : IServiceBase {
 
         private readonly List<BulkService<TIService, TRequest>> _bulkServices;
