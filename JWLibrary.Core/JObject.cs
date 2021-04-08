@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace JWLibrary.Core {
-    public static class JObject {
+    public static class JObj {
         public static void jIfTrue(this bool obj, Action action) {
             if (obj) action();
         }
@@ -42,6 +44,30 @@ namespace JWLibrary.Core {
             }
 
             return false;
+        }
+
+        public static string jValue(this string src, string @default = null) {
+            return src.jIfNullOrEmpty(x => @default);
+        }
+        public static T jValue<T>(this object src, object @deafult = null) {
+            if (src is string) {
+                if (string.IsNullOrEmpty(src as string)) {
+                    return (T)Convert.ChangeType(@deafult, typeof(T));
+                }
+            }
+            return (T)Convert.ChangeType(src, typeof(T));
+        }
+        
+        public static T jValue<T>(this string src, Nullable<T> @default = null) where T : struct, Enum {
+            return src.jStringToEnum<T>(@default.Value);
+        }
+
+        public static string jValue(this Enum src, Enum @default = null) {
+            return src.jIsNull() ? (@default == null ? string.Empty : @default.jEnumToString()) : src.jEnumToString();
+        }
+
+        public static int Define(string src) {
+            return 0;
         }
     }
 }

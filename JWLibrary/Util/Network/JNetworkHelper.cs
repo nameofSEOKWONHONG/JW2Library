@@ -46,7 +46,7 @@ namespace JWLibrary.Utils {
 
         public static void OpenPort(this int port, string name = "ACC", ENUM_PORT_TYPE portType = ENUM_PORT_TYPE.TCP,
             ENUM_BOUND_TYPE boundType = ENUM_BOUND_TYPE.IN) {
-            var arg = OpenPortCommand(name, boundType.jToString(), portType.jToString(), port);
+            var arg = OpenPortCommand(name, boundType.jEnumToString(), portType.jEnumToString(), port);
             ProcessHandlerAsync.RunAsync("cmd.exe", arg,
                     output => { Debug.WriteLine(output); },
                     error => { Debug.WriteLine(error); })
@@ -56,7 +56,7 @@ namespace JWLibrary.Utils {
 
         public static void ClosePort(this int port, string name = "ACC", ENUM_PORT_TYPE portType = ENUM_PORT_TYPE.TCP,
             ENUM_BOUND_TYPE boundType = ENUM_BOUND_TYPE.IN) {
-            var arg = ClosePortCommand(name, boundType.jToString(), portType.jToString(), port);
+            var arg = ClosePortCommand(name, boundType.jEnumToString(), portType.jEnumToString(), port);
             ProcessHandlerAsync.RunAsync("cmd.exe", arg,
                     output => { Debug.WriteLine(output); },
                     error => { Debug.WriteLine(error); })
