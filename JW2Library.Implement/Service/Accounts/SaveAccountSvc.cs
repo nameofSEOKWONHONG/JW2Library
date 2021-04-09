@@ -18,10 +18,10 @@ namespace Service.Accounts {
             Account exists = null;
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_getAccountSvc);
             executor.SetRequest(o => o.Request = Request)
-                .AddFilter(o => o.Request.jIsNotNull())
+                .AddFilter(o => o.Request.isNotNull())
                 .OnExecuted(o => { exists = o.Result; });
 
-            if (exists.jIsNull()) return false;
+            if (exists.isNull()) return false;
             return true;
         }
 

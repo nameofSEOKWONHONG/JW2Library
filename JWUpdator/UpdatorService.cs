@@ -31,13 +31,13 @@ namespace JWUpdator {
         ///     exeute
         /// </summary>
         public override void Execute() {
-            Request.jForEach(file => {
+            Request.forEach(file => {
                 var downloadFile = $"{_prefixUrl}{file}";
-                var localFileName = $"{"".jToAppPath()}{file}";
+                var localFileName = $"{"".toPath()}{file}";
                 var request = new JHttpRequest(_baseUrl);
                 request.DownloadAsync(downloadFile, localFileName).GetAwaiter().GetResult();
 
-                if (localFileName.jFileExists()) localFileName.jFileUnzip($"{"".jToAppPath()}{_unzipPath}");
+                if (localFileName.jFileExists()) localFileName.jFileUnzip($"{"".toPath()}{_unzipPath}");
                 return true;
             });
 

@@ -40,7 +40,7 @@ namespace JWLibrary.ServiceExecutor {
         public void OnExecuted(Action<TIService> action) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.jIsFalse()) return;
+                if (pass.isFalse()) return;
             }
 
             if (service.Validate()) {
@@ -55,7 +55,7 @@ namespace JWLibrary.ServiceExecutor {
         public async Task OnExecutedAsync(Func<TIService, Task> func) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.jIsFalse()) return;
+                if (pass.isFalse()) return;
             }
 
             if (service.Validate()) {

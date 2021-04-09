@@ -20,7 +20,7 @@ namespace JWLibrary.Core {
 
         //protected JENUM_BASE(string value) => this.Value = value;
         
-        public static TEnum Define(string value) {
+        public static TEnum define(string value) {
             TEnum @enum = new TEnum();
             @enum.Value = value;
             return @enum;
@@ -50,7 +50,7 @@ namespace JWLibrary.Core {
         #endregion
 
         #region [util]
-        public static List<TEnum> AsList() {
+        public static List<TEnum> asList() {
             return typeof(TEnum)
                 .GetProperties(BindingFlags.Public | BindingFlags.Static)
                 .Where(p => p.PropertyType == typeof(TEnum))
@@ -58,8 +58,8 @@ namespace JWLibrary.Core {
                 .ToList();
         }
 
-        public static TEnum Parse(string value) {
-            List<TEnum> all = AsList();
+        public static TEnum parse(string value) {
+            List<TEnum> all = asList();
 
             if (!all.Any(a => a.Value == value))
                 throw new InvalidOperationException($"\"{value}\" is not a valid value for the type {typeof(TEnum).Name}");
@@ -92,7 +92,7 @@ namespace JWLibrary.Core {
                 JsonSerializer serializer) {
                 JToken item = JToken.Load(reader);
                 string value = item.Value<string>();
-                return JENUM_BASE<T>.Parse(value);
+                return JENUM_BASE<T>.parse(value);
             }
 
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {

@@ -16,7 +16,7 @@ namespace JWLibrary.Core {
 
         public int Index { get; private set; }
 
-        public T Next() {
+        public T next() {
             Index++;
             if (Index > base.Count - 1)
                 Index = 0;
@@ -25,7 +25,7 @@ namespace JWLibrary.Core {
             return base[Index];
         }
 
-        public T Previous() {
+        public T previous() {
             Index--;
             if (Index < 0)
                 Index = 0;

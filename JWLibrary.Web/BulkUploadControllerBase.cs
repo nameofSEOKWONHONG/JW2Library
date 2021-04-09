@@ -10,7 +10,7 @@ namespace JWLibrary.Web {
         public virtual bool Upload<T>(BulkUploadDto<T>[] items)
             where T : class {
             IBulkUploadValidator<T> validator = new BulkUploadValidator<T>();
-            items.jForEach(item => {
+            items.forEach(item => {
                 validator.Validate(item);
                 return true;
             });
@@ -21,7 +21,7 @@ namespace JWLibrary.Web {
     public class BulkUploadValidator<T> : IBulkUploadValidator<T>
         where T : class {
         public void Validate(BulkUploadDto<T> item) {
-            if (item.Data.jIsNull()) {
+            if (item.Data.isNull()) {
                 item.IsValid = false;
                 item.ErrorMsg = "Data is null";
             }

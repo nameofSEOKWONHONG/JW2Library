@@ -14,8 +14,8 @@ namespace JWLibrary.Core {
         /// <typeparam name="T"></typeparam>
         /// <param name="iterator"></param>
         /// <param name="action"></param>
-        public static void jForEach<T>(this IEnumerable<T> iterator, Action<T> action) {
-            if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
+        public static void forEach<T>(this IEnumerable<T> iterator, Action<T> action) {
+            if (iterator.count() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
             var index = 0;
@@ -23,7 +23,7 @@ namespace JWLibrary.Core {
                 action(item);
 
                 if (index % JConst.LOOP_LIMIT == 0)
-                    JConst.SetInterval(JConst.SLEEP_INTERVAL);
+                    JConst.setInterval(JConst.SLEEP_INTERVAL);
                 index++;
             }
         }
@@ -34,12 +34,12 @@ namespace JWLibrary.Core {
         /// <typeparam name="T"></typeparam>
         /// <param name="iterator"></param>
         /// <param name="action"></param>
-        public static void jForEach<T>(this IEnumerable<T> iterator, Action<T, int> action) {
-            if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
+        public static void forEach<T>(this IEnumerable<T> iterator, Action<T, int> action) {
+            if (iterator.count() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
             var index = 0;
-            iterator.jForEach(item => {
+            iterator.forEach(item => {
                 action(item, index);
                 index++;
             });
@@ -51,8 +51,8 @@ namespace JWLibrary.Core {
         /// <typeparam name="T"></typeparam>
         /// <param name="iterator"></param>
         /// <param name="func"></param>
-        public static void jForEach<T>(this IEnumerable<T> iterator, Func<T, bool> func) {
-            if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
+        public static void forEach<T>(this IEnumerable<T> iterator, Func<T, bool> func) {
+            if (iterator.count() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
             var index = 0;
@@ -61,14 +61,14 @@ namespace JWLibrary.Core {
                 if (isBreak) break;
 
                 if (index % JConst.LOOP_LIMIT == 0)
-                    JConst.SetInterval(JConst.SLEEP_INTERVAL);
+                    JConst.setInterval(JConst.SLEEP_INTERVAL);
                 index++;
             }
         }
         
         
-        public static void jForEach<T>(this IEnumerable<T> iterator, Func<T, int, bool> func) {
-            if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
+        public static void forEach<T>(this IEnumerable<T> iterator, Func<T, int, bool> func) {
+            if (iterator.count() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
             var index = 0;
@@ -77,7 +77,7 @@ namespace JWLibrary.Core {
                 if (isBreak) break;
 
                 if (index % JConst.LOOP_LIMIT == 0)
-                    JConst.SetInterval(JConst.SLEEP_INTERVAL);
+                    JConst.setInterval(JConst.SLEEP_INTERVAL);
                 index++;
             }
         }
@@ -94,7 +94,7 @@ namespace JWLibrary.Core {
             var dt = new DataTable();
             foreach (var property in properties) dt.Columns.Add(property.Name, property.PropertyType);
 
-            entities.jForEach(item => {
+            entities.forEach(item => {
                 var itemProperty = item.GetType().GetProperties();
                 var row = dt.NewRow();
                 foreach (var property in itemProperty) row[property.Name] = property.GetValue(item);
@@ -107,14 +107,14 @@ namespace JWLibrary.Core {
 
         public static T jToObject<T>(this IDataReader reader)
             where T : class, new() {
-            var properties = typeof(T).GetProperties().jToList();
+            var properties = typeof(T).GetProperties().toList();
 
             var newItem = new T();
 
-            Enumerable.Range(0, reader.FieldCount - 1).jForEach(i => {
+            Enumerable.Range(0, reader.FieldCount - 1).forEach(i => {
                 if (!reader.IsDBNull(i)) {
-                    var property = properties.Where(m => m.Name.Equals(reader.GetName(i))).jFirst();
-                    if (property.jIsNotNull())
+                    var property = properties.Where(m => m.Name.Equals(reader.GetName(i))).first();
+                    if (property.isNotNull())
                         if (reader.GetFieldType(i).Equals(property.PropertyType))
                             property.SetValue(newItem, reader[i]);
                 }

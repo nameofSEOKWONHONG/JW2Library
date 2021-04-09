@@ -31,14 +31,14 @@ namespace JCoreSvcTest {
             using (var svc =
                 new BulkServiceExecutorManager<IGetWeatherForecastSvc, WeatherForecastRequestDto>(request)) {
                 svc.SetRequest((s, r) => s.Request = r)
-                    .AddFilter(s => s.Request.ID.jIsNotNull())
+                    .AddFilter(s => s.Request.ID.isNotNull())
                     .OnExecuted(s => {
                         result.Add(s.Result);
                     });
             }
             
-            result.jForEach(item => {
-                Console.WriteLine(item.jObjectToJson());
+            result.forEach(item => {
+                Console.WriteLine(item.fromObjectToJson());
             });
         }
     }

@@ -34,9 +34,9 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public override bool Validate() {
-            if (ServiceValidator.jIsNotNull()) {
+            if (ServiceValidator.isNotNull()) {
                 var result = ServiceValidator.Validate(Owner);
-                if (result.IsValid.jIsFalse()) {
+                if (result.IsValid.isFalse()) {
                     Debug.WriteLine($"service : {Owner.GetType().Name}");
                     Debug.WriteLine($"error : {result.Errors.First().ErrorMessage}");
                     return false;

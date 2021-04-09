@@ -12,7 +12,7 @@ namespace Service.Config {
 
         public override void Execute() {
             JList<GetConfigResult> results = new JList<GetConfigResult>();
-            this.Request.jForEach(item => {
+            this.Request.forEach(item => {
                 var doc = this.Collection.FindOne($"$.key='{item.Key}'");
                 results.Add(new GetConfigResult() {
                     Key = item.Key,

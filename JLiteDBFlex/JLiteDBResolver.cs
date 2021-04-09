@@ -14,13 +14,13 @@ namespace JLiteDBFlex {
             indexItems) Resolve<TEntity>(string additionalDbFileName = "")
             where TEntity : class {
             var fileName =
-                typeof(TEntity).jGetAttributeValue((JLiteDbTableAttribute tableAttribute) => tableAttribute.FileName);
-            if (additionalDbFileName.jIsEmpty()) fileName = $"{additionalDbFileName}_{fileName}";
+                typeof(TEntity).getAttrValue((JLiteDbTableAttribute tableAttribute) => tableAttribute.FileName);
+            if (additionalDbFileName.isEmpty()) fileName = $"{additionalDbFileName}_{fileName}";
 
             var tableName =
-                typeof(TEntity).jGetAttributeValue((JLiteDbTableAttribute tableAttribute) => tableAttribute.TableName);
+                typeof(TEntity).getAttrValue((JLiteDbTableAttribute tableAttribute) => tableAttribute.TableName);
             var indexItems =
-                typeof(TEntity).jGetAttributeValue((JLiteDbTableAttribute indexAttribute) => indexAttribute.IndexItems);
+                typeof(TEntity).getAttrValue((JLiteDbTableAttribute indexAttribute) => indexAttribute.IndexItems);
 
             LiteDatabase database = null;
 

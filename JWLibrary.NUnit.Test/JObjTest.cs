@@ -17,17 +17,17 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void TypeConvertTest() {
             var src = "10";
-            var dest = "".jValue(src);
+            var dest = "".toValue(src);
             Assert.AreEqual(src, dest);
 
             
-            var dest2 = "".jValue<double>(12);
+            var dest2 = "".toValue<double>(12);
             Assert.AreEqual(dest2, 12);
 
-            // var dest3 = "1".jValue<TYPES>();
+            // var dest3 = "1".toValue<TYPES>();
             // Assert.AreEqual("1", dest3);
             //
-            // var dest4 = TYPES.ONE.jValue<string>();
+            // var dest4 = TYPES.ONE.toValue<string>();
             // Assert.AreEqual("1", dest4);
 
             ENUM_USE_YN enumUseYn = ENUM_USE_YN.Y;
@@ -40,7 +40,7 @@ namespace JWLibrary.NUnit.Test {
             Console.WriteLine(ENUM_USE_YN.Y);
 
             var obj = JsonConvert.DeserializeObject<TestObj>(@"{'Name':'test', 'UseYn':'N'}");
-            if (obj.jIsNotNull()) {
+            if (obj.isNotNull()) {
                 Assert.AreEqual(obj.UseYn, ENUM_USE_YN.N);
             }
         }
@@ -60,7 +60,7 @@ namespace JWLibrary.NUnit.Test {
     
     [JsonConverter(typeof(JsonConverter<ENUM_USE_YN>))]
     public class ENUM_USE_YN : JENUM_BASE<ENUM_USE_YN> {
-        public static ENUM_USE_YN Y {get; set;} = Define("Y");
-        public static ENUM_USE_YN N {get; set;} = Define("N");
+        public static ENUM_USE_YN Y {get; set;} = define("Y");
+        public static ENUM_USE_YN N {get; set;} = define("N");
     }    
 }

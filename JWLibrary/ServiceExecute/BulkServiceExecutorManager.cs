@@ -15,7 +15,7 @@ namespace JWLibrary.ServiceExecutor {
 
         public BulkServiceExecutorManager(IEnumerable<TRequest> requestItems) {
             this._bulkServices = new List<BulkService<TIService, TRequest>>(requestItems.Count());
-            requestItems.jForEach(request => {
+            requestItems.forEach(request => {
                 var instance = ServiceLocator.Current.GetInstance<TIService>();
                 var serviceExecutorManager = new ServiceExecutorManager<TIService>(instance);
                 this._bulkServices.Add(new BulkService<TIService, TRequest>() {
@@ -27,7 +27,7 @@ namespace JWLibrary.ServiceExecutor {
         }
         
         public BulkServiceExecutorManager<TIService, TRequest> SetRequest(Action<TIService, TRequest> action) {
-            this._bulkServices.jForEach(bulkService => {
+            this._bulkServices.forEach(bulkService => {
                 bulkService.SvcExecManager.SetRequest<TRequest>(bulkService.Reqeust, action);
                 return true;
             });
@@ -35,7 +35,7 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public BulkServiceExecutorManager<TIService, TRequest> AddFilter(Func<TIService, bool> func) {
-            this._bulkServices.jForEach(bulkService => {
+            this._bulkServices.forEach(bulkService => {
                 bulkService.SvcExecManager.AddFilter(func);
                 return true;
             });
@@ -43,7 +43,7 @@ namespace JWLibrary.ServiceExecutor {
         }
         
         public void OnExecuted(Action<TIService> action) {
-            this._bulkServices.jForEach(bulkService => {
+            this._bulkServices.forEach(bulkService => {
                 bulkService.SvcExecManager.OnExecuted(action);
                 return true;
             });

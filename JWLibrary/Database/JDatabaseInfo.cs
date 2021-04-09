@@ -5,8 +5,10 @@ using System.Data.SqlClient;
 using JWLibrary.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using Npgsql;
+using Oracle.ManagedDataAccess.Client;
 using RepoDb;
 
 namespace JWLibrary.Database {
@@ -30,7 +32,12 @@ namespace JWLibrary.Database {
                     PostgreSqlBootstrap.Initialize();
                     return new NpgsqlConnection(connectionString);
                 }
-            }
+            },
+            {
+                "ORACLE", connectionString => {
+                    return new OracleConnection(connectionString);
+                }
+            },
         };
 
         private IConfiguration _configuration;
@@ -51,8 +58,8 @@ namespace JWLibrary.Database {
                 .Build();
             var section = _configuration.GetSection("DbConnections");
 
-            _connectionMaps.jForEach((item, index) => {
-                if (section.GetValue<string>(item.Key).jIsNullOrEmpty()) return true;
+            _connectionMaps.forEach((item, index) => {
+                if (section.GetValue<string>(item.Key).isNullOrEmpty()) return true;
                 Connections.Add(item.Key, item.Value(section.GetValue<string>(item.Key)));
                 return true;
             });

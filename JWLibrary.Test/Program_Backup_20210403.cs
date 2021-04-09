@@ -55,7 +55,7 @@
 //             // using (var executor = new ServiceExecutorManager<ITestService>(service)) {
 //             //     executor.SetRequest(o => o.Request = "Service Executor ")
 //             //         .AddFilter(o => o.Request.Length > 0)
-//             //         .AddFilter(o => o.Request.jIsNotNull())
+//             //         .AddFilter(o => o.Request.isNotNull())
 //             //         .OnExecuted(o => {
 //             //             result = o.Result;
 //             //         });

@@ -13,18 +13,18 @@ namespace JLiteDBFlex {
         public static JLiteDbFlexer<T> Create<T>() where T : class {
             using (_mutex.Lock()) {
                 var exists = _instanceMap.FirstOrDefault(m => m.Key == typeof(T));
-                if (exists.jIsNotNull()) return exists.Value as JLiteDbFlexer<T>;
+                if (exists.isNotNull()) return exists.Value as JLiteDbFlexer<T>;
 
                 var newInstance = new JLiteDbFlexer<T>();
-                if (newInstance.jIsNotNull()) _instanceMap.Add(typeof(T), newInstance);
+                if (newInstance.isNotNull()) _instanceMap.Add(typeof(T), newInstance);
 
                 return newInstance;
             }
         }
 
         public static void Distroy() {
-            _instanceMap.jForEach(instance => {
-                if (instance.Value.jIsNotNull()) instance.Value.LiteDatabase?.Dispose();
+            _instanceMap.forEach(instance => {
+                if (instance.Value.isNotNull()) instance.Value.LiteDatabase?.Dispose();
             });
 
             _instanceMap.Clear();

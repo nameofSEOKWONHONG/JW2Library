@@ -10,7 +10,7 @@ namespace JWLibrary.Utils {
         where T : class {
         public static T LoadFromXml(string filename) {
             T settings = null;
-            if (File.Exists(filename).jIsNotNull()) return null;
+            if (File.Exists(filename).isNotNull()) return null;
 
             try {
                 var xs = new XmlSerializer(typeof(T));
@@ -26,7 +26,7 @@ namespace JWLibrary.Utils {
 
         public static bool Save2Xml(string filename, T settings) {
             if (null == filename) return false;
-            if (Path.GetFileName(filename).jIsNullOrEmpty()) return false;
+            if (Path.GetFileName(filename).isNullOrEmpty()) return false;
 
             try {
                 var xs = new XmlSerializer(typeof(T));

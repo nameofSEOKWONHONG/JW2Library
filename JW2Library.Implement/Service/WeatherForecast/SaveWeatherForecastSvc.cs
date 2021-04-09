@@ -23,14 +23,14 @@ namespace Service.WeatherForecast {
             executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = Request.ID})
                 .OnExecuted(o => { _exists = o.Result; });
 
-            if (_exists.jIsNotNull()) return true;
+            if (_exists.isNotNull()) return true;
             return false;
         }
 
         public override void Execute() {
             JDataBase.Resolve<SqlConnection>()
                 .DbExecutor<int>(db => {
-                    if (_exists.jIsNotNull()) Result = db.Update(Request);
+                    if (_exists.isNotNull()) Result = db.Update(Request);
                     Result = db.Insert(Request).Value;
                 });
         }

@@ -17,7 +17,7 @@ namespace Service.Config {
                 svc.SetRequest((o, current) => {
                     o.Request = current;
                 }).AddFilter(o => {
-                    return o.Request.jIsNotNull();
+                    return o.Request.isNotNull();
                 }).OnExecuted(o => {
                     var result = o.Result;
                 });

@@ -10,7 +10,7 @@ namespace JWLibrary.Util {
     public static class PythonExecutor {
         public static Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction,
             Action<ScriptScope> endaction) {
-            if (script.jIsNullOrEmpty()) throw new Exception("script is empty.");
+            if (script.isNullOrEmpty()) throw new Exception("script is empty.");
 
             var engine = Python.CreateEngine();
             var src = engine.CreateScriptSourceFromString(script);
@@ -27,7 +27,7 @@ namespace JWLibrary.Util {
 
         public static async Task Execute_Python_File_Async(this string fileName, Action<ScriptScope> preaction,
             Action<ScriptScope> endaction) {
-            if (fileName.jIsNull()) throw new FileNotFoundException("pytho_file_path is empty");
+            if (fileName.isNull()) throw new FileNotFoundException("pytho_file_path is empty");
             if (!fileName.jFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".py")) throw new FileLoadException("file is not support python");
 

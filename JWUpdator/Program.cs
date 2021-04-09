@@ -15,9 +15,9 @@ namespace JWUpdator {
             svc.SetRequest(o => o.Request = version)
                 .OnExecuted(o => { updatorDto = o.Result; });
 
-            if (updatorDto.jIsNotNull()) {
+            if (updatorDto.isNotNull()) {
                 using var updatorSvc = new ServiceExecutorManager<IUpdatorService>(new UpdatorService());
-                updatorSvc.AddFilter(o => o.Result.jIsNotNull())
+                updatorSvc.AddFilter(o => o.Result.isNotNull())
                     .SetRequest(o => o.Request = updatorDto.FileList)
                     .OnExecuted(o => {
                         if (o.Result) Console.WriteLine("downloaded");

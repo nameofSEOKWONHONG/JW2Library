@@ -21,7 +21,7 @@ namespace JWService.WeatherForecast {
             executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = Request.ID})
                 .OnExecuted(o => _removeObj = o.Result);
 
-            if (_removeObj.jIsNotNull()) return true;
+            if (_removeObj.isNotNull()) return true;
             return false;
         }
 

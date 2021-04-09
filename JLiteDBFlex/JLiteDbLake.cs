@@ -31,16 +31,16 @@ namespace JLiteDBFlex {
 
         public LiteDatabase GetOrAdd<T>(JLiteDbLakeOption<T> option)
             where T : class {
-            if (option.jIsNull()) throw new Exception("option is null");
-            if (option.FileName.jIsEmpty()) throw new Exception("filename is empty");
+            if (option.isNull()) throw new Exception("option is null");
+            if (option.FileName.isEmpty()) throw new Exception("filename is empty");
 
-            var exists = _litedbKeyValuePairs.jFirst(m => m.Key.FileName == option.FileName);
-            if (exists.Key.jIsEmpty() == false) return exists.Value;
+            var exists = _litedbKeyValuePairs.first(m => m.Key.FileName == option.FileName);
+            if (exists.Key.isEmpty() == false) return exists.Value;
 
             var litedb = new LiteDatabase(option.FileName);
-            if (litedb.jIsNotNull()) {
-                if (option.Indexes.jIsNotNull())
-                    option.Indexes.jForEach(item => { litedb.GetCollection<T>().EnsureIndex(item.Key, item.Value); });
+            if (litedb.isNotNull()) {
+                if (option.Indexes.isNotNull())
+                    option.Indexes.forEach(item => { litedb.GetCollection<T>().EnsureIndex(item.Key, item.Value); });
 
                 _litedbKeyValuePairs.Add(option, litedb);
             }
@@ -53,15 +53,15 @@ namespace JLiteDBFlex {
         }
 
         public void Remove(IJLiteDbLakeOption option) {
-            var exists = _litedbKeyValuePairs.jFirst(m => m.Key.FileName == option.FileName);
-            if (exists.Key.FileName.jIsEmpty() == false) {
+            var exists = _litedbKeyValuePairs.first(m => m.Key.FileName == option.FileName);
+            if (exists.Key.FileName.isEmpty() == false) {
                 exists.Value.Dispose();
                 _litedbKeyValuePairs.Remove(exists.Key);
             }
         }
         
         public void Dispose() {
-            _litedbKeyValuePairs.jForEach(item => { item.Value.Dispose(); });
+            _litedbKeyValuePairs.forEach(item => { item.Value.Dispose(); });
 
             _litedbKeyValuePairs.Clear();
         }

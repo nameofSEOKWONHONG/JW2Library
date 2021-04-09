@@ -16,7 +16,7 @@ namespace APIServer.Controllers {
         public string Hello() {
             var str = "hello version 0.0" + DateTime.Now.ToString();
             var exists = Context.CacheManager.Get<string>(str);
-            if (!exists.jIsNullOrEmpty()) {
+            if (!exists.isNullOrEmpty()) {
                 return str;
             }
 

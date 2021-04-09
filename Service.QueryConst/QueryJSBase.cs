@@ -11,7 +11,7 @@ namespace Service.QueryConst {
         public static T Self => _instance.Value;
 
         protected string ReadQueryJS(string javascriptFile) {
-            return javascriptFile.jFileReadLines().jJoin(CARRIAGE_RETURN);
+            return javascriptFile.jFileReadLines().@join(CARRIAGE_RETURN);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace JWLibrary.Util.Cache {
         private readonly LiteDatabase _liteDatabase;
 
         public CacheManager() {
-            if (!Directory.Exists(PREFIX_DIR.jToAppPath())) Directory.CreateDirectory(PREFIX_DIR.jToAppPath());
+            if (!Directory.Exists(PREFIX_DIR.toPath())) Directory.CreateDirectory(PREFIX_DIR.toPath());
             _liteDatabase = new LiteDatabase($"{PREFIX_DIR}/{CACHE_DB_FILE_NAME}");
             var col = _liteDatabase.GetCollection(CACHE_DB_TABLE_NAME);
             col.EnsureIndex("Key");
@@ -48,7 +48,7 @@ namespace JWLibrary.Util.Cache {
                 col.Insert(bsonDoc);
             }
             else {
-                result = exists["Value"].AsString.jJsonToObject<T>();
+                result = exists["Value"].AsString.fromJsonToObject<T>();
             }
         }
     }
