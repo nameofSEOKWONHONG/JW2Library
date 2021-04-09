@@ -49,6 +49,11 @@ namespace JWLibrary.Core {
         public static string jValue(this string src, string @default = null) {
             return src.jIfNullOrEmpty(x => @default);
         }
+
+        public static string jValue(this object src, object @default = null) {
+            return Convert.ToString(src);
+        }
+        
         public static T jValue<T>(this object src, object @deafult = null) {
             if (src is string) {
                 if (string.IsNullOrEmpty(src as string)) {

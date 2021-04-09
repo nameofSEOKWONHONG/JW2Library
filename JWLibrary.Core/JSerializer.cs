@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 
 namespace JWLibrary.Core {
     public static class JSerializer {
-        public static T jToConvert<T>(this string jsonString) {
+        public static T jJsonToObject<T>(this string jsonString) {
             return JsonConvert.DeserializeObject<T>(jsonString);
         }
 
-        public static IEnumerable<T> jToConvertEnumerable<T>(this string jsonString) {
+        public static IEnumerable<T> jJsonToObjects<T>(this string jsonString) {
             return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonString);
         }
 
-        public static string jToString<T>(this T entity, Formatting? formatting = null,
+        public static string jObjectToJson<T>(this T entity, Formatting? formatting = null,
             JsonSerializerSettings serializerSettings = null)
             where T : class {
             if (formatting.jIsNotNull() && serializerSettings.jIsNotNull())
@@ -23,12 +23,12 @@ namespace JWLibrary.Core {
             return JsonConvert.SerializeObject(entity);
         }
 
-        public static string jToString<TKey, TValue>(this JDictionaryPool<TKey, TValue> dictionaryPool) {
+        public static string jObjectToJson<TKey, TValue>(this JDictionaryPool<TKey, TValue> dictionaryPool) {
             var dic = dictionaryPool.ToDictionary();
             return JsonConvert.SerializeObject(dic);
         }
 
-        public static string jToString(this object obj) {
+        public static string jObjectToJson(this object obj) {
             return JsonConvert.SerializeObject(obj);
         }
     }

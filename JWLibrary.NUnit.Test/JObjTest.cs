@@ -6,6 +6,7 @@ using System.Linq;
 using Google.Protobuf.WellKnownTypes;
 using JWLibrary.Core;
 using NetFabric.Hyperlinq;
+using Newtonsoft.Json;
 using NiL.JS.Expressions;
 using NUnit.Framework;
 using Enum = System.Enum;
@@ -31,14 +32,23 @@ namespace JWLibrary.NUnit.Test {
 
             ENUM_USE_YN enumUseYn = ENUM_USE_YN.Y;
             ENUM_USE_YN enumUseYn2 = ENUM_USE_YN.N;
-             
+
             Assert.AreEqual(enumUseYn, ENUM_USE_YN.Y);
             Assert.AreEqual(enumUseYn2, ENUM_USE_YN.N);
             
             Console.WriteLine(enumUseYn2);
             Console.WriteLine(ENUM_USE_YN.Y);
 
+            var obj = JsonConvert.DeserializeObject<TestObj>(@"{'Name':'test', 'UseYn':'N'}");
+            if (obj.jIsNotNull()) {
+                Assert.AreEqual(obj.UseYn, ENUM_USE_YN.N);
+            }
         }
+    }
+
+    public class TestObj {
+        public string Name { get; set; }
+        public ENUM_USE_YN UseYn { get; set; }
     }
 
     public enum TYPES {
@@ -47,4 +57,10 @@ namespace JWLibrary.NUnit.Test {
         [System.ComponentModel.Description("2")]
         TWO
     }
+    
+    [JsonConverter(typeof(JsonConverter<ENUM_USE_YN>))]
+    public class ENUM_USE_YN : JENUM_BASE<ENUM_USE_YN> {
+        public static ENUM_USE_YN Y {get; set;} = Define("Y");
+        public static ENUM_USE_YN N {get; set;} = Define("N");
+    }    
 }

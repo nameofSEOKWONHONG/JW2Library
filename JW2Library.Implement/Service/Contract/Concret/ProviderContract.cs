@@ -58,9 +58,9 @@ namespace Service.Contract {
         /// <exception cref="NotImplementedException"></exception>
         public override bool PostContract(IUser user, IGoods goods, ICompany company) {
             //notice
-            Console.WriteLine(user.jToString());
-            Console.WriteLine(goods.jToString());
-            Console.WriteLine(company.jToString());
+            Console.WriteLine(user.jObjectToJson());
+            Console.WriteLine(goods.jObjectToJson());
+            Console.WriteLine(company.jObjectToJson());
             return true;
         }
 

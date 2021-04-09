@@ -48,7 +48,7 @@ namespace JWLibrary.Util.Cache {
                 col.Insert(bsonDoc);
             }
             else {
-                result = exists["Value"].AsString.jToConvert<T>();
+                result = exists["Value"].AsString.jJsonToObject<T>();
             }
         }
     }
