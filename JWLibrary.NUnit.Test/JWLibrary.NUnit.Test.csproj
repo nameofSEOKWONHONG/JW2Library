@@ -13,19 +13,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\JW2Library.Implement\Service.Data\Service.Data.csproj" />
-      <ProjectReference Include="..\JW2Library.Implement\Service\Service.csproj" />
-      <ProjectReference Include="..\JWLibrary.Core\JWLibrary.Core.csproj" />
-      <ProjectReference Include="..\JWLibrary\JWLibrary.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="appsettings.Development.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\JW2Library.Implement\Service.Data\Service.Data.csproj" />
+      <ProjectReference Include="..\JW2Library.Implement\Service\Service.csproj" />
+      <ProjectReference Include="..\JWLibrary.Core\JWLibrary.Core.csproj" />
+      <ProjectReference Include="..\JWLibrary\JWLibrary.csproj" />
+      <ProjectReference Include="..\Service.QueryConst\Service.QueryConst.csproj" />
     </ItemGroup>
 
 </Project>

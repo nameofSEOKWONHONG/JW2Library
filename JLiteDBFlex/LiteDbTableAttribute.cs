@@ -6,10 +6,13 @@ namespace JLiteDBFlex {
     ///     litedb entity extension attribute
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
-    public class JLiteDbTableAttribute : Attribute {
+    public class LiteDbTableAttribute : Attribute {
+        public string FileName { get; }
+        public string TableName { get; }
+        
         public readonly Dictionary<string, bool> IndexItems = new();
-
-        public JLiteDbTableAttribute(string fileName, string tableName, string[] indexNames = null,
+        
+        public LiteDbTableAttribute(string fileName, string tableName, string[] indexNames = null,
             bool[] indexUniques = null) {
             FileName = fileName;
             TableName = tableName;
@@ -20,8 +23,5 @@ namespace JLiteDBFlex {
                     IndexItems.Add(indexNames[i], unique);
                 }
         }
-
-        public string FileName { get; }
-        public string TableName { get; }
     }
 }

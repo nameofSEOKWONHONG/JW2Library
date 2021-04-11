@@ -1,7 +1,7 @@
 ﻿using JLiteDBFlex;
 
 namespace JWService.Data.Models {
-    [JLiteDbTable("account.db", "accounts")]
+    [LiteDbTable("account.db", "accounts")]
     public class Account {
         /// <summary>
         ///     Id

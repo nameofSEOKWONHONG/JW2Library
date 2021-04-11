@@ -47,6 +47,15 @@ namespace JWLibrary.Core {
         public static bool operator ==(JENUM_BASE<TEnum> a, JENUM_BASE<TEnum> b) => a?.Equals(b) ?? false;
 
         public static bool operator !=(JENUM_BASE<TEnum> a, JENUM_BASE<TEnum> b) => !(a?.Equals(b) ?? false);
+        
+        public static explicit operator string(JENUM_BASE<TEnum> source)
+        {
+            return source.Value;
+        }
+        public static implicit operator JENUM_BASE<TEnum>(string source)
+        {
+            return JENUM_BASE<TEnum>.parse(source);
+        }
         #endregion
 
         #region [util]
