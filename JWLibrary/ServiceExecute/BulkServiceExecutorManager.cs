@@ -47,8 +47,7 @@ namespace JWLibrary.ServiceExecutor {
             this._bulkServices.forEach(bulkService => {
                 isResult = bulkService.SvcExecManager.OnExecuted(func);
                 if (isResult.isFalse()) {
-                    isResult = false;
-                    return false;
+                    throw new Exception($"{typeof(TIService).Name} execute failed.");
                 }
 
                 return true;

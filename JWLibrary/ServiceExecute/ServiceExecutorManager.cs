@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JWLibrary.Core;
+using JWLibrary.Util.Session;
 using NetFabric.Hyperlinq;
 
 namespace JWLibrary.ServiceExecutor {
@@ -67,6 +68,9 @@ namespace JWLibrary.ServiceExecutor {
                 service.PostExecute();
 
                 var executed = await func(service);
+                if (executed.isFalse()) {
+                    throw new Exception($"{typeof(TIService).Name} executed failed.");
+                }
                 return executed;
             }
 
