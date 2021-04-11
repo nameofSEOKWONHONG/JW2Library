@@ -18,7 +18,10 @@ namespace JWLibrary.NUnit.Test {
             var result = false;
             using (var executor = new ServiceExecutorManager<IMigrationDatabaseService>(_initDatabaseService)) {
                 executor.SetRequest(o => o.Request = true)
-                    .OnExecuted(o => { result = o.Result; });
+                    .OnExecuted(o => {
+                        result = o.Result;
+                        return true;
+                    });
             }
 
             Console.WriteLine(result);
@@ -31,9 +34,9 @@ namespace JWLibrary.NUnit.Test {
             var result = false;
             using (var executor = new ServiceExecutorManager<IMigrationDatabaseService>(_initDatabaseService)) {
                 await executor.SetRequest(o => o.Request = true)
-                    .OnExecutedAsync(o => {
+                    .OnExecutedAsync(async o => {
                         result = o.Result;
-                        return Task.CompletedTask;
+                        return true;
                     });
             }
 

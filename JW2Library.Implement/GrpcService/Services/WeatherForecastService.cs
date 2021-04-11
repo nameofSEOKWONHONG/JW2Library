@@ -21,7 +21,10 @@ namespace GrpcService {
             WEATHER_FORECAST result = null;
             using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(new GetWeatherForecastSvc());
             executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = request.Id})
-                .OnExecuted(o => { result = o.Result; });
+                .OnExecuted(o => {
+                    result = o.Result;
+                    return true;
+                });
             return Task.FromResult(new WeatherForecastResponse {
                 Id = result.ID,
                 Date = result.DATE.ToString(),

@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using JLiteDBFlex;
 using JWLibrary.DI;
+using JWLibrary.Util.Session;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -154,7 +155,7 @@ namespace APIServer {
             JLiteDbFlexerManager.Distroy();
             
             #if DEBUG
-            ServiceLocator.Current.GetInstance<ISessionContext>().CacheManager.Dispose();
+            ServiceLocator.Current.GetInstance<ISessionContext>().GetCacheManager().Dispose();
             #endif
         }
     }

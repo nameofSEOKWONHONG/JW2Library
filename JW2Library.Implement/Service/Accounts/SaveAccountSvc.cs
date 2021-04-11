@@ -19,7 +19,10 @@ namespace Service.Accounts {
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_getAccountSvc);
             executor.SetRequest(o => o.Request = Request)
                 .AddFilter(o => o.Request.isNotNull())
-                .OnExecuted(o => { exists = o.Result; });
+                .OnExecuted(o => {
+                    exists = o.Result;
+                    return true;
+                });
 
             if (exists.isNull()) return false;
             return true;

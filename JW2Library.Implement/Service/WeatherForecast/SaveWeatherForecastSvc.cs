@@ -21,7 +21,10 @@ namespace Service.WeatherForecast {
         public override bool PreExecute() {
             using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(_getWeatherForecastSvc);
             executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = Request.ID})
-                .OnExecuted(o => { _exists = o.Result; });
+                .OnExecuted(o => {
+                    _exists = o.Result;
+                    return true;
+                });
 
             if (_exists.isNotNull()) return true;
             return false;

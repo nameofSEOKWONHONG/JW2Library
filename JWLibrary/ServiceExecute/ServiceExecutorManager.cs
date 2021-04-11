@@ -37,10 +37,10 @@ namespace JWLibrary.ServiceExecutor {
             return this;
         }
 
-        public void OnExecuted(Action<TIService> action) {
+        public bool OnExecuted(Func<TIService, bool> func) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.isFalse()) return;
+                if (pass.isFalse()) return false;
             }
 
             if (service.Validate()) {
@@ -48,14 +48,17 @@ namespace JWLibrary.ServiceExecutor {
                 if (preExecuted) service.Execute();
                 service.PostExecute();
 
-                action(service);
+                var executed =  func(service);
+                return executed;
             }
+
+            return false;
         }
 
-        public async Task OnExecutedAsync(Func<TIService, Task> func) {
+        public async Task<bool> OnExecutedAsync(Func<TIService, Task<bool>> func) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.isFalse()) return;
+                if (pass.isFalse()) return false;
             }
 
             if (service.Validate()) {
@@ -63,8 +66,11 @@ namespace JWLibrary.ServiceExecutor {
                 if (preExecuted) await service.ExecuteAsync();
                 service.PostExecute();
 
-                await func(service);
+                var executed = await func(service);
+                return executed;
             }
+
+            return false;
         }
 
         protected void Dispose(bool disposing) {

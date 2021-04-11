@@ -5,7 +5,11 @@ using LiteDB;
 using Newtonsoft.Json;
 
 namespace JWLibrary.Util.Cache {
-    public class CacheManager : IDisposable {
+    public interface ICacheManager : IDisposable {
+        T Get<T>(object obj);
+    }
+    
+    public class CacheManager : ICacheManager {
         private const string PREFIX_DIR = "Cache";
         private const string CACHE_DB_FILE_NAME = "cache.db";
         private const string CACHE_DB_TABLE_NAME = "cacheinfo";

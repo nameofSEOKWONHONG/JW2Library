@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using JWLibrary.Core;
+using LiteDB;
 using MongoDB.Driver;
 using StackExchange.Redis;
+using Collation = LiteDB.Collation;
+using ConnectionType = LiteDB.ConnectionType;
 
 namespace JWLibrary.Database {
     public class MongoClientHandler {
         private readonly IMongoClient _client;
         private IMongoDatabase _mongoDatabase;
 
-        public MongoClientHandler(string connnectionString) {
+        public MongoClientHandler(string connnectionString, string database) {
             _client = new MongoClient(connnectionString);
-        }
-
-        public void open(string database = null) {
             _mongoDatabase = _client.GetDatabase(database);
         }
 
@@ -35,15 +36,43 @@ namespace JWLibrary.Database {
 
         public RedisClientHandler(string connectionString) {
             _muxer = ConnectionMultiplexer.Connect(connectionString);
-        }
-
-        public void open() {
-            if(_muxer.IsConnected)
-                _database = _muxer.GetDatabase();
+            _database = _muxer.GetDatabase();
         }
 
         public void handle(Action<IDatabase> execute) {
             execute(_database);
+        }
+
+        public async Task<bool> handleAsync(Func<IDatabase, Task<bool>> executeAsync) {
+            return await executeAsync(_database);
+        } 
+    }
+
+    public class LiteDbHandler : IDisposable {
+        private LiteDB.LiteDatabase _database;
+        
+
+        public LiteDbHandler(ConnectionString connectionString) {
+            connectionString.Connection = ConnectionType.Shared;
+            _database = new LiteDatabase(connectionString);
+        }
+
+        public void handle<T>(string table, Action<ILiteCollection<T>> action)
+            where T : class {
+            var col = _database.GetCollection<T>(table);
+            action(col);
+        }
+
+        public async Task<bool> handleAsync<T>(string table, Func<ILiteCollection<T>, Task<bool>> func) 
+            where T : class {
+            var col = _database.GetCollection<T>(table);
+            var result = await func(col);
+            return result;
+        }
+
+
+        public void Dispose() {
+            _database?.Dispose();
         }
     }
 
@@ -53,7 +82,6 @@ namespace JWLibrary.Database {
             testobj.Name = "test";
             testobj.Age = 10;
             RedisClientHandler handler = new RedisClientHandler("ip");
-            handler.open();
             handler.handle(db => {
                 var result = db.SetAdd("test", testobj.fromObjectToJson());
                 Console.WriteLine(result);
@@ -65,8 +93,7 @@ namespace JWLibrary.Database {
         }
 
         public void Run2() {
-            MongoClientHandler handler = new MongoClientHandler("ip");
-            handler.open("test");
+            MongoClientHandler handler = new MongoClientHandler("ip", "testdb");
             handler.handle<Test>("test", col => {
                 col.InsertOne(new Test() {
                     Name = "test",

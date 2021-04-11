@@ -10,7 +10,7 @@ namespace JWLibrary.Core {
         }
 
         public static IEnumerable<T> toList<T>(this IEnumerable<T> enumerable) {
-            return enumerable.jIfNotNull(x => x, new JList<T>());
+            return enumerable.ifNotNull(x => x, new JList<T>());
         }
 
         public static T[] toArray<T>(this IEnumerable<T> enumerable) where T : new() {
@@ -45,21 +45,12 @@ namespace JWLibrary.Core {
             return obj;
         }
 
-        public static void ifNull<T>(this T obj, Action action) {
-            if (obj.isNull()) action();
-        }
-
-        public static void jIfNotNull<T>(this T obj, Action action) {
-            if (obj.isNotNull()) action();
-        }
-
-        public static T jIfNotNull<T>(this T obj, Func<T, T> predicate, T defaultValue)
-            where T : class {
+        public static T ifNotNull<T>(this T obj, Func<T, T> predicate, T defaultValue) {
             if (obj.isNotNull()) return predicate(obj);
             return defaultValue;
         }
 
-        public static IEnumerable<T> jWhere<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
+        public static IEnumerable<T> where<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
             where T : class {
             if (enumerable.isEmpty()) {
                 enumerable = new JList<T>();
@@ -69,7 +60,7 @@ namespace JWLibrary.Core {
             return enumerable.AsValueEnumerable().Where(predicate);
         }
 
-        public static IEnumerable<T> jSelect<T>(this IEnumerable<T> enumerable, Func<T, T> predicate)
+        public static IEnumerable<T> select<T>(this IEnumerable<T> enumerable, Func<T, T> predicate)
             where T : class {
             return enumerable.AsValueEnumerable().Select(predicate);
         }

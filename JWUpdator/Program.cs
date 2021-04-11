@@ -13,7 +13,10 @@ namespace JWUpdator {
             UpdatorDto updatorDto = null;
             using var svc = new ServiceExecutorManager<IUpdatorExistsService>(new UpdatorExistsService());
             svc.SetRequest(o => o.Request = version)
-                .OnExecuted(o => { updatorDto = o.Result; });
+                .OnExecuted(o => {
+                    updatorDto = o.Result;
+                    return true;
+                });
 
             if (updatorDto.isNotNull()) {
                 using var updatorSvc = new ServiceExecutorManager<IUpdatorService>(new UpdatorService());
@@ -21,6 +24,7 @@ namespace JWUpdator {
                     .SetRequest(o => o.Request = updatorDto.FileList)
                     .OnExecuted(o => {
                         if (o.Result) Console.WriteLine("downloaded");
+                        return true;
                     });
             }
         }

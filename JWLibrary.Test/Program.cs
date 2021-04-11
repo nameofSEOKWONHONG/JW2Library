@@ -34,6 +34,7 @@ namespace JCoreSvcTest {
                     .AddFilter(s => s.Request.ID.isNotNull())
                     .OnExecuted(s => {
                         result.Add(s.Result);
+                        return true;
                     });
             }
             

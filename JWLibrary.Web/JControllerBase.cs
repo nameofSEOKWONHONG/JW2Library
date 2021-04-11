@@ -1,32 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JWLibrary.Core;
 using JWLibrary.DI;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Util.Cache;
+using JWLibrary.Util.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
-    /// <summary>
-    ///     base controller
-    /// </summary>
     [ApiController]
-    //[Route("api/[controller]/[action]")] //normal route
-    [Route("api/{v:apiVersion}/[controller]/[action]")] //url version route
-    public class JControllerBase<TController> : ControllerBase, IDisposable
+    public class JControllerBase<TController> : ControllerBase, IDisposable 
         where TController : class {
-        protected ILogger<TController> Logger;
         protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
-
+        protected ILogger<TController> Logger;
         public JControllerBase(ILogger<TController> logger) {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
             this.Logger = logger;
         }
-
-        public void Dispose() {
+        public virtual void Dispose() {
+            
         }
-
+        
+                /// <summary>
+        /// single execute
+        /// </summary>
+        /// <param name="serviceExecutor"></param>
+        /// <param name="request"></param>
+        /// <param name="func"></param>
+        /// <typeparam name="TServiceExecutor"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
         protected TResult CreateService<TServiceExecutor, TRequest, TResult>
             (TServiceExecutor serviceExecutor, TRequest request, Func<TServiceExecutor, bool> func = null)
             where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
@@ -34,7 +40,10 @@ namespace JWLibrary.Web {
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             executor.SetRequest(o => o.Request = request)
                 .AddFilter(o => func.isNotNull() ? func(serviceExecutor) : true)
-                .OnExecuted(o => { result = o.Result; });
+                .OnExecuted(o => {
+                    result = o.Result;
+                    return true;
+                });
             return result;
         }
 
@@ -45,24 +54,44 @@ namespace JWLibrary.Web {
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             await executor.SetRequest(o => o.Request = request)
                 .AddFilter(o => func.isNotNull() ? func(serviceExecutor) : true)
-                .OnExecutedAsync(o => {
+                .OnExecutedAsync(async o => {
                     result = o.Result;
-                    return Task.CompletedTask;
+                    return true;
                 });
             return result;
         }
+
+        protected IEnumerable<TResult> CreateBulkService<TServiceExecutor, TRequest, TResult>(TServiceExecutor serviceExecutor,
+            IEnumerable<TRequest> requests, Func<TServiceExecutor, bool> func = null) 
+            where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
+            var results = new JList<TResult>();
+            using var bulkExecutor = new BulkServiceExecutorManager<TServiceExecutor, TRequest>(requests);
+            bulkExecutor.SetRequest((o, c) => o.Request = c)
+                .AddFilter(func)
+                .OnExecuted(o => {
+                    results.Add(o.Result);
+                    return true;
+                });
+
+            return results;
+        }
     }
+    /// <summary>
+    ///     base controller
+    /// </summary>
+    
+    //[Route("api/[controller]/[action]")] //normal route
+    [Route("api/{v:apiVersion}/[controller]/[action]")] //url version route
+    public class JVersionControllerBase<TController> : JControllerBase<TController>, IDisposable
+        where TController : class {
+        public JVersionControllerBase(ILogger<TController> logger) : base(logger) {
+            
+        }
 
-    public interface ISessionContext : IDisposable {
-        CacheManager CacheManager { get; set; }
-    }
-
-    public class SessionContext : ISessionContext {
-        public CacheManager CacheManager { get; set; } = new CacheManager();
-
-        public void Dispose() {
-            if (CacheManager.isNotNull())
-                CacheManager.Dispose();
+        public override void Dispose() {
+            //your code...
+            
+            base.Dispose();
         }
     }
 }

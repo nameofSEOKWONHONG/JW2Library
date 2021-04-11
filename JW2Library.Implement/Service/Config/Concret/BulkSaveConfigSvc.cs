@@ -20,6 +20,7 @@ namespace Service.Config {
                     return o.Request.isNotNull();
                 }).OnExecuted(o => {
                     var result = o.Result;
+                    return true;
                 });
             }
         }

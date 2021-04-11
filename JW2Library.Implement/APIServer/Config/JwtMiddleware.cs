@@ -60,7 +60,10 @@ namespace APIServer.Config {
                 // attach account to context on successful jwt validation
                 using var executor = new ServiceExecutorManager<IGetAccountByIdSvc>(_getAccountByIdSvc);
                 await executor.SetRequest(o => o.Request = new RequestDto<int> {Data = accountId})
-                    .OnExecutedAsync(async o => { context.Items["ACCOUNT"] = o.Result; });
+                    .OnExecutedAsync(async o => {
+                        context.Items["ACCOUNT"] = o.Result;
+                        return true;
+                    });
                 //await Task.Delay(1000);
             }
             catch {

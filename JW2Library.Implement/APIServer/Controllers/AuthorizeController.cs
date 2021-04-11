@@ -25,7 +25,10 @@ namespace APIServer.Controllers {
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_svc);
             await executor.SetRequest(o => o.Request = account)
                 .AddFilter(o => o.Request.isNotNull())
-                .OnExecutedAsync(async o => { result = o.Result; });
+                .OnExecutedAsync(async o => {
+                    result = o.Result;
+                    return true;
+                });
 
             var jwtToken = jwtTokenService.GenerateJwtToken(result.Id);
             return jwtToken;

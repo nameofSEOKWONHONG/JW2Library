@@ -42,17 +42,29 @@ namespace JWLibrary.ServiceExecutor {
             return this;
         }
         
-        public void OnExecuted(Action<TIService> action) {
+        public bool OnExecuted(Func<TIService, bool> func) {
+            var isResult = true;
             this._bulkServices.forEach(bulkService => {
-                bulkService.SvcExecManager.OnExecuted(action);
+                isResult = bulkService.SvcExecManager.OnExecuted(func);
+                if (isResult.isFalse()) {
+                    isResult = false;
+                    return false;
+                }
+
                 return true;
             });
+
+            return isResult;
         }
         
-        public async Task OnExecutedAsync(Func<TIService, Task> func) {
+        public async Task<bool> OnExecutedAsync(Func<TIService, Task<bool>> func) {
+            var isResult = true;
             foreach (var bulkService in this._bulkServices) {
-                await bulkService.SvcExecManager.OnExecutedAsync(func);
+                isResult = await bulkService.SvcExecManager.OnExecutedAsync(func);
+                if (isResult.isFalse()) return false;
             }
+
+            return isResult;
         }
         
         public void Dispose() {

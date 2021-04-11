@@ -19,7 +19,10 @@ namespace JWService.WeatherForecast {
         public override bool PreExecute() {
             using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(_getWeatherForecastSvc);
             executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = Request.ID})
-                .OnExecuted(o => _removeObj = o.Result);
+                .OnExecuted(o => {
+                    _removeObj = o.Result;
+                    return true;
+                });
 
             if (_removeObj.isNotNull()) return true;
             return false;

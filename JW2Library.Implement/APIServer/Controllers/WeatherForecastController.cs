@@ -49,9 +49,9 @@ namespace APIServer.Controllers {
             WEATHER_FORECAST result = null;
             using var executor = new ServiceExecutorManager<IGetWeatherForecastSvc>(_getWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = new WeatherForecastRequestDto {ID = idx})
-                .OnExecutedAsync(o => {
+                .OnExecutedAsync(async o => {
                     result = o.Result;
-                    return Task.CompletedTask;
+                    return true;
                 });
             return result;
         }
@@ -67,7 +67,10 @@ namespace APIServer.Controllers {
             IEnumerable<WEATHER_FORECAST> result = null;
             using var executor = new ServiceExecutorManager<IGetAllWeatherForecastSvc>(_getAllWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = new WeatherForecastRequestDto())
-                .OnExecutedAsync(async o => result = o.Result);
+                .OnExecutedAsync(async o => {
+                    result = o.Result;
+                    return true;
+                });
             return result;
         }
 
@@ -82,7 +85,10 @@ namespace APIServer.Controllers {
             var result = 0;
             using var executor = new ServiceExecutorManager<ISaveWeatherForecastSvc>(_saveWeatherForecastSvc);
             await executor.SetRequest(o => o.Request = request.Data)
-                .OnExecutedAsync(async o => result = o.Result);
+                .OnExecutedAsync(async o => {
+                    result = o.Result;
+                    return true;
+                });
             return result;
         }
 
