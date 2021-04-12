@@ -66,7 +66,7 @@ namespace JWLibrary.ServiceExecutor {
                 var preExecuted = service.PreExecute();
                 if (preExecuted) await service.ExecuteAsync();
                 service.PostExecute();
-
+                
                 var executed = await func(service);
                 if (executed.isFalse()) {
                     throw new Exception($"{typeof(TIService).Name} executed failed.");

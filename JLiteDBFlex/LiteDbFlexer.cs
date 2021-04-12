@@ -2,11 +2,11 @@
 using LiteDB;
 
 namespace JLiteDBFlex {
-    public interface ILiteDbFlexer {
+    internal interface ILiteDbFlexer {
         ILiteDatabase LiteDatabase { get; }
     }
 
-    public class LiteDbFlexer<T> : ILiteDbFlexer
+    internal class LiteDbFlexer<T> : ILiteDbFlexer
         where T : class {
         #region [property]
         public ILiteCollection<T> LiteCollection { get; private set; }
