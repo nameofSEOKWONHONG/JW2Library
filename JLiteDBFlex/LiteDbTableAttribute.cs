@@ -12,15 +12,12 @@ namespace JLiteDBFlex {
         
         public readonly Dictionary<string, bool> IndexItems = new();
         
-        public LiteDbTableAttribute(string fileName, string tableName, string[] indexNames = null,
-            bool[] indexUniques = null) {
+        public LiteDbTableAttribute(string fileName, string tableName, string[] indexNames = null) {
             FileName = fileName;
             TableName = tableName;
             if (indexNames != null)
                 for (var i = 0; i < indexNames.Length; i++) {
-                    var unique = true;
-                    if (indexUniques != null) unique = indexUniques[i];
-                    IndexItems.Add(indexNames[i], unique);
+                    IndexItems.Add(indexNames[i], true);
                 }
         }
     }

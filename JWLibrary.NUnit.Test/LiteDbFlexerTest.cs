@@ -53,7 +53,7 @@ namespace JWLibrary.NUnit.Test {
         public void get_delete_test() {
             var exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "kim");
             if (exists.isNotNull()) {
-                LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Delete(exists.Id);
+                LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Delete(exists.Name);
             }
 
             exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "kim");
@@ -95,7 +95,7 @@ namespace JWLibrary.NUnit.Test {
                 Assert.AreEqual(40, exists.Age);
 
                 var removed = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection
-                    .Delete(exists.Id);
+                    .Delete(exists.Name);
                 
                 Assert.IsTrue(removed);
             }
@@ -144,7 +144,7 @@ namespace JWLibrary.NUnit.Test {
     public class UserDto {
         //auto-increment
         //id가 명시적으로 없을 경우 _oid를 생성함. 해당 hash값이 고유값이 됨. Key와는 다른 의미임.
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
     }

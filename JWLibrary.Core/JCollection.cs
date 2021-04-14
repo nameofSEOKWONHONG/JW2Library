@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace JWLibrary.Core {
     public static class JCollection {
@@ -81,12 +82,19 @@ namespace JWLibrary.Core {
                 index++;
             }
         }
+        
+        public static async Task forEachAsync<T>(this IEnumerable<T> iterator, Func<T, Task> func) {
+            foreach (var value in iterator)
+            {
+                await func(value);
+            }
+        }
 
         #endregion [for & foreach]
 
         #region [Datatable & DataReader]
 
-        public static DataTable jToDataTable<T>(this IEnumerable<T> entities)
+        public static DataTable toDataTable<T>(this IEnumerable<T> entities)
             where T : class, new() {
             var entity = new T();
             var properties = entity.GetType().GetProperties();
@@ -105,7 +113,7 @@ namespace JWLibrary.Core {
             return dt;
         }
 
-        public static T jToObject<T>(this IDataReader reader)
+        public static T fromReaderToObject<T>(this IDataReader reader)
             where T : class, new() {
             var properties = typeof(T).GetProperties().toList();
 
