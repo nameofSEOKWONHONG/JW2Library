@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using Npgsql;
-using Oracle.ManagedDataAccess.Client;
 using RepoDb;
 
 namespace JWLibrary.Database {
@@ -33,11 +32,11 @@ namespace JWLibrary.Database {
                     return new NpgsqlConnection(connectionString);
                 }
             },
-            {
-                "ORACLE", connectionString => {
-                    return new OracleConnection(connectionString);
-                }
-            },
+            // {
+            //     "ORACLE", connectionString => {
+            //         return new OracleConnection(connectionString);
+            //     }
+            // },
         };
 
         private IConfiguration _configuration;
