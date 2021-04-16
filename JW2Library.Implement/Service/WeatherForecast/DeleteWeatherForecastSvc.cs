@@ -29,7 +29,7 @@ namespace JWService.WeatherForecast {
         }
 
         public override void Execute() {
-            JDataBase.Resolve<SqlConnection>().DbExecutor<bool>(db => { Result = db.Delete(_removeObj) > 0; });
+            JDatabaseResolver.Resolve<SqlConnection>().DbExecutor<bool>(db => { Result = db.Delete(_removeObj) > 0; });
         }
 
         public class Validator : AbstractValidator<DeleteWeatherForecastSvc> {

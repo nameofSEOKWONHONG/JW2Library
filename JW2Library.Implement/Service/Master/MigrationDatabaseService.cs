@@ -16,7 +16,7 @@ namespace Service {
         IMigrationDatabaseService {
         public override void Execute() {
             var sql = string.Empty;
-            JDataBase.Resolve<SqlConnection>()
+            JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutor<bool>(con => {
                     InitDatabase(con);
                     InitTable(con);
@@ -26,7 +26,7 @@ namespace Service {
 
         public override async Task ExecuteAsync() {
             var sql = string.Empty;
-            await JDataBase.Resolve<SqlConnection>()
+            await JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutorAsync<bool>(async con => {
                     await InitDatabaseAsync(con);
                     await InitTableAsync(con);

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace JWLibrary.Utils {
     public static class CryptoAES256 {
-        public static string ToEncAES256(this string plainText, string cipherKey, string cipherIV,
+        public static string toEncAes256(this string plainText, string cipherKey, string cipherIV,
             CipherMode cipherMode, PaddingMode paddingMode) {
             var byteKey = Encoding.UTF8.GetBytes(cipherKey);
             var byteIV = Encoding.UTF8.GetBytes(cipherIV);
@@ -17,7 +17,7 @@ namespace JWLibrary.Utils {
                     aesCryptoProvider.Padding = paddingMode;
                     var result = aesCryptoProvider.CreateEncryptor(byteKey, byteIV)
                         .TransformFinalBlock(bytePlainText, 0, bytePlainText.Length);
-                    return result.jToHMACString();
+                    return result.fromHexToString();
                 }
                 finally {
                     aesCryptoProvider.Dispose();
@@ -25,11 +25,11 @@ namespace JWLibrary.Utils {
             }
         }
 
-        public static string ToDecAES256(this string cipherText, string cipherKey, string cipherIV,
+        public static string toDecAes256(this string cipherText, string cipherKey, string cipherIV,
             CipherMode cipherMode, PaddingMode paddingMode, DeconvertCipherFormat format) {
             var byteKey = Encoding.UTF8.GetBytes(cipherKey);
             var byteIV = Encoding.UTF8.GetBytes(cipherIV);
-            var byteBuff = cipherText.jToHMACBytes(format);
+            var byteBuff = cipherText.toHmac(format);
             using (var aesCrytoProvider = new AesCryptoServiceProvider()) {
                 try {
                     aesCrytoProvider.Mode = cipherMode;

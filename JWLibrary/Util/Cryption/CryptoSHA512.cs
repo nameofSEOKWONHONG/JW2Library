@@ -7,10 +7,8 @@ namespace JWLibrary.Utils {
         ///     SHA512 Encrypt (Decrypt is not support.)
         /// </summary>
         /// <param name="encryptText"></param>
-        /// <param name="encryptKey"></param>
-        /// <param name="useHashing">not use</param>
         /// <returns></returns>
-        public static string ToSHA512(this string encryptText) {
+        public static string fromStringToSha512(this string encryptText) {
             using (var sha512 = SHA512.Create()) {
                 var bytes = Encoding.UTF8.GetBytes(encryptText);
                 var hash = sha512.ComputeHash(bytes);

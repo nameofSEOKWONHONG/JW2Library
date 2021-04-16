@@ -13,7 +13,7 @@ namespace JWService.WeatherForecast {
         ServiceExecutor<GetAllWeatherForecastSvc, WeatherForecastRequestDto, IEnumerable<WEATHER_FORECAST>>,
         IGetAllWeatherForecastSvc {
         public override void Execute() {
-            JDataBase.Resolve<SqlConnection>()
+            JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutor<WEATHER_FORECAST>(con => {
                     var compiler = new SqlServerCompiler();
                     var db = new QueryFactory(con, compiler);

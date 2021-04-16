@@ -18,7 +18,7 @@ namespace Service.WeatherForecast {
         public override void Execute() {
             //use sqlkata
             var query = new Query("WEATHER_FORECAST").Where("ID", Request.ID).Select("*");
-            JDataBase.Resolve<SqlConnection>()
+            JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutor<WEATHER_FORECAST>(con => {
                     var compiler = new SqlServerCompiler();
                     var db = new QueryFactory(con, compiler);

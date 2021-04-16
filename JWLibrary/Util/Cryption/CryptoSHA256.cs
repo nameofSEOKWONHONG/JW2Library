@@ -10,7 +10,7 @@ namespace JWLibrary.Utils {
         /// <param name="encryptKey"></param>
         /// <param name="useHashing">not use</param>
         /// <returns></returns>
-        public static string ToSHA256(this string encryptText) {
+        public static string fromStringToSha256(this string encryptText) {
             using (var sha = SHA256.Create()) {
                 var hash = sha.ComputeHash(Encoding.ASCII.GetBytes(encryptText));
 

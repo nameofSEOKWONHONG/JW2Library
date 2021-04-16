@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JWLibrary.Utils {
     public static class CryptoHMAC {
-        public static string ToHMACString(this string encData, string encKey,
+        public static string toHmac(this string encData, string encKey,
             DeconvertCipherFormat deconvertCipherFormat) {
             var encoding = new UTF8Encoding();
             var keyBuff = encoding.GetBytes(encKey);
@@ -15,14 +15,14 @@ namespace JWLibrary.Utils {
                 hashMessage = hmacsha256.ComputeHash(dataBytes);
             }
 
-            return hashMessage.jToHMACString();
+            return hashMessage.fromHexToString();
         }
 
-        public static byte[] jToHMACBytes(this string cipherText, DeconvertCipherFormat outputFormat) {
+        public static byte[] toHmac(this string cipherText, DeconvertCipherFormat outputFormat) {
             byte[] decodeText = null;
             switch (outputFormat) {
                 case DeconvertCipherFormat.HEX:
-                    decodeText = jToByte(cipherText);
+                    decodeText = fromHexToByte(cipherText);
                     break;
 
                 case DeconvertCipherFormat.Base64:
@@ -36,7 +36,7 @@ namespace JWLibrary.Utils {
             return decodeText;
         }
 
-        public static byte[] jToByte(this string hexString) {
+        public static byte[] fromHexToByte(this string hexString) {
             try {
                 var bytes = new byte[hexString.Length / 2];
                 for (var i = 0; i < bytes.Length; i++) bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
@@ -48,7 +48,7 @@ namespace JWLibrary.Utils {
             }
         }
 
-        public static string jToHMACString(this byte[] hashMessage) {
+        public static string fromHexToString(this byte[] hashMessage) {
             var sbinary = string.Empty;
 
             for (var i = 0; i < hashMessage.Length; i++) sbinary += hashMessage[i].ToString("X2");

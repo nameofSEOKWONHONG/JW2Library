@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using JLiteDBFlex;
 using JWLibrary.DI;
+using JWLibrary.EF;
 using JWLibrary.Util.Session;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
@@ -77,6 +78,8 @@ namespace APIServer {
                 //})
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddVersionConfig();
+
+            services.AddDbContext<BlogContext>(ServiceLifetime.Scoped);
 
             //register manual service
             services.AccountServiceLoader();
