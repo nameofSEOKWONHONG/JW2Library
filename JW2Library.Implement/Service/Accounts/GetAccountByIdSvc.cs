@@ -12,7 +12,7 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var litedb = JLiteDbFlexerManager.Create<Account>();
+            var litedb = LiteDbFlexerManager.Instance.Create<Account>();
             Result = litedb.LiteCollection.FindById(Request.Data);
         }
 

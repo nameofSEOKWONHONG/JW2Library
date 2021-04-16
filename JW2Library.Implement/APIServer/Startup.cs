@@ -152,7 +152,7 @@ namespace APIServer {
         }
 
         private void OnShutdown() {
-            JLiteDbFlexerManager.Distroy();
+            LiteDbFlexerManager.Instance.Distroy();
             
             #if DEBUG
             ServiceLocator.Current.GetInstance<ISessionContext>().GetCacheManager().Dispose();

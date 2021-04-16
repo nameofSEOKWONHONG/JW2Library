@@ -10,7 +10,7 @@ namespace Service.Accounts {
         }
 
         public override void Execute() {
-            var litedb = JLiteDbFlexerManager.Create<Account>();
+            var litedb = LiteDbFlexerManager.Instance.Create<Account>();
             var account = litedb.LiteCollection
                 .FindOne(m => m.UserId == Request.UserId && m.Passwd == Request.Passwd);
 

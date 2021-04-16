@@ -8,8 +8,9 @@ namespace JWLibrary.Core {
             return datetime;
         }
 
-        public static string toDate(this DateTime date, ConvertFormat format = ConvertFormat.Default) {
-            return date.ToString(format.jEnumToString());
+        public static string toDate(this DateTime date, ENUM_DATE_FORMAT format = null ) {
+            if (format.isNotNull()) date.ToString(format.Value);
+            return date.ToString(ENUM_DATE_FORMAT.DEFAULT.Value);
         }
 
         public static string toDate(this DateTime date, string format = null) {
@@ -18,13 +19,13 @@ namespace JWLibrary.Core {
         }
     }
 
-    public enum ConvertFormat {
-        [StringValue("yyyy-MM-dd")] Default,
-        [StringValue("yyyy-MM-dd")] yyyy_MM_dd,
-        [StringValue("yyyy-MM-dd HH:mm:ss")] yyyy_MM_dd_S_HH_C_mm_C_ss,
-        [StringValue("yyyyMMdd")] yyyyMMdd,
-        [StringValue("yyyy/MM/dd")] yyyy_FS_MM_FS_dd,
-        [StringValue("yyyyMMddHHmmss")] yyyyMMddHHmmss,
-        [StringValue("HHmmss")] HHmmss
+    public class ENUM_DATE_FORMAT : JENUM_BASE<ENUM_DATE_FORMAT> {
+        public static readonly ENUM_DATE_FORMAT DEFAULT = define("yyyy-MM-dd");
+        public static readonly ENUM_DATE_FORMAT YYYY_MM_DD = define("yyyy-MM-dd");
+        public static readonly ENUM_DATE_FORMAT YYYY_MM_DD_HH_MM_SS = define("yyyy-MM-dd HH:mm:ss");
+        public static readonly ENUM_DATE_FORMAT YYYYMMDD = define("yyyyMMdd");
+        public static readonly ENUM_DATE_FORMAT YYYY_FS_MM_FS_DD = define("yyyy/MM/dd");
+        public static readonly ENUM_DATE_FORMAT YYYYMMDDHHMMSS = define("yyyyMMddHHmmss");
+        public static readonly ENUM_DATE_FORMAT HHMMSS = define("HHmmss");
     }
 }
