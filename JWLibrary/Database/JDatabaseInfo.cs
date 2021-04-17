@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using JWLibrary.Core;
+using JWLibrary.EF;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -19,17 +20,17 @@ namespace JWLibrary.Database {
             {
                 "MSSQL", connectionString => {
                     SqlServerBootstrap.Initialize();
-                    return new SqlConnection(connectionString);
+                    return new SqlConnection(DbConnectionProvider.Instance.MSSQL);
                 }
             }, {
                 "MYSQL", connectionString => {
                     MySqlBootstrap.Initialize();
-                    return new MySqlConnection(connectionString);
+                    return new MySqlConnection(DbConnectionProvider.Instance.MYSQL);
                 }
             }, {
                 "NPGSQL", connectionString => {
                     PostgreSqlBootstrap.Initialize();
-                    return new NpgsqlConnection(connectionString);
+                    return new NpgsqlConnection(DbConnectionProvider.Instance.NPGSQL);
                 }
             },
             // {
@@ -38,8 +39,6 @@ namespace JWLibrary.Database {
             //     }
             // },
         };
-
-        private IConfiguration _configuration;
 
         public JDatabaseInfo() {
             var serviceCollection = new ServiceCollection();
@@ -50,16 +49,8 @@ namespace JWLibrary.Database {
             new();
 
         private void InitConfig(IServiceCollection serviceCollection) {
-            // Build configuration
-            _configuration = new ConfigurationBuilder()
-                .AddJsonFile("./appsettings.json", true, true)
-                .AddEnvironmentVariables()
-                .Build();
-            var section = _configuration.GetSection("DbConnections");
-
             _connectionMaps.forEach((item, index) => {
-                if (section.GetValue<string>(item.Key).isNullOrEmpty()) return true;
-                Connections.Add(item.Key, item.Value(section.GetValue<string>(item.Key)));
+                Connections.Add(item.Key, item.Value(item.Key));
                 return true;
             });
         }

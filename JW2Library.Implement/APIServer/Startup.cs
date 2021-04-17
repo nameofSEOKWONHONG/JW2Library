@@ -79,7 +79,7 @@ namespace APIServer {
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddVersionConfig();
 
-            services.AddDbContext<BlogContext>(ServiceLifetime.Scoped);
+            //services.AddDbContext<BlogContext>(ServiceLifetime.Scoped);
 
             //register manual service
             services.AccountServiceLoader();
