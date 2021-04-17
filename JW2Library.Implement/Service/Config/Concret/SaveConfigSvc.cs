@@ -18,7 +18,7 @@ namespace Service.Config {
             doc["user_id"] = this.Request.UserId;
             var bsonValue = this.Collection.Insert(doc);
             this.Result = new SaveConfigResult() {
-                IsSuccess = bsonValue.AsInt32 > 0,
+                IsSuccess = bsonValue.AsObjectId.Pid > 0,
                 Key = key
             };
         }

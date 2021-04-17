@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
     [ApiController]
+    [Route("api/[controller]/[action]")] //url version route
     public class JControllerBase<TController> : ControllerBase, IDisposable 
         where TController : class {
         protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();

@@ -2,8 +2,8 @@
 using Service.Data;
 
 namespace Service.Accounts {
-    public static class ServiceLoader {
-        public static void AccountServiceLoader(this IServiceCollection services) {
+    public class AccountServiceRegister : IServiceRegister {
+        public void ServiceRegistry(IServiceCollection services) {
             services.AddScoped<IGetAccountSvc, GetAccountSvc>();
             services.AddScoped<IGetAccountsSvc, GetAccountsSvc>();
             services.AddScoped<IDeleteAccountSvc, DeleteAccountSvc>();

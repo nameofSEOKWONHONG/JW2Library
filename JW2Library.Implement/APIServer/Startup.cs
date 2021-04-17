@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using APIServer.Config;
 using APIServer.Util;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using JLiteDBFlex;
+using JWLibrary.Core;
 using JWLibrary.DI;
 using JWLibrary.EF;
 using JWLibrary.Util.Session;
@@ -16,12 +19,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Service;
 using Service.Accounts;
 using Service.Config;
 using Service.WeatherForecast;
 
 namespace APIServer {
     public class Startup {
+
+        
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
@@ -82,9 +88,10 @@ namespace APIServer {
             //services.AddDbContext<BlogContext>(ServiceLifetime.Scoped);
 
             //register manual service
-            services.AccountServiceLoader();
-            services.WeatherServiceLoader();
-            services.ConfigServiceLoader();
+            services.ServiceLoad();
+            // services.AccountServiceLoader();
+            // services.WeatherServiceLoader();
+            // services.ConfigServiceLoader();
             services.AddSingleton<ISessionContext, SessionContext>();
             ServiceLocator.SetLocatorProvider(services.BuildServiceProvider());
 

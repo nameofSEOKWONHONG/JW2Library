@@ -27,8 +27,8 @@ namespace APIServer.Controllers {
         }
 
         [HttpGet]
-        public GetConfigResult Get(GetConfigRequest key) =>
-            this.CreateService<IGetConfigSvc, GetConfigRequest, GetConfigResult>(this._getConfigSvc, key);
+        public GetConfigResult Get(string key) =>
+            this.CreateService<IGetConfigSvc, GetConfigRequest, GetConfigResult>(this._getConfigSvc, new GetConfigRequest() {Key = key});
 
         [HttpGet]
         public IEnumerable<GetConfigResult> GetAll(IEnumerable<GetConfigRequest> keys) =>
