@@ -17,7 +17,7 @@ namespace Service.Accounts {
         public override void Execute() {
             var litedb = LiteDbFlexerManager.Instance.Create<Account>();
             var query = litedb.LiteCollection.Query();
-            if (Request.Data.isNotNull()) {
+            if (Request.Data.jIsNotNull()) {
                 if (Request.Data.Id > 0) query = query.Where(m => m.Id >= Request.Data.Id);
                 if (Request.Data.UserId.isNullOrEmpty())
                     query = query.Where(m => m.UserId == Request.Data.UserId);

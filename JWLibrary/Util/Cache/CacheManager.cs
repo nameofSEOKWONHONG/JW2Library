@@ -16,7 +16,7 @@ namespace JWLibrary.Util.Cache {
         private readonly LiteDatabase _liteDatabase;
 
         public CacheManager() {
-            if (!Directory.Exists(PREFIX_DIR.toPath())) Directory.CreateDirectory(PREFIX_DIR.toPath());
+            if (!Directory.Exists(PREFIX_DIR.jToPath())) Directory.CreateDirectory(PREFIX_DIR.jToPath());
             _liteDatabase = new LiteDatabase($"{PREFIX_DIR}/{CACHE_DB_FILE_NAME}");
             var col = _liteDatabase.GetCollection(CACHE_DB_TABLE_NAME);
             col.EnsureIndex("Key");

@@ -52,7 +52,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void get_delete_test() {
             var exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "kim");
-            if (exists.isNotNull()) {
+            if (exists.jIsNotNull()) {
                 LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Delete(exists.Name);
             }
 
@@ -64,7 +64,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void get_update_test() {
             var exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "hwang");
-            if (exists.isNotNull()) {
+            if (exists.jIsNotNull()) {
                 exists.Age = 22;
                 var result= LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Update(exists);
                 Assert.IsTrue(result);

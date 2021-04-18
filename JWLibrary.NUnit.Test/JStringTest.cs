@@ -30,7 +30,7 @@ namespace JWLibrary.NUnit.Test {
         public void JSplitTest() {
             var text = "1|2|3|4|5|6|7|8|9|10";
             var result = text.split('|');
-            result.forEach(item => {
+            result.jForeach(item => {
                 Console.WriteLine(item);
             });
             

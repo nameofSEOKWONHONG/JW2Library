@@ -26,7 +26,7 @@ namespace JWLibrary.Util.Session {
         }
 
         public void Dispose() {
-            if (CacheManager.isNotNull())
+            if (CacheManager.jIsNotNull())
                 CacheManager.Dispose();
         }
     }

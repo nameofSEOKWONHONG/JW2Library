@@ -24,7 +24,7 @@ namespace JLiteDBFlex {
             LiteDatabase = resolveInfo.liteDatabase;
 
             LiteCollection = resolveInfo.liteDatabase.GetCollection<T>(resolveInfo.tableName);
-            resolveInfo.indexItems.forEach(indexItem => {
+            resolveInfo.indexItems.jForeach(indexItem => {
                 LiteCollection.EnsureIndex(indexItem.Key, indexItem.Value);
             }); 
         }

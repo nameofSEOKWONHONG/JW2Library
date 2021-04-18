@@ -31,14 +31,14 @@ namespace JLiteDBFlex {
         /// <returns>ValueTuple</returns>
         public (ILiteCollection<T> LiteCollection, string TableName, string FileName, ILiteDatabase LiteDatabase) Create<T>() where T : class {
             var exists = _instanceMap.FirstOrDefault(m => m.Key == typeof(T));
-            if (exists.Key.isNotNull()) {
+            if (exists.Key.jIsNotNull()) {
                 var result = exists.Value as LiteDbFlexer<T>;
                 return new(result.LiteCollection, result.TableName, result.FileName, result.LiteDatabase);
             }
 
             using (_mutex.Lock()) {
                 var newInstance = new LiteDbFlexer<T>();
-                if (_instanceMap.Keys.Contains(typeof(T)).isFalse()) {
+                if (_instanceMap.Keys.Contains(typeof(T)).jIsFalse()) {
                     _instanceMap.Add(typeof(T), newInstance);
                     return new(newInstance.LiteCollection, newInstance.TableName, newInstance.FileName, newInstance
                         .LiteDatabase);                        
@@ -53,8 +53,8 @@ namespace JLiteDBFlex {
         /// collection clear.
         /// </summary>
         public void Distroy() {
-            _instanceMap.forEach(instance => {
-                if (instance.Value.isNotNull()) instance.Value.LiteDatabase?.Dispose();
+            _instanceMap.jForeach(instance => {
+                if (instance.Value.jIsNotNull()) instance.Value.LiteDatabase?.Dispose();
             });
 
             _instanceMap.Clear();

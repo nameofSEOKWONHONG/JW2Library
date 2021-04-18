@@ -10,7 +10,7 @@ namespace JWLibrary.Utils {
         where T : class {
         public static T LoadFromXml(string filename) {
             T settings = null;
-            if (File.Exists(filename).isNotNull()) return null;
+            if (File.Exists(filename).jIsNotNull()) return null;
 
             try {
                 var xs = new XmlSerializer(typeof(T));

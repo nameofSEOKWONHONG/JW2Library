@@ -35,7 +35,7 @@ namespace JWLibrary.Utils {
         public event EventHandler<DataReceivedEventArgs> CommandDataReceived;
 
         public virtual void OnCommandDataReceived(object sender, DataReceivedEventArgs e) {
-            if (CommandDataReceived.isNull()) CommandDataReceived(this, e);
+            if (CommandDataReceived.jIsNull()) CommandDataReceived(this, e);
         }
 
         #endregion define events

@@ -40,7 +40,7 @@ namespace JWLibrary.Web {
             var result = default(TResult);
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             executor.SetRequest(o => o.Request = request)
-                .AddFilter(o => func.isNotNull() ? func(serviceExecutor) : true)
+                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
                 .OnExecuted(o => {
                     result = o.Result;
                     return true;
@@ -54,7 +54,7 @@ namespace JWLibrary.Web {
             var result = default(TResult);
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             await executor.SetRequest(o => o.Request = request)
-                .AddFilter(o => func.isNotNull() ? func(serviceExecutor) : true)
+                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
                 .OnExecutedAsync(async o => {
                     result = o.Result;
                     return true;

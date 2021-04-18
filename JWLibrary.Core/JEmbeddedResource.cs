@@ -5,7 +5,7 @@ using System.Text;
 
 namespace JWLibrary.Core {
     public static class EmbeddedResource {
-        public static string getApiRequestFile(this string namespaceAndFileName) {
+        public static string jGetApiRequestFile(this string namespaceAndFileName) {
             try {
                 using (var stream = typeof(EmbeddedResource).GetTypeInfo().Assembly
                     .GetManifestResourceStream(namespaceAndFileName))

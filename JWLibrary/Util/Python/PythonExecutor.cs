@@ -27,7 +27,7 @@ namespace JWLibrary.Util {
 
         public static async Task Execute_Python_File_Async(this string fileName, Action<ScriptScope> preaction,
             Action<ScriptScope> endaction) {
-            if (fileName.isNull()) throw new FileNotFoundException("pytho_file_path is empty");
+            if (fileName.jIsNull()) throw new FileNotFoundException("pytho_file_path is empty");
             if (!fileName.jFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".py")) throw new FileLoadException("file is not support python");
 

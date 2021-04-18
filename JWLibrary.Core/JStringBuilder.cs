@@ -30,23 +30,23 @@ namespace JWLibrary.Core {
             _stringBuilder = _stringBuilderPool.Get();
         }
 
-        public void append(string str) {
+        public void Append(string str) {
             _stringBuilder.Append(str);
         }
 
-        public void append(char c) {
+        public void Append(char c) {
             _stringBuilder.Append(c);
         }
 
-        public void appendLine(string str) {
+        public void AppendLine(string str) {
             _stringBuilder.AppendLine(str);
         }
 
-        public void appendFormat(CultureInfo cultureInfo, string format, params object[] objs) {
+        public void AppendFormat(CultureInfo cultureInfo, string format, params object[] objs) {
             _stringBuilder.AppendFormat(cultureInfo, format, objs);
         }
 
-        public void appendJoin(string seperator, params object[] objs) {
+        public void AppendJoin(string seperator, params object[] objs) {
             _stringBuilder.AppendJoin(seperator, objs);
         }
 
@@ -55,10 +55,10 @@ namespace JWLibrary.Core {
         }
 
         public void Dispose() {
-            release();
+            Release();
         }
 
-        public void release() {
+        public void Release() {
             _stringBuilderPool.Return(_stringBuilder);
             _stringBuilderPool = null;
             GC.Collect();

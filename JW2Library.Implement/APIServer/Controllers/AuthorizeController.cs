@@ -24,7 +24,7 @@ namespace APIServer.Controllers {
             Account result = null;
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_svc);
             await executor.SetRequest(o => o.Request = account)
-                .AddFilter(o => o.Request.isNotNull())
+                .AddFilter(o => o.Request.jIsNotNull())
                 .OnExecutedAsync(async o => {
                     result = o.Result;
                     return true;

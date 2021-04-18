@@ -9,7 +9,7 @@ namespace Service.Config {
         protected LiteDatabase LiteDatabase { get; private set; }
         protected readonly ILiteCollection<BsonDocument> Collection; 
         public ConfigSvcBase() {
-            var dir = ConfigConst.PRE_CONFIG_DIR.toPath();
+            var dir = ConfigConst.PRE_CONFIG_DIR.jToPath();
             if (!Directory.Exists(dir)) {
                 Directory.CreateDirectory(dir);
             }
@@ -18,10 +18,10 @@ namespace Service.Config {
                 new LiteDB.ConnectionString($"{ConfigConst.PRE_CONFIG_DIR}/{ConfigConst.CONFIG_DB_FILE_NAME}") {
                     Connection = ConnectionType.Shared
                 };
-            if(this.LiteDatabase.isNull())
+            if(this.LiteDatabase.jIsNull())
                 this.LiteDatabase = new LiteDatabase(connectionString);
             
-            if(this.Collection.isNull())
+            if(this.Collection.jIsNull())
                 this.Collection = LiteDatabase.GetCollection(ConfigConst.DB_NAME);
         }
 

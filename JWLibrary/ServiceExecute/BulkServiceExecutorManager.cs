@@ -15,7 +15,7 @@ namespace JWLibrary.ServiceExecutor {
 
         public BulkServiceExecutorManager(IEnumerable<TRequest> requestItems) {
             this._bulkServices = new List<BulkService<TIService, TRequest>>(requestItems.Count());
-            requestItems.forEach(request => {
+            requestItems.jForeach(request => {
                 var instance = ServiceLocator.Current.GetInstance<TIService>();
                 var serviceExecutorManager = new ServiceExecutorManager<TIService>(instance);
                 this._bulkServices.Add(new BulkService<TIService, TRequest>() {
@@ -27,7 +27,7 @@ namespace JWLibrary.ServiceExecutor {
         }
         
         public BulkServiceExecutorManager<TIService, TRequest> SetRequest(Action<TIService, TRequest> action) {
-            this._bulkServices.forEach(bulkService => {
+            this._bulkServices.jForeach(bulkService => {
                 bulkService.SvcExecManager.SetRequest<TRequest>(bulkService.Reqeust, action);
                 return true;
             });
@@ -35,7 +35,7 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public BulkServiceExecutorManager<TIService, TRequest> AddFilter(Func<TIService, bool> func) {
-            this._bulkServices.forEach(bulkService => {
+            this._bulkServices.jForeach(bulkService => {
                 bulkService.SvcExecManager.AddFilter(func);
                 return true;
             });
@@ -44,9 +44,9 @@ namespace JWLibrary.ServiceExecutor {
         
         public bool OnExecuted(Func<TIService, bool> func) {
             var isResult = true;
-            this._bulkServices.forEach(bulkService => {
+            this._bulkServices.jForeach(bulkService => {
                 isResult = bulkService.SvcExecManager.OnExecuted(func);
-                if (isResult.isFalse()) {
+                if (isResult.jIsFalse()) {
                     throw new Exception($"{typeof(TIService).Name} execute failed.");
                 }
 
@@ -60,7 +60,7 @@ namespace JWLibrary.ServiceExecutor {
             var isResult = true;
             foreach (var bulkService in this._bulkServices) {
                 isResult = await bulkService.SvcExecManager.OnExecutedAsync(func);
-                if (isResult.isFalse()) return false;
+                if (isResult.jIsFalse()) return false;
             }
 
             return isResult;

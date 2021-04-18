@@ -8,17 +8,17 @@ namespace JWLibrary.NUnit.Test {
     public class EqualsTest {
         [Test]
         public void equals_int_test() {
-            Assert.IsTrue(Enumerable.Range(1, 10).isEquals(5));
+            Assert.IsTrue(Enumerable.Range(1, 10).jIsEquals(5));
         }
 
         [Test]
         public void equals_string_test() {
-            Assert.IsTrue((new[] {"A", "B", "C", "D", "E"}).isEquals("B"));
+            Assert.IsTrue((new[] {"A", "B", "C", "D", "E"}).jIsEquals("B"));
         }
 
         [Test]
         public void equals_single_test() {
-            Assert.IsTrue("A".isEquals("A"));
+            Assert.IsTrue("A".jIsEquals("A"));
         }
     }
 }

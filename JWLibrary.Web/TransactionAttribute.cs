@@ -19,7 +19,7 @@ namespace JWLibrary.Web {
             using (var transactionScope = new TransactionScope(_transactionScopeOption, TimeSpan.FromSeconds(5),
                 TransactionScopeAsyncFlowOption.Enabled)) {
                 var action = await next();
-                if (action.Exception.isNull()) transactionScope.Complete();
+                if (action.Exception.jIsNull()) transactionScope.Complete();
             }
         }
     }

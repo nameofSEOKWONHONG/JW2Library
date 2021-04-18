@@ -41,7 +41,7 @@ namespace JWLibrary.ServiceExecutor {
         public bool OnExecuted(Func<TIService, bool> func) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.isFalse()) return false;
+                if (pass.jIsFalse()) return false;
             }
 
             if (service.Validate()) {
@@ -59,7 +59,7 @@ namespace JWLibrary.ServiceExecutor {
         public async Task<bool> OnExecutedAsync(Func<TIService, Task<bool>> func) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.isFalse()) return false;
+                if (pass.jIsFalse()) return false;
             }
 
             if (service.Validate()) {
@@ -68,7 +68,7 @@ namespace JWLibrary.ServiceExecutor {
                 service.PostExecute();
                 
                 var executed = await func(service);
-                if (executed.isFalse()) {
+                if (executed.jIsFalse()) {
                     throw new Exception($"{typeof(TIService).Name} executed failed.");
                 }
                 return executed;

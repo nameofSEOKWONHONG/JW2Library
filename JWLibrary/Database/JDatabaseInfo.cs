@@ -49,7 +49,7 @@ namespace JWLibrary.Database {
             new();
 
         private void InitConfig(IServiceCollection serviceCollection) {
-            _connectionMaps.forEach((item, index) => {
+            _connectionMaps.jForeach((item, index) => {
                 Connections.Add(item.Key, item.Value(item.Key));
                 return true;
             });

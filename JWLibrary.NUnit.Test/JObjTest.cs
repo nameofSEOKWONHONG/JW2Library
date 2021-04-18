@@ -17,17 +17,17 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void TypeConvertTest() {
             var src = "10";
-            var dest = "".toValue(src);
+            var dest = "".jToValue(src);
             Assert.AreEqual(src, dest);
 
             
-            var dest2 = "".toValue<double>(12);
+            var dest2 = "".jToValue<double>(12);
             Assert.AreEqual(dest2, 12);
 
-            // var dest3 = "1".toValue<TYPES>();
+            // var dest3 = "1".jToValue<TYPES>();
             // Assert.AreEqual("1", dest3);
             //
-            // var dest4 = TYPES.ONE.toValue<string>();
+            // var dest4 = TYPES.ONE.jToValue<string>();
             // Assert.AreEqual("1", dest4);
 
             ENUM_USE_YN enumUseYn = ENUM_USE_YN.Y;
@@ -40,7 +40,7 @@ namespace JWLibrary.NUnit.Test {
             Console.WriteLine(ENUM_USE_YN.Y);
 
             var obj = JsonConvert.DeserializeObject<TestObj>(@"{'Name':'test', 'UseYn':'N'}");
-            if (obj.isNotNull()) {
+            if (obj.jIsNotNull()) {
                 Assert.AreEqual(obj.UseYn, ENUM_USE_YN.N);
             }
         }

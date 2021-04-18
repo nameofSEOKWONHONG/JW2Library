@@ -21,9 +21,9 @@ namespace JWLibrary.Util {
         private static void ExecuteJavascriptSource(string source, Action<Context> preaction,
             Action<Context> endaction) {
             var context = new Context();
-            if (preaction.isNotNull()) preaction(context);
+            if (preaction.jIsNotNull()) preaction(context);
             context.Eval(source);
-            if (endaction.isNotNull()) endaction(context);
+            if (endaction.jIsNotNull()) endaction(context);
         }
 
         public static void ExecuteFile(this string fileName) {
@@ -40,14 +40,14 @@ namespace JWLibrary.Util {
 
         private static void ExecuteJavascriptFile(string fileName, Action<Context> preaction,
             Action<Context> endaction) {
-            if (fileName.isNull()) throw new FileNotFoundException("jsPath is empty");
+            if (fileName.jIsNull()) throw new FileNotFoundException("jsPath is empty");
             if (!fileName.jFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".js")) throw new FileLoadException("file is not support javascript");
 
             var context = new Context();
-            if (preaction.isNotNull()) preaction(context);
+            if (preaction.jIsNotNull()) preaction(context);
             context.Eval(string.Join("\n", fileName.jFileReadLines()));
-            if (endaction.isNotNull()) endaction(context);
+            if (endaction.jIsNotNull()) endaction(context);
         }
     }
 }

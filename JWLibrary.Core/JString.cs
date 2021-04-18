@@ -57,7 +57,7 @@ namespace JWLibrary.Core {
         }
 
         public static int toCount(this string str) {
-            return str.isNull() ? 0 : str.Length;
+            return str.jIsNull() ? 0 : str.Length;
         }
 
         public static bool isNullOrEmpty(this string str) {
@@ -65,7 +65,7 @@ namespace JWLibrary.Core {
         }
 
         public static string replace(this string text, string oldValue, string newValue) {
-            return text.ifNullOrEmpty(x => string.Empty).Replace(oldValue, newValue);
+            return text.jIfNullOrEmpty(x => string.Empty).Replace(oldValue, newValue);
         }
 
         private static void copyTo(Stream src, Stream dest) {

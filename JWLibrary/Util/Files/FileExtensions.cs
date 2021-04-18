@@ -30,7 +30,7 @@ namespace JWLibrary.Utils.Files {
         }
 
         public static void jFileWriteAllLines(this string fileName, string[] lines, Encoding encoding = null) {
-            if (encoding.isNotNull())
+            if (encoding.jIsNotNull())
                 File.WriteAllLines(fileName, lines, encoding);
 
             File.WriteAllLines(fileName, lines);
@@ -38,7 +38,7 @@ namespace JWLibrary.Utils.Files {
 
         public static async Task
             jFileWriteAllLinesAsync(this string fileName, string[] lines, Encoding encoding = null) {
-            if (encoding.isNotNull())
+            if (encoding.jIsNotNull())
                 await File.WriteAllLinesAsync(fileName, lines, encoding);
 
             await File.WriteAllLinesAsync(fileName, lines);

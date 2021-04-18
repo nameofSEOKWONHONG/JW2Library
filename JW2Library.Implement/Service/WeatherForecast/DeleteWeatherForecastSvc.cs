@@ -24,7 +24,7 @@ namespace JWService.WeatherForecast {
                     return true;
                 });
 
-            if (_removeObj.isNotNull()) return true;
+            if (_removeObj.jIsNotNull()) return true;
             return false;
         }
 

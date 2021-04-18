@@ -20,7 +20,7 @@ namespace Service.Accounts {
             using var executor = new ServiceExecutorManager<IGetAccountByIdSvc>(_getAccountByIdSvc);
             executor.SetRequest(o => o.Request = Request)
                 .OnExecuted(o => {
-                    result = o.Result.isNotNull();
+                    result = o.Result.jIsNotNull();
                     return true;
                 });
 

@@ -32,7 +32,7 @@ namespace JWLibrary.Core {
         }
 
         public bool Add(TKey key, TValue value) {
-            if (key.isNull())
+            if (key.jIsNull())
                 return false;
 
             if (!_pool.ContainsKey(key) && _pool.TryAdd(key, new ConcurrentQueue<TValue>())) {
@@ -60,7 +60,7 @@ namespace JWLibrary.Core {
         }
 
         public bool Remove(TKey key) {
-            if (key.isNull())
+            if (key.jIsNull())
                 return false;
 
             ConcurrentQueue<TValue> value;
@@ -68,7 +68,7 @@ namespace JWLibrary.Core {
         }
 
         public int Count(TKey key) {
-            if (key.isNull())
+            if (key.jIsNull())
                 return 0;
 
             if (!_pool.ContainsKey(key))
@@ -86,7 +86,7 @@ namespace JWLibrary.Core {
         /// <param name="creator"></param>
         /// <returns></returns>
         public TValue GetValue(TKey key, Func<TValue> creator = null) {
-            if (key.isNull())
+            if (key.jIsNull())
                 return default;
 
             if (!_pool.ContainsKey(key))
@@ -97,7 +97,7 @@ namespace JWLibrary.Core {
                 TValue v;
                 if (q.TryDequeue(out v))
                     return v;
-                if (creator.isNotNull())
+                if (creator.jIsNotNull())
                     return creator();
             }
 
@@ -117,8 +117,8 @@ namespace JWLibrary.Core {
             var dic = new Dictionary<TKey, TValue>();
 
             try {
-                _pool.forEach(key => {
-                    key.Value.forEach(value => {
+                _pool.jForeach(key => {
+                    key.Value.jForeach(value => {
                         dic.Add(key.Key, value);
                         return true;
                     });
@@ -163,14 +163,14 @@ namespace JWLibrary.Core {
         /// <returns></returns>
         public static IDictionary<string, T> jConcatUpdate<T>(this IDictionary<string, T> first, IDictionary<string, T> second) {
             var result = new Dictionary<string, T>();
-            first.forEach(firstPair => {
+            first.jForeach(firstPair => {
                 result.Add(firstPair.Key, firstPair.Value);
             });
             
-            second.forEach(secondPair => {
+            second.jForeach(secondPair => {
                 var exists = result.ContainsKey(secondPair.Key);
                 if (exists) {
-                    if (result[secondPair.Key].isEmpty()) {
+                    if (result[secondPair.Key].jIsEmpty()) {
                         result[secondPair.Key] = secondPair.Value;
                     }
                 }

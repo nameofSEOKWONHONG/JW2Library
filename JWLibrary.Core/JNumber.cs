@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace JWLibrary.Core {
     public static class JNumber {
-        public static string toNumber<T>(this T val, ENUM_NUMBER_FORMAT_TYPE type, ENUM_GET_ALLOW_TYPE allow) {
+        public static string jToNumber<T>(this T val, ENUM_NUMBER_FORMAT_TYPE type, ENUM_GET_ALLOW_TYPE allow) {
             if (val.GetType() == typeof(DateTime)) throw new NotSupportedException("DateTime is not support.");
             if (val.GetType() == typeof(float)) throw new NotSupportedException("float is not support.");
 
@@ -86,25 +86,25 @@ namespace JWLibrary.Core {
         }
 
         public static bool isNumber(this string str) {
-            str = str.ifNullOrEmpty(x => string.Empty);
+            str = str.jIfNullOrEmpty(x => string.Empty);
             var regex = new Regex("^[0-9]*$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
             return regex.Match(str).Success;
         }
 
         public static bool isAlphabet(this string str) {
-            str = str.ifNullOrEmpty(x => string.Empty);
+            str = str.jIfNullOrEmpty(x => string.Empty);
             var regex = new Regex(@"^[a-zA-Z\-_]+$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
             return regex.Match(str).Success;
         }
 
         public static bool isAlphabetAndNumber(this string str) {
-            str = str.ifNullOrEmpty(x => string.Empty);
+            str = str.jIfNullOrEmpty(x => string.Empty);
             var regex = new Regex(@"^[a-zA-Z0-9]+$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
             return regex.Match(str).Success;
         }
 
         public static bool isNumeric(this string str) {
-            str = str.ifNullOrEmpty(x => string.Empty);
+            str = str.jIfNullOrEmpty(x => string.Empty);
             var regex = new Regex(@"^(?<digit>-?\d+)(\.(?<scale>\d*))?$",
                 RegexOptions.ExplicitCapture | RegexOptions.Compiled);
             return regex.Match(str).Success;

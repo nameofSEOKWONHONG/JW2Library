@@ -14,7 +14,7 @@ namespace APIServer.Config {
             new WeatherServiceRegister()
         };        
         public static void ServiceLoad(this IServiceCollection services) {
-            _serviceRegisters.forEach(item => {
+            _serviceRegisters.jForeach(item => {
                 item.ServiceRegistry(services);
             });
         }

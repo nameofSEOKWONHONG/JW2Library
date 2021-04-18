@@ -2,18 +2,18 @@
 
 namespace JWLibrary.Core {
     public static class JDateHelper {
-        public static DateTime toDate(this string date) {
+        public static DateTime jToDate(this string date) {
             var datetime = DateTime.MinValue;
             DateTime.TryParse(date, out datetime);
             return datetime;
         }
 
-        public static string toDate(this DateTime date, ENUM_DATE_FORMAT format = null ) {
-            if (format.isNotNull()) date.ToString(format.Value);
+        public static string jToDate(this DateTime date, ENUM_DATE_FORMAT format = null ) {
+            if (format.jIsNotNull()) date.ToString(format.Value);
             return date.ToString(ENUM_DATE_FORMAT.DEFAULT.Value);
         }
 
-        public static string toDate(this DateTime date, string format = null) {
+        public static string jToDate(this DateTime date, string format = null) {
             if (format.isNullOrEmpty()) format = "yyyy-MM-dd";
             return date.ToString(format);
         }

@@ -14,11 +14,11 @@ namespace JWLibrary.Core {
         public static string fromObjectToJson<T>(this T entity, Formatting? formatting = null,
             JsonSerializerSettings serializerSettings = null)
             where T : class {
-            if (formatting.isNotNull() && serializerSettings.isNotNull())
+            if (formatting.jIsNotNull() && serializerSettings.jIsNotNull())
                 return JsonConvert.SerializeObject(entity, formatting.Value, serializerSettings);
-            if (formatting.isNotNull() && serializerSettings.isNull())
+            if (formatting.jIsNotNull() && serializerSettings.jIsNull())
                 return JsonConvert.SerializeObject(entity, formatting.Value);
-            if (formatting.isNull() && serializerSettings.isNotNull())
+            if (formatting.jIsNull() && serializerSettings.jIsNotNull())
                 return JsonConvert.SerializeObject(entity, serializerSettings);
             return JsonConvert.SerializeObject(entity);
         }

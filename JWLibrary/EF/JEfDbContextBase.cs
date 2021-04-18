@@ -8,7 +8,7 @@ namespace JWLibrary.EF {
     public abstract class JEfDbContextBase : DbContext {
         protected static bool IsCreated = false;
         protected JEfDbContextBase() {
-            if (IsCreated.isFalse()) {
+            if (IsCreated.jIsFalse()) {
                 IsCreated = true;
                 this.Database.Migrate();
                 this.Database.EnsureCreated();

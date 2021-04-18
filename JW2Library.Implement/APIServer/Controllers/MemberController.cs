@@ -50,7 +50,7 @@ namespace APIServer.Controllers {
         public async Task<Account> GetMember(string userId, string passwd) {
             return await CreateServiceAsync<IGetAccountSvc, Account, Account>(_getAccountSvc,
                 new Account {UserId = userId, Passwd = passwd},
-                o => o.Request.isNotNull());
+                o => o.Request.jIsNotNull());
         }
 
         [Authorize]

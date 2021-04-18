@@ -2,15 +2,15 @@ using System.Runtime.InteropServices;
 
 namespace JWLibrary.Core {
     public class JOS {
-        public static bool isWindows() {
+        public static bool jIsWindows() {
             return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         }
 
-        public static bool isMac() {
+        public static bool jIsMac() {
             return RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
         }
 
-        public static bool isLinux() {
+        public static bool jIsLinux() {
             return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
         }
     }

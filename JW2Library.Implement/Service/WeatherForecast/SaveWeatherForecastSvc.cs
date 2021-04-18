@@ -26,14 +26,14 @@ namespace Service.WeatherForecast {
                     return true;
                 });
 
-            if (_exists.isNotNull()) return true;
+            if (_exists.jIsNotNull()) return true;
             return false;
         }
 
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutor<int>(db => {
-                    if (_exists.isNotNull()) Result = db.Update(Request);
+                    if (_exists.jIsNotNull()) Result = db.Update(Request);
                     Result = db.Insert(Request).Value;
                 });
         }

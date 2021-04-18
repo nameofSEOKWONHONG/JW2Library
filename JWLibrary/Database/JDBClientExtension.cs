@@ -24,7 +24,7 @@ namespace JWLibrary.Database {
                 if (tableName.isNullOrEmpty()) throw new NullReferenceException("table name is null or empty.");
 
                 var entity = new T();
-                var dt = bulkDatas.toDataTable();
+                var dt = bulkDatas.jToDateTable();
 
                 using (var bulkCopy = new SqlBulkCopy((SqlConnection) connection, SqlBulkCopyOptions.Default, null)) {
                     bulkCopy.DestinationTableName = tableName.isNullOrEmpty() ? entity.GetType().Name : tableName;
@@ -47,7 +47,7 @@ namespace JWLibrary.Database {
                 if (tableName.isNullOrEmpty()) throw new NullReferenceException("table name is null or empty.");
 
                 var entity = new T();
-                var dt = bulkDatas.toDataTable();
+                var dt = bulkDatas.jToDateTable();
 
                 using (var bulkCopy = new SqlBulkCopy((SqlConnection) connection, SqlBulkCopyOptions.Default, null)) {
                     bulkCopy.DestinationTableName = tableName.isNullOrEmpty() ? entity.GetType().Name : tableName;
