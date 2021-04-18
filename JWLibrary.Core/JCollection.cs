@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -10,7 +11,7 @@ namespace JWLibrary.Core {
         #region [for & foreach]
 
         /// <summary>
-        ///     use struct, no break
+        ///     foreach loop
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="iterator"></param>
@@ -19,6 +20,26 @@ namespace JWLibrary.Core {
             if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
+            var index = 0;
+            foreach (var item in iterator) {
+                action(item);
+                if (index % JConst.LOOP_LIMIT == 0)
+                    JConst.setInterval(JConst.SLEEP_INTERVAL);
+
+                index++;
+            }
+        }
+
+        /// <summary>
+        /// for loop
+        /// </summary>
+        /// <param name="iterator"></param>
+        /// <param name="action"></param>
+        /// <typeparam name="T"></typeparam>
+        public static void jFor<T>(this IEnumerable<T> iterator, Action<T> action) {
+            if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
+                Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
+            
             var srcs = iterator.ToArray();
             for (var i = 0; i < srcs.Length; i++) {
                 action(srcs[i]);
@@ -28,7 +49,7 @@ namespace JWLibrary.Core {
         }
 
         /// <summary>
-        ///     use struct, no break
+        ///     foreach loop
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="iterator"></param>
@@ -44,6 +65,17 @@ namespace JWLibrary.Core {
             });
         }
 
+        public static void jFor<T>(this IEnumerable<T> iterator, Action<T, int> action) {
+            if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
+                Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
+
+            var index = 0;
+            iterator.jFor(item => {
+                action(item, index);
+                index++;
+            });
+        }
+
         /// <summary>
         ///     use class, allow break;
         /// </summary>
@@ -54,13 +86,15 @@ namespace JWLibrary.Core {
             if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
-            var srcs = iterator.ToArray();
-            for (var i = 0; i < srcs.Length; i++) {
-                var isBreak = !func(srcs[i]);
+            var index = 0;
+            foreach (var item in iterator) {
+                var isBreak = !func(item);
                 if (isBreak) break;
                 
-                if (i % JConst.LOOP_LIMIT == 0)
+                if (index % JConst.LOOP_LIMIT == 0)
                     JConst.setInterval(JConst.SLEEP_INTERVAL);
+                
+                index++;
             }
         }
         
@@ -68,6 +102,22 @@ namespace JWLibrary.Core {
             if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
                 Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
 
+            var index = 0;
+            iterator.jForeach(item => {
+                var isBreak = !func(item, index);
+                if(isBreak) return false;
+                
+                if (index % JConst.LOOP_LIMIT == 0)
+                    JConst.setInterval(JConst.SLEEP_INTERVAL);
+
+                return true;
+            });
+        }
+
+        public static void jFor<T>(this IEnumerable<T> iterator, Func<T, int, bool> func) {
+            if (iterator.jCount() > JConst.LOOP_WARNING_COUNT)
+                Trace.TraceInformation($"OVER LOOP WARNING COUNT ({JConst.LOOP_WARNING_COUNT})");
+            
             var srcs = iterator.ToArray();
             for (var i = 0; i < srcs.Length; i++) {
                 var isBreak = !func(srcs[i], i);
@@ -77,7 +127,7 @@ namespace JWLibrary.Core {
                     JConst.setInterval(JConst.SLEEP_INTERVAL);
             }
         }
-        
+
         public static async Task jForeachAsync<T>(this IEnumerable<T> iterator, Func<T, Task> func) {
             foreach (var value in iterator)
             {
