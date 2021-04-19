@@ -19,7 +19,7 @@ namespace Service.Accounts {
             var query = litedb.LiteCollection.Query();
             if (Request.Data.jIsNotNull()) {
                 if (Request.Data.Id > 0) query = query.Where(m => m.Id >= Request.Data.Id);
-                if (Request.Data.UserId.isNullOrEmpty())
+                if (Request.Data.UserId.jIsNullOrEmpty())
                     query = query.Where(m => m.UserId == Request.Data.UserId);
 
                 var accounts = query.Limit(Request.Size).Offset((Request.Page - 1) * Request.Page)

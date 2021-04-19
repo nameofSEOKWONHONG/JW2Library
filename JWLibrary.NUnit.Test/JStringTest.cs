@@ -29,7 +29,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void JSplitTest() {
             var text = "1|2|3|4|5|6|7|8|9|10";
-            var result = text.split('|');
+            var result = text.jSplit('|');
             result.jForeach(item => {
                 Console.WriteLine(item);
             });
@@ -40,7 +40,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void JSubstringTest() {
             var text = "세상이 바뀌어도 그 본질은 바뀌지 않는다.";
-            var result = text.substring(4, 1);
+            var result = text.jSubstring(4, 1);
             Assert.AreEqual("바", result);
             
         }

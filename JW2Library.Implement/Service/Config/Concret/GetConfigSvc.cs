@@ -22,7 +22,7 @@ namespace Service.Config {
         }
 
         public override void PostExecute() {
-            if (this.Result.Content.isNullOrEmpty()) throw new Exception("key is empty.");
+            if (this.Result.Content.jIsNullOrEmpty()) throw new Exception("key is empty.");
             base.PostExecute();
         }
 

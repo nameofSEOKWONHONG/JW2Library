@@ -93,44 +93,31 @@ namespace JWLibrary.NUnit.Test {
 
         [Test]
         public void blog_sync_test() {
-            IJDbSyncContext context = new JDbSyncContext(new JList<DbContext>() {
-                new BlogSqlContext(),
-                new BlogSqliteDbContext()
+            IJDbSyncContext context = new JDbSyncContext(
+                srcDbContext:new BlogSqlContext(), 
+                destDbContext:new JList<DbContext>() {
+                    new BlogSqliteDbContext(),
             });
             
-            context.Insert(db => {
-                if (db is BlogSqlContext) {
-                    var blogSqlContext = db as BlogSqlContext;
-                    blogSqlContext.Blogs.Add(new Blog() {
-                        BLOG_NAME = "test2",
-                        BLOG_AUTHOR = "test2",
-                        WRITE_DT = DateTime.Now
-                    });
-                }
-                else if (db is BlogSqliteDbContext) {
-                    var blogcontext = db as BlogSqliteDbContext;
-                    blogcontext.Blogs.Add(new Blog() {
-                        BLOG_NAME = "test2",
-                        BLOG_AUTHOR = "test2",
-                        WRITE_DT = DateTime.Now
-                    });
-                }
+            context.Insert<Blog>(db => {
+                Blog blog = new Blog() {
+                    BLOG_NAME = "test2",
+                    BLOG_AUTHOR = "test2",
+                    WRITE_DT = DateTime.Now
+                };
+                return blog;
             });
             
-            context.Update(db => {
-                if (db is BlogSqlContext) {
-                    var context = db as BlogSqlContext;
-                    var exists = context.Blogs.FirstOrDefault();
-                    exists.BLOG_AUTHOR = exists.BLOG_AUTHOR + "!!";
-                    context.Update(exists);
-                }
-                else if (db is BlogSqliteDbContext) {
-                    var context = db as BlogSqliteDbContext;
-                    var exists = context.Blogs.FirstOrDefault();
-                    exists.BLOG_AUTHOR = exists.BLOG_AUTHOR + "!!";
-                    context.Update(exists);
-
-                }
+            context.Update<Blog>(db => {
+                var dbcontext = db as BlogSqlContext;
+                var exists = dbcontext.Blogs.FirstOrDefault();
+                exists.BLOG_AUTHOR = exists.BLOG_AUTHOR + "!@!@";
+                return exists;
+            });
+            
+            context.Delete<Blog>(db => {
+                var dbcontext = db as BlogSqlContext; 
+                return dbcontext.Blogs.LastOrDefault();
             });
             
             context.Dispose();

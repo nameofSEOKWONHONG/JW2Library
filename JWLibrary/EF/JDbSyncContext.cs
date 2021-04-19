@@ -10,48 +10,65 @@ using NiL.JS.Expressions;
 
 namespace JWLibrary.EF {
     public interface IJDbSyncContext : IDisposable{
-        void Insert(Action<DbContext> action);
-        void Update(Action<DbContext> action);
-        void Delete(Action<DbContext> action);
+        void Insert<T>(Func<DbContext, T> func) where T : class;
+        void Update<T>(Func<DbContext, T> func) where T : class;
+        void Delete<T>(Func<DbContext, T> func) where T : class;
     }
     
+    /// <summary>
+    /// 원본 데이터를 다른 DB로 동기화
+    /// </summary>
     public class JDbSyncContext : IJDbSyncContext {
-        private C5.IList<DbContext> _list = new JList<DbContext>();
-        public JDbSyncContext(IEnumerable<DbContext> dbcontexts) {
-            _list.AddRange(dbcontexts);
+        private DbContext _srcDbContext = null;
+        private C5.IList<DbContext> _destDbContexts = new JList<DbContext>();
+        
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="srcDbContext">원본 db context</param>
+        /// <param name="destDbContext">복사 대상 db context</param>
+        public JDbSyncContext(DbContext srcDbContext, IEnumerable<DbContext> destDbContext) {
+            _srcDbContext = srcDbContext;
+            _destDbContexts.AddRange(destDbContext);
         }
 
-        public void Insert(Action<DbContext> action) {
-            _list.jForeach(context => {
-                action(context);
+        public void Insert<T>(Func<DbContext, T> func) where T : class {
+            var entity = func(_srcDbContext);
+            _srcDbContext.Add<T>(entity);
+            _srcDbContext.SaveChanges();
+            
+            _destDbContexts.jForeach(context => {
+                context.Add<T>(entity);
                 context.SaveChanges();
             });
         }
 
-        public void Update(Action<DbContext> action) {
-            _list.jForeach(context => {
-                action(context);
+        public void Update<T>(Func<DbContext, T> func) where T : class {
+            var entity = func(_srcDbContext);
+            _srcDbContext.Update<T>(entity);
+            _srcDbContext.SaveChanges();
+            
+            _destDbContexts.jForeach(context => {
+                context.Update<T>(entity);
                 context.SaveChanges();
             });
         }
 
-        public void Delete(Action<DbContext> action) {
-            _list.jForeach(context => {
-                action(context);
+        public void Delete<T>(Func<DbContext, T> func) where T : class {
+            var entity = func(_srcDbContext);
+            _srcDbContext.Remove<T>(entity);
+            _srcDbContext.SaveChanges();
+            
+            _destDbContexts.jForeach(context => {
+                context.Remove<T>(entity);
                 context.SaveChanges();
             });
         }
 
         public void Dispose() {
-            _list.jForeach(context => {
+            _destDbContexts.jForeach(context => {
                 context.Dispose();
             });
-        }
-    }
-
-    public class Demo {
-        public void Test() {
-            
         }
     }
 }

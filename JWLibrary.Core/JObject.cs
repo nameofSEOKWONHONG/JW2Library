@@ -24,12 +24,12 @@ namespace JWLibrary.Core {
         }
         
         public static string jIfNullOrEmpty(this string str, Func<string, string> func) {
-            if (str.isNullOrEmpty()) return func(str);
+            if (str.jIsNullOrEmpty()) return func(str);
             return str;
         }
 
         public static string jIfNotNullOrEmpty(this string str, Func<string, string> func) {
-            if (!str.isNullOrEmpty()) return func(str);
+            if (!str.jIsNullOrEmpty()) return func(str);
             return str;
         }
 
@@ -58,7 +58,7 @@ namespace JWLibrary.Core {
                 return true;
             }
             else if (obj is string) {
-                if ((obj as string).isNullOrEmpty()) return true;    
+                if ((obj as string).jIsNullOrEmpty()) return true;    
             }
             else if (obj is ICollection) {
                 if ((obj as ICollection).Count > 0)

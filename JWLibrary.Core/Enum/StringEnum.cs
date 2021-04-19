@@ -223,7 +223,7 @@ namespace JWLibrary.Core {
     #region [static enum util]
     public static class JEnumUtil {
         public static T jStringToEnum<T>(this string value, T defaultValue) where T : struct {
-            if (value.isNullOrEmpty()) return defaultValue;
+            if (value.jIsNullOrEmpty()) return defaultValue;
 
             return Enum.TryParse(value, true, out T result) ? result : defaultValue;
         }

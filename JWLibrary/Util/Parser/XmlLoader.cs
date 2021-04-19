@@ -26,7 +26,7 @@ namespace JWLibrary.Utils {
 
         public static bool Save2Xml(string filename, T settings) {
             if (null == filename) return false;
-            if (Path.GetFileName(filename).isNullOrEmpty()) return false;
+            if (Path.GetFileName(filename).jIsNullOrEmpty()) return false;
 
             try {
                 var xs = new XmlSerializer(typeof(T));

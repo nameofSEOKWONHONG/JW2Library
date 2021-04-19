@@ -10,7 +10,7 @@ namespace JWLibrary.Util {
     public static class PythonExecutor {
         public static Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction,
             Action<ScriptScope> endaction) {
-            if (script.isNullOrEmpty()) throw new Exception("script is empty.");
+            if (script.jIsNullOrEmpty()) throw new Exception("script is empty.");
 
             var engine = Python.CreateEngine();
             var src = engine.CreateScriptSourceFromString(script);

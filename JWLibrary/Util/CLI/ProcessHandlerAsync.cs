@@ -36,11 +36,11 @@ namespace JWLibrary.Util.CLI {
 
             process.Exited += (s, e) => tcs.SetResult(process.ExitCode);
             process.OutputDataReceived += (s, e) => {
-                if (!e.Data.isNullOrEmpty())
+                if (!e.Data.jIsNullOrEmpty())
                     outputReceived(e.Data);
             };
             process.ErrorDataReceived += (s, e) => {
-                if (!e.Data.isNullOrEmpty())
+                if (!e.Data.jIsNullOrEmpty())
                     errorReceived(e.Data);
             };
 

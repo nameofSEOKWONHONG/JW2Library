@@ -14,7 +14,7 @@ namespace JWLibrary.Core {
         }
 
         public static string jToDate(this DateTime date, string format = null) {
-            if (format.isNullOrEmpty()) format = "yyyy-MM-dd";
+            if (format.jIsNullOrEmpty()) format = "yyyy-MM-dd";
             return date.ToString(format);
         }
     }
