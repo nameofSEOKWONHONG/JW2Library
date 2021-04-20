@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using JWLibrary.Utils;
 using Microsoft.Extensions.Configuration;
 
-namespace JWLibrary.EF {
+namespace JWLibrary.Database {
     public class DbConnectionProvider {
         private static Lazy<DbConnectionProvider> _dbconnectionProvider =
             new Lazy<DbConnectionProvider>(() => new DbConnectionProvider());

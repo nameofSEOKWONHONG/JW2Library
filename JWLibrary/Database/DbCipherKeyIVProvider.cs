@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JWLibrary.EF {
+namespace JWLibrary.Database {
     internal class DbCipherKeyIVProvider {
         private static readonly Lazy<DbCipherKeyIVProvider> _instance =
             new(() => new DbCipherKeyIVProvider());

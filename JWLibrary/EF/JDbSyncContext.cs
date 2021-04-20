@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using JWLibrary.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Scripting.Utils;
@@ -13,6 +14,9 @@ namespace JWLibrary.EF {
         void Insert<T>(Func<DbContext, T> func) where T : class;
         void Update<T>(Func<DbContext, T> func) where T : class;
         void Delete<T>(Func<DbContext, T> func) where T : class;
+        Task InsertAsync<T>(Func<DbContext, T> func) where T : class;
+        Task UpdateAsync<T>(Func<DbContext, T> func) where T : class;
+        Task DeleteAsync<T>(Func<DbContext, T> func) where T : class;
     }
     
     /// <summary>
@@ -43,6 +47,22 @@ namespace JWLibrary.EF {
             });
         }
 
+        public async Task InsertAsync<T>(Func<DbContext, T> func) where T : class {
+            try {
+                var entity = func(_srcDbContext);
+                _srcDbContext.Add<T>(entity);
+                await _srcDbContext.SaveChangesAsync();
+
+                _destDbContexts.jForeachAsync(async context => {
+                    context.Add<T>(entity);
+                    await context.SaveChangesAsync();
+                });
+            }
+            catch (Exception e) {
+                
+            }
+        }
+
         public void Update<T>(Func<DbContext, T> func) where T : class {
             var entity = func(_srcDbContext);
             _srcDbContext.Update<T>(entity);
@@ -54,6 +74,22 @@ namespace JWLibrary.EF {
             });
         }
 
+        public async Task UpdateAsync<T>(Func<DbContext, T> func) where T : class {
+            try {
+                var entity = func(_srcDbContext);
+                _srcDbContext.Update<T>(entity);
+                await _srcDbContext.SaveChangesAsync();
+            
+                _destDbContexts.jForeachAsync(async context => {
+                    context.Update<T>(entity);
+                    await context.SaveChangesAsync();
+                });
+            }
+            catch (Exception e) {
+                
+            }
+        }
+
         public void Delete<T>(Func<DbContext, T> func) where T : class {
             var entity = func(_srcDbContext);
             _srcDbContext.Remove<T>(entity);
@@ -62,6 +98,17 @@ namespace JWLibrary.EF {
             _destDbContexts.jForeach(context => {
                 context.Remove<T>(entity);
                 context.SaveChanges();
+            });
+        }
+
+        public async Task DeleteAsync<T>(Func<DbContext, T> func) where T : class {
+            var entity = func(_srcDbContext);
+            _srcDbContext.Remove<T>(entity);
+            await _srcDbContext.SaveChangesAsync();
+            
+            _destDbContexts.jForeachAsync(async context => {
+                context.Remove<T>(entity);
+                await context.SaveChangesAsync();
             });
         }
 

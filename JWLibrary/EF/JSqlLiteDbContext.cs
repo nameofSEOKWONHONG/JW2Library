@@ -1,4 +1,5 @@
 ﻿using JWLibrary.Core;
+using JWLibrary.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace JWLibrary.EF {

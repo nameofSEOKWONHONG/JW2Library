@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using Community.CsharpSqlite;
 using JWLibrary.Core;
 using JWLibrary.EF;
@@ -17,7 +18,9 @@ namespace JWLibrary.NUnit.Test {
             _context = new BlogSqlContext();
             _sqliteDbContext = new BlogSqliteDbContext();
         }
-        
+
+        #region [dbcontext test]
+
         [Test]
         public void blog_dbcontext_test() {
             try {
@@ -89,7 +92,11 @@ namespace JWLibrary.NUnit.Test {
             finally {
                 
             }
-        }
+        }        
+
+        #endregion
+
+        #region [dbcontext sync test]
 
         [Test]
         public void blog_sync_test() {
@@ -97,7 +104,7 @@ namespace JWLibrary.NUnit.Test {
                 srcDbContext:new BlogSqlContext(), 
                 destDbContext:new JList<DbContext>() {
                     new BlogSqliteDbContext(),
-            });
+                });
             
             context.Insert<Blog>(db => {
                 Blog blog = new Blog() {
@@ -120,6 +127,40 @@ namespace JWLibrary.NUnit.Test {
                 return dbcontext.Blogs.LastOrDefault();
             });
             
+            context.Dispose();
+        }
+
+        #endregion
+
+        [Test]
+        public async Task dbcontext_sync_async_test() {
+            IJDbSyncContext context = new JDbSyncContext(
+                srcDbContext:new BlogSqlContext(), 
+                destDbContext:new JList<DbContext>() {
+                    new BlogSqliteDbContext(),
+                });
+            
+            context.InsertAsync<Blog>(db => {
+                Blog blog = new Blog() {
+                    BLOG_NAME = "test2",
+                    BLOG_AUTHOR = "test2",
+                    WRITE_DT = DateTime.Now
+                };
+                return blog;
+            });
+            
+            context.UpdateAsync<Blog>(db => {
+                var dbcontext = db as BlogSqlContext;
+                var exists = dbcontext.Blogs.FirstOrDefault();
+                exists.BLOG_AUTHOR = exists.BLOG_AUTHOR + "!@!@";
+                return exists;
+            });
+            //
+            // context.DeleteAsync<Blog>(db => {
+            //     var dbcontext = db as BlogSqlContext; 
+            //     return dbcontext.Blogs.LastOrDefault();
+            // });
+            //
             context.Dispose();
         }
     }

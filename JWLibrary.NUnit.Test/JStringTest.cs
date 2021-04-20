@@ -42,7 +42,6 @@ namespace JWLibrary.NUnit.Test {
             var text = "세상이 바뀌어도 그 본질은 바뀌지 않는다.";
             var result = text.jSubstring(4, 1);
             Assert.AreEqual("바", result);
-            
         }
     }
 }
