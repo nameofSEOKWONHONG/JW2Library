@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using JWLibrary.Core;
 using JWLibrary.Utils;
 using Microsoft.Extensions.Configuration;
+using Nito.AsyncEx;
 
 namespace JWLibrary.Database {
     public class DbConnectionProvider {
@@ -34,21 +36,31 @@ namespace JWLibrary.Database {
         public DbConnectionProvider() {
             
         }
+
+        private static Dictionary<string, string> _providerMaps;
+        private static AsyncLock _mutex = new AsyncLock();
         
         private static Dictionary<string, string> ProviderMaps {
             get {
-                var maps = new Dictionary<string, string>();
-                var configuration = new ConfigurationBuilder()
-                    .AddJsonFile("./appsettings.json", true, true)
-                    .AddEnvironmentVariables()
-                    .Build();
-                var section = configuration.GetSection("DbConnectionProvider");
-                maps.Add("MSSQL", section.GetValue<string>("MSSQL"));
-                maps.Add("MYSQL", section.GetValue<string>("MYSQL"));
-                maps.Add("SQLITE", section.GetValue<string>("SQLITE"));
-                maps.Add("SQLITE_IN_MEMORY", section.GetValue<string>("SQLITE_IN_MEMORY"));
-                maps.Add("NPGSQL", section.GetValue<string>("NPGSQL"));
-                return maps; 
+                if (_providerMaps.jIsNull()) {
+                    using (_mutex.Lock()) {
+                        if (_providerMaps.jIsNull()) {
+                            _providerMaps = new Dictionary<string, string>();
+                            var configuration = new ConfigurationBuilder()
+                                .AddJsonFile("./appsettings.json", true, true)
+                                .AddEnvironmentVariables()
+                                .Build();
+                            var section = configuration.GetSection("DbConnectionProvider");
+                            _providerMaps.Add("MSSQL", section.GetValue<string>("MSSQL"));
+                            _providerMaps.Add("MYSQL", section.GetValue<string>("MYSQL"));
+                            _providerMaps.Add("SQLITE", section.GetValue<string>("SQLITE"));
+                            _providerMaps.Add("SQLITE_IN_MEMORY", section.GetValue<string>("SQLITE_IN_MEMORY"));
+                            _providerMaps.Add("NPGSQL", section.GetValue<string>("NPGSQL"));                            
+                        }
+                    }
+                }
+
+                return _providerMaps;
             }
         }
     }

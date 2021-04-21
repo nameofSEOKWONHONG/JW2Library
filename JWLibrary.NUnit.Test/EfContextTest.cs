@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using System.Transactions;
 using Community.CsharpSqlite;
 using JWLibrary.Core;
 using JWLibrary.EF;
@@ -61,12 +62,12 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void blog_sqlitedbcontext_test() {
             try {
-                _sqliteDbContext.Blogs.Add(new Blog() {
-                    BLOG_NAME = "test1",
-                    BLOG_AUTHOR = "test1",
-                    WRITE_DT = DateTime.Now
-                });
-                var i = _sqliteDbContext.SaveChanges();
+                var srcExists = _context.Blogs.FirstOrDefault(m => m.BLOG_NAME == "test1");
+                if (srcExists.jIsNotNull()) {
+                    _sqliteDbContext.Blogs.Add(srcExists);
+                    var i = _sqliteDbContext.SaveChanges();
+                    Assert.Greater(i, 0);
+                }
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -162,6 +163,36 @@ namespace JWLibrary.NUnit.Test {
             // });
             //
             context.Dispose();
+        }
+
+        [Test]
+        public void sync_transaction_test() {
+            using var syncContext = new JDbSyncContext(new BlogSqlContext(), new[] {new BlogSqliteDbContext()});
+            try {
+                syncContext.Insert(db => {
+                    return new Blog() {
+                        BLOG_NAME = "test3",
+                        BLOG_AUTHOR = "test3",
+                        WRITE_DT = DateTime.Now
+                    };
+                });
+
+                //throw new Exception();
+            
+                syncContext.Update(db => {
+                    var dbcontext = db as BlogSqlContext;
+                    var exists = dbcontext.Blogs.FirstOrDefault(m => m.BLOG_NAME == "test3");
+                    if (exists.jIsNotNull()) {
+                        exists.BLOG_NAME = "test33";
+                        exists.BLOG_AUTHOR = "test33";
+                    }
+
+                    return exists;
+                });
+            }
+            catch (Exception e) {
+                syncContext.DoRollback();
+            }
         }
     }
 }

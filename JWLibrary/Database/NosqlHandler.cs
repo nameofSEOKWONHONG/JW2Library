@@ -18,12 +18,12 @@ namespace JWLibrary.Database {
             _mongoDatabase = _client.GetDatabase(database);
         }
 
-        public void handle<T>(string table, Action<IMongoCollection<T>> execute) {
+        public void Execute<T>(string table, Action<IMongoCollection<T>> execute) {
             var collection = _mongoDatabase.GetCollection<T>(table);
             execute(collection);
         }
 
-        public async Task<bool> handleAsync<T>(string table, Func<IMongoCollection<T>, Task<bool>> executeAsync) {
+        public async Task<bool> ExecuteAsync<T>(string table, Func<IMongoCollection<T>, Task<bool>> executeAsync) {
             var collection = _mongoDatabase.GetCollection<T>(table);
             var @is = await executeAsync(collection);
             return @is;
@@ -39,15 +39,19 @@ namespace JWLibrary.Database {
             _database = _muxer.GetDatabase();
         }
 
-        public void handle(Action<IDatabase> execute) {
+        public void Execute(Action<IDatabase> execute) {
             execute(_database);
         }
 
-        public async Task<bool> handleAsync(Func<IDatabase, Task<bool>> executeAsync) {
+        public async Task<bool> ExecuteAsync(Func<IDatabase, Task<bool>> executeAsync) {
             return await executeAsync(_database);
         } 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    [Obsolete("Don't use", true)]
     public class LiteDbHandler : IDisposable {
         private LiteDB.LiteDatabase _database;
         
@@ -57,13 +61,13 @@ namespace JWLibrary.Database {
             _database = new LiteDatabase(connectionString);
         }
 
-        public void handle<T>(string table, Action<ILiteCollection<T>> action)
+        public void Execute<T>(string table, Action<ILiteCollection<T>> action)
             where T : class {
             var col = _database.GetCollection<T>(table);
             action(col);
         }
 
-        public async Task<bool> handleAsync<T>(string table, Func<ILiteCollection<T>, Task<bool>> func) 
+        public async Task<bool> ExecuteAsync<T>(string table, Func<ILiteCollection<T>, Task<bool>> func) 
             where T : class {
             var col = _database.GetCollection<T>(table);
             var result = await func(col);
@@ -82,11 +86,11 @@ namespace JWLibrary.Database {
             testobj.Name = "test";
             testobj.Age = 10;
             RedisClientHandler handler = new RedisClientHandler("ip");
-            handler.handle(db => {
+            handler.Execute(db => {
                 var result = db.SetAdd("test", testobj.fromObjectToJson());
                 Console.WriteLine(result);
             });
-            handler.handle(db => {
+            handler.Execute(db => {
                 var result = db.StringGet("test");
                 Console.WriteLine(result);
             });
@@ -94,13 +98,13 @@ namespace JWLibrary.Database {
 
         public void Run2() {
             MongoClientHandler handler = new MongoClientHandler("ip", "testdb");
-            handler.handle<Test>("test", col => {
+            handler.Execute<Test>("test", col => {
                 col.InsertOne(new Test() {
                     Name = "test",
                     Age = 10
                 });
             });
-            handler.handle<Test>("test", col => {
+            handler.Execute<Test>("test", col => {
                 var result = col.Find(m => m.Name == "test").First();
                 Console.WriteLine(result.fromObjectToJson());
             });
