@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using eXtensionSharp;
 using FluentValidation;
-using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
 
 namespace Service.Config {
-    public class BulkSaveConfigSvc : ConfigSvcBase<BulkSaveConfigSvc, IEnumerable<SaveConfigRequest>, IEnumerable<SaveConfigResult>>, IBulkSaveConfigSvc {
+    public class BulkSaveConfigSvc :
+        ConfigSvcBase<BulkSaveConfigSvc, IEnumerable<SaveConfigRequest>, IEnumerable<SaveConfigResult>>,
+        IBulkSaveConfigSvc {
         public BulkSaveConfigSvc() {
-            this.SetValidator<Validator>();
+            SetValidator<Validator>();
         }
 
         public override void Execute() {
-            using (var svc = new BulkServiceExecutorManager<SaveConfigSvc, SaveConfigRequest>(this.Request)) {
-                svc.SetRequest((o, current) => {
-                    o.Request = current;
-                }).AddFilter(o => {
-                    return o.Request.jIsNotNull();
-                }).OnExecuted(o => {
-                    var result = o.Result;
-                    return true;
-                });
+            using (var svc = new BulkServiceExecutorManager<SaveConfigSvc, SaveConfigRequest>(Request)) {
+                svc.SetRequest((o, current) => { o.Request = current; })
+                    .AddFilter(o => { return o.Request.xIsNotNull(); }).OnExecuted(o => {
+                        var result = o.Result;
+                        return true;
+                    });
             }
         }
 

@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using JWLibrary.Core;
-using JWLibrary.EF;
-using Microsoft.Extensions.Configuration;
+using eXtensionSharp;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using Npgsql;
 using RepoDb;
@@ -49,7 +46,7 @@ namespace JWLibrary.Database {
             new();
 
         private void InitConfig(IServiceCollection serviceCollection) {
-            _connectionMaps.jForeach((item, index) => {
+            _connectionMaps.xForEach((item, index) => {
                 Connections.Add(item.Key, item.Value(item.Key));
                 return true;
             });

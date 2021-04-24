@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using Dapper;
+using eXtensionSharp;
 using FluentValidation;
-using JWLibrary.Core;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
 using JWService.WeatherForecast;
@@ -26,14 +26,14 @@ namespace Service.WeatherForecast {
                     return true;
                 });
 
-            if (_exists.jIsNotNull()) return true;
+            if (_exists.xIsNotNull()) return true;
             return false;
         }
 
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutor<int>(db => {
-                    if (_exists.jIsNotNull()) Result = db.Update(Request);
+                    if (_exists.xIsNotNull()) Result = db.Update(Request);
                     Result = db.Insert(Request).Value;
                 });
         }

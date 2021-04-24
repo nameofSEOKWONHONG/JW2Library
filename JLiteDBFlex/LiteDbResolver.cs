@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using JWLibrary.Core;
+using eXtensionSharp;
 using LiteDB;
 
 namespace JLiteDBFlex {
@@ -13,13 +13,13 @@ namespace JLiteDBFlex {
         public static (ILiteDatabase liteDatabase, string fileName, string tableName, Dictionary<string, bool> indexItems) Resolve<TEntity>()
             where TEntity : class {
             var fileName =
-                typeof(TEntity).getAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.FileName);
+                typeof(TEntity).xGetAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.FileName);
             
             var tableName =
-                typeof(TEntity).getAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.TableName);
+                typeof(TEntity).xGetAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.TableName);
             
             var indexItems =
-                typeof(TEntity).getAttrValue((LiteDbTableAttribute indexAttribute) => indexAttribute.IndexItems);
+                typeof(TEntity).xGetAttrValue((LiteDbTableAttribute indexAttribute) => indexAttribute.IndexItems);
 
             var conStr = new ConnectionString() {
                 Filename = fileName,

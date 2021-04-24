@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.DI;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace JWLibrary.ServiceExecutor {
     
@@ -15,7 +14,7 @@ namespace JWLibrary.ServiceExecutor {
 
         public BulkServiceExecutorManager(IEnumerable<TRequest> requestItems) {
             this._bulkServices = new List<BulkService<TIService, TRequest>>(requestItems.Count());
-            requestItems.jForeach(request => {
+            requestItems.xForEach(request => {
                 var instance = ServiceLocator.Current.GetInstance<TIService>();
                 var serviceExecutorManager = new ServiceExecutorManager<TIService>(instance);
                 this._bulkServices.Add(new BulkService<TIService, TRequest>() {
@@ -27,7 +26,7 @@ namespace JWLibrary.ServiceExecutor {
         }
         
         public BulkServiceExecutorManager<TIService, TRequest> SetRequest(Action<TIService, TRequest> action) {
-            this._bulkServices.jForeach(bulkService => {
+            this._bulkServices.xForEach(bulkService => {
                 bulkService.SvcExecManager.SetRequest<TRequest>(bulkService.Reqeust, action);
                 return true;
             });
@@ -35,7 +34,7 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public BulkServiceExecutorManager<TIService, TRequest> AddFilter(Func<TIService, bool> func) {
-            this._bulkServices.jForeach(bulkService => {
+            this._bulkServices.xForEach(bulkService => {
                 bulkService.SvcExecManager.AddFilter(func);
                 return true;
             });
@@ -44,9 +43,9 @@ namespace JWLibrary.ServiceExecutor {
         
         public bool OnExecuted(Func<TIService, bool> func) {
             var isResult = true;
-            this._bulkServices.jForeach(bulkService => {
+            this._bulkServices.xForEach(bulkService => {
                 isResult = bulkService.SvcExecManager.OnExecuted(func);
-                if (isResult.jIsFalse()) {
+                if (isResult.xIsFalse()) {
                     throw new Exception($"{typeof(TIService).Name} execute failed.");
                 }
 
@@ -60,7 +59,7 @@ namespace JWLibrary.ServiceExecutor {
             var isResult = true;
             foreach (var bulkService in this._bulkServices) {
                 isResult = await bulkService.SvcExecManager.OnExecutedAsync(func);
-                if (isResult.jIsFalse()) return false;
+                if (isResult.xIsFalse()) return false;
             }
 
             return isResult;

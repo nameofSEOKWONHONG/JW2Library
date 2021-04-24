@@ -1,26 +1,24 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.Util.CLI;
 
 namespace JWLibrary.Utils {
     /// <summary>
     ///     firewall port type
     /// </summary>
-    public enum ENUM_PORT_TYPE {
-        [StringValue("TCP")] TCP,
-
-        [StringValue("UDP")] UDP
+    public class ENUM_PORT_TYPE : XENUM_BASE<ENUM_PORT_TYPE> {
+        public static readonly ENUM_PORT_TYPE TCP = Define("TCP");
+        public static readonly ENUM_PORT_TYPE UDP = Define("UDP");
     }
 
     /// <summary>
     ///     firewall bound type
     /// </summary>
-    public enum ENUM_BOUND_TYPE {
-        [StringValue("in")] IN,
-
-        [StringValue("out")] OUT
+    public class ENUM_BOUND_TYPE : XENUM_BASE<ENUM_BOUND_TYPE> {
+        public static readonly ENUM_BOUND_TYPE IN = Define("in");
+        public static readonly ENUM_BOUND_TYPE OUT = Define("out");
     }
 
     public static class JNetworkHelper {
@@ -44,9 +42,9 @@ namespace JWLibrary.Utils {
             return true;
         }
 
-        public static void OpenPort(this int port, string name = "ACC", ENUM_PORT_TYPE portType = ENUM_PORT_TYPE.TCP,
-            ENUM_BOUND_TYPE boundType = ENUM_BOUND_TYPE.IN) {
-            var arg = OpenPortCommand(name, boundType.jEnumToString(), portType.jEnumToString(), port);
+        public static void OpenPort(this int port, string name, ENUM_PORT_TYPE portType,
+            ENUM_BOUND_TYPE boundType) {
+            var arg = OpenPortCommand(name, boundType.Value, portType.Value, port);
             ProcessHandlerAsync.RunAsync("cmd.exe", arg,
                     output => { Debug.WriteLine(output); },
                     error => { Debug.WriteLine(error); })
@@ -54,9 +52,9 @@ namespace JWLibrary.Utils {
                 .OnCompleted(() => { Debug.WriteLine("done"); });
         }
 
-        public static void ClosePort(this int port, string name = "ACC", ENUM_PORT_TYPE portType = ENUM_PORT_TYPE.TCP,
-            ENUM_BOUND_TYPE boundType = ENUM_BOUND_TYPE.IN) {
-            var arg = ClosePortCommand(name, boundType.jEnumToString(), portType.jEnumToString(), port);
+        public static void ClosePort(this int port, string name, ENUM_PORT_TYPE portType,
+            ENUM_BOUND_TYPE boundType) {
+            var arg = ClosePortCommand(name, boundType.Value, portType.Value, port);
             ProcessHandlerAsync.RunAsync("cmd.exe", arg,
                     output => { Debug.WriteLine(output); },
                     error => { Debug.WriteLine(error); })

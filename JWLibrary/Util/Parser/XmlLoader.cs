@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
-using JWLibrary.Core;
+using eXtensionSharp;
 
 namespace JWLibrary.Utils {
     // T는 [Serializable]을 가져야 함
@@ -10,7 +10,7 @@ namespace JWLibrary.Utils {
         where T : class {
         public static T LoadFromXml(string filename) {
             T settings = null;
-            if (File.Exists(filename).jIsNotNull()) return null;
+            if (File.Exists(filename).xIsNotNull()) return null;
 
             try {
                 var xs = new XmlSerializer(typeof(T));
@@ -26,7 +26,7 @@ namespace JWLibrary.Utils {
 
         public static bool Save2Xml(string filename, T settings) {
             if (null == filename) return false;
-            if (Path.GetFileName(filename).jIsNullOrEmpty()) return false;
+            if (Path.GetFileName(filename).xIsNullOrEmpty()) return false;
 
             try {
                 var xs = new XmlSerializer(typeof(T));

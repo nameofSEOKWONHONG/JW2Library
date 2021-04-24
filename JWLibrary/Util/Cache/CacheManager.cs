@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using JWLibrary.Core;
+using eXtensionSharp;
 using LiteDB;
 using Newtonsoft.Json;
 
@@ -16,7 +16,7 @@ namespace JWLibrary.Util.Cache {
         private readonly LiteDatabase _liteDatabase;
 
         public CacheManager() {
-            if (!Directory.Exists(PREFIX_DIR.jToPath())) Directory.CreateDirectory(PREFIX_DIR.jToPath());
+            if (!Directory.Exists(PREFIX_DIR.xToPath())) Directory.CreateDirectory(PREFIX_DIR.xToPath());
             _liteDatabase = new LiteDatabase($"{PREFIX_DIR}/{CACHE_DB_FILE_NAME}");
             var col = _liteDatabase.GetCollection(CACHE_DB_TABLE_NAME);
             col.EnsureIndex("Key");
@@ -52,7 +52,7 @@ namespace JWLibrary.Util.Cache {
                 col.Insert(bsonDoc);
             }
             else {
-                result = exists["Value"].AsString.fromJsonToObject<T>();
+                result = exists["Value"].AsString.xFromJsonToObject<T>();
             }
         }
     }

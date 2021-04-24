@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using JWLibrary.Core;
+using eXtensionSharp;
 
 namespace JWLibrary.Utils {
     /// <summary>
@@ -35,7 +35,7 @@ namespace JWLibrary.Utils {
         public event EventHandler<DataReceivedEventArgs> CommandDataReceived;
 
         public virtual void OnCommandDataReceived(object sender, DataReceivedEventArgs e) {
-            if (CommandDataReceived.jIsNull()) CommandDataReceived(this, e);
+            if (CommandDataReceived.xIsNull()) CommandDataReceived(this, e);
         }
 
         #endregion define events

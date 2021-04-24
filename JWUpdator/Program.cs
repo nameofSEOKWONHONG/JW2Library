@@ -1,5 +1,6 @@
 ﻿using System;
-using JWLibrary.Core;
+using System.Linq;
+using eXtensionSharp;
 using JWLibrary.ServiceExecutor;
 
 namespace JWUpdator {
@@ -18,9 +19,9 @@ namespace JWUpdator {
                     return true;
                 });
 
-            if (updatorDto.jIsNotNull()) {
+            if (updatorDto.xIsNotNull()) {
                 using var updatorSvc = new ServiceExecutorManager<IUpdatorService>(new UpdatorService());
-                updatorSvc.AddFilter(o => o.Result.jIsNotNull())
+                updatorSvc.AddFilter(o => o.Result.xIsNotNull())
                     .SetRequest(o => o.Request = updatorDto.FileList)
                     .OnExecuted(o => {
                         if (o.Result) Console.WriteLine("downloaded");

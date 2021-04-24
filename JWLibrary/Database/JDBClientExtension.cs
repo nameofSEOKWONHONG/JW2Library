@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using JWLibrary.Core;
+using eXtensionSharp;
 
 namespace JWLibrary.Database {
     /// <summary>
@@ -21,13 +21,13 @@ namespace JWLibrary.Database {
             string tableName = null)
             where T : class, new() {
             try {
-                if (tableName.jIsNullOrEmpty()) throw new NullReferenceException("table name is null or empty.");
+                if (tableName.xIsNullOrEmpty()) throw new NullReferenceException("table name is null or empty.");
 
                 var entity = new T();
-                var dt = bulkDatas.jToDateTable();
+                var dt = bulkDatas.xToDateTable();
 
                 using (var bulkCopy = new SqlBulkCopy((SqlConnection) connection, SqlBulkCopyOptions.Default, null)) {
-                    bulkCopy.DestinationTableName = tableName.jIsNullOrEmpty() ? entity.GetType().Name : tableName;
+                    bulkCopy.DestinationTableName = tableName.xIsNullOrEmpty() ? entity.GetType().Name : tableName;
                     foreach (var property in entity.GetType().GetProperties())
                         bulkCopy.ColumnMappings.Add(property.Name, property.Name);
 
@@ -44,13 +44,13 @@ namespace JWLibrary.Database {
             string tableName = null)
             where T : class, new() {
             try {
-                if (tableName.jIsNullOrEmpty()) throw new NullReferenceException("table name is null or empty.");
+                if (tableName.xIsNullOrEmpty()) throw new NullReferenceException("table name is null or empty.");
 
                 var entity = new T();
-                var dt = bulkDatas.jToDateTable();
+                var dt = bulkDatas.xToDateTable();
 
                 using (var bulkCopy = new SqlBulkCopy((SqlConnection) connection, SqlBulkCopyOptions.Default, null)) {
-                    bulkCopy.DestinationTableName = tableName.jIsNullOrEmpty() ? entity.GetType().Name : tableName;
+                    bulkCopy.DestinationTableName = tableName.xIsNullOrEmpty() ? entity.GetType().Name : tableName;
                     foreach (var property in entity.GetType().GetProperties())
                         bulkCopy.ColumnMappings.Add(property.Name, property.Name);
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace JWLibrary.Core {
+namespace JWLibrary {
     public class ResultDtoBase<TResultDto> {
         [JsonProperty("data")] public TResultDto Data { get; set; }
     }

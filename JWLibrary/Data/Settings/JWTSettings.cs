@@ -1,4 +1,4 @@
-﻿namespace JWLibrary.Core.Data {
+﻿namespace JWLibrary {
     public class JWTSettings {
         public string Secret { get; set; } = "wldnditkfkdgo.dkvmflwkafrhgkdtkdrjsrkdgo~!";
     }

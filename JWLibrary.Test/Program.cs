@@ -1,5 +1,5 @@
 ﻿using System;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.DI;
 using JWLibrary.ServiceExecutor;
 using JWService.WeatherForecast;
@@ -18,29 +18,27 @@ namespace JCoreSvcTest {
 
             ServiceLocator.SetLocatorProvider(serviceProvider);
 
-            var request = new JList<WeatherForecastRequestDto>() {
-                new WeatherForecastRequestDto() {
-                    ID = 2003,
+            var request = new XList<WeatherForecastRequestDto> {
+                new() {
+                    ID = 2003
                 },
-                new WeatherForecastRequestDto() {
+                new() {
                     ID = 2004
                 }
             };
 
-            JList<WEATHER_FORECAST> result = new JList<WEATHER_FORECAST>();
+            var result = new XList<WEATHER_FORECAST>();
             using (var svc =
                 new BulkServiceExecutorManager<IGetWeatherForecastSvc, WeatherForecastRequestDto>(request)) {
                 svc.SetRequest((s, r) => s.Request = r)
-                    .AddFilter(s => s.Request.ID.jIsNotNull())
+                    .AddFilter(s => s.Request.ID.xIsNotNull())
                     .OnExecuted(s => {
                         result.Add(s.Result);
                         return true;
                     });
             }
-            
-            result.jForeach(item => {
-                Console.WriteLine(item.fromObjectToJson());
-            });
+
+            result.xForEach(item => { Console.WriteLine(item.xFromObjectToJson()); });
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
-using JWLibrary.Core;
+using eXtensionSharp;
 
 namespace JWLibrary.Util.CLI {
     /// <summary>
@@ -36,11 +36,11 @@ namespace JWLibrary.Util.CLI {
 
             process.Exited += (s, e) => tcs.SetResult(process.ExitCode);
             process.OutputDataReceived += (s, e) => {
-                if (!e.Data.jIsNullOrEmpty())
+                if (!e.Data.xIsNullOrEmpty())
                     outputReceived(e.Data);
             };
             process.ErrorDataReceived += (s, e) => {
-                if (!e.Data.jIsNullOrEmpty())
+                if (!e.Data.xIsNullOrEmpty())
                     errorReceived(e.Data);
             };
 

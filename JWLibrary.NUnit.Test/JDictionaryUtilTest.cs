@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using JWLibrary.Core;
+using eXtensionSharp;
 using NUnit.Framework;
 
 namespace JWLibrary.NUnit.Test {
@@ -19,15 +19,15 @@ namespace JWLibrary.NUnit.Test {
             //Assert.AreEqual(result["C"], "C");
 
             //if exists same key, update second value.
-            var result2 = mapA.jConcatUpdate(mapB);
+            var result2 = mapA.xConcatUpdate(mapB);
             Assert.AreEqual(result2["B"], "BB");
 
-            Console.WriteLine(result2.fromObjectToJson());
+            Console.WriteLine(result2.xFromObjectToJson());
         }
 
         [Test]
         public void JDictionaryPoolTest() {
-            JDictionaryPool<string, string> jDictionaryPool = new JDictionaryPool<string, string>();
+            XDictionaryPool<string, string> jDictionaryPool = new XDictionaryPool<string, string>();
             jDictionaryPool.Add("A", "A");
             jDictionaryPool.Add("B", "B");
             jDictionaryPool.Add("C", "C");
@@ -42,9 +42,8 @@ namespace JWLibrary.NUnit.Test {
 
             jDictionaryPool.Release("C", "C");
             jDictionaryPool.Clear();
-            
-            Console.WriteLine(jDictionaryPool.fromObjectToJson());
-            
+
+            Console.WriteLine(jDictionaryPool.xFromObjectToJson());
         }
     }
 }

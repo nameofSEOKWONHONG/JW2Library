@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using JWLibrary.Core;
+using JWLibrary;
 using JWLibrary.ServiceExecutor;
 using JWService.Data.Models;
 

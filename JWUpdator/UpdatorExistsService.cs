@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using eXtensionSharp;
 using FluentValidation;
-using JWLibrary.Core;
 using JWLibrary.ServiceExecutor;
 
 namespace JWUpdator {
@@ -17,7 +18,7 @@ namespace JWUpdator {
         /// <summary>
         ///     update file list
         /// </summary>
-        public JLKList<string> FileList { get; set; }
+        public IEnumerable<string> FileList { get; set; }
     }
 
     /// <summary>
@@ -51,7 +52,7 @@ namespace JWUpdator {
             if (result.IsSuccessStatusCode) {
                 result.EnsureSuccessStatusCode();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                _updatorDto = content.fromJsonToObject<UpdatorDto>();
+                _updatorDto = content.xFromJsonToObject<UpdatorDto>();
             }
 
             return true;

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
-using JWLibrary.Core;
+using eXtensionSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Scripting.Utils;
-using NetFabric.Hyperlinq;
-using NiL.JS.Expressions;
 
 namespace JWLibrary.EF {
     public interface IJDbSyncContext : IDisposable{
@@ -28,7 +24,7 @@ namespace JWLibrary.EF {
     /// </summary>
     public class JDbSyncContext : IJDbSyncContext {
         private DbContext _srcDbContext = null;
-        private C5.IList<DbContext> _destDbContexts = new JList<DbContext>();
+        private IList<DbContext> _destDbContexts = new XList<DbContext>();
         private bool _isRollback;
         
         /// <summary>
@@ -49,7 +45,7 @@ namespace JWLibrary.EF {
                 _srcDbContext.Add<T>(entity);
                 _srcDbContext.SaveChanges();
 
-                _destDbContexts.jForeach(context => {
+                _destDbContexts.xForEach(context => {
                     context.Add<T>(entity);
                     context.SaveChanges();
                 });
@@ -82,7 +78,7 @@ namespace JWLibrary.EF {
                 _srcDbContext.Update<T>(entity);
                 _srcDbContext.SaveChanges();
 
-                _destDbContexts.jForeach(context => {
+                _destDbContexts.xForEach(context => {
                     context.Update<T>(entity);
                     context.SaveChanges();
                 });
@@ -114,7 +110,7 @@ namespace JWLibrary.EF {
                 _srcDbContext.Remove<T>(entity);
                 _srcDbContext.SaveChanges();
 
-                _destDbContexts.jForeach(context => {
+                _destDbContexts.xForEach(context => {
                     context.Remove<T>(entity);
                     context.SaveChanges();
                 });
@@ -152,28 +148,28 @@ namespace JWLibrary.EF {
                 CommitTransaction();
             }
             _srcDbContext.Dispose();
-            _destDbContexts.jForeach(context => {
+            _destDbContexts.xForEach(context => {
                 context.Dispose();
             });
         }
         
         private void BeginTrasaction() {
             _srcDbContext.Database.BeginTransaction(IsolationLevel.ReadUncommitted);
-            _destDbContexts.jForeach(context => {
+            _destDbContexts.xForEach(context => {
                 context.Database.BeginTransaction(IsolationLevel.ReadUncommitted);
             });
         }
 
         private void CommitTransaction() {
             _srcDbContext.Database.CommitTransaction();
-            _destDbContexts.jForeach(context => {
+            _destDbContexts.xForEach(context => {
                 context.Database.CommitTransaction();
             });
         }
 
         private void RollbackTransaction() {
             _srcDbContext.Database.RollbackTransaction();
-            _destDbContexts.jForeach(context => {
+            _destDbContexts.xForEach(context => {
                 context.Database.RollbackTransaction();
             });
         }        

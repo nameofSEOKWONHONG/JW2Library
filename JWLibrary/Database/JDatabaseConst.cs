@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using JWLibrary.Core;
+using eXtensionSharp;
 using Microsoft.Scripting.Interpreter;
 using SqlKata.Compilers;
 
@@ -15,12 +15,12 @@ namespace JWLibrary.Database {
             };
     }
 
-    public class ENUM_SQL_COMPILER_TYPE : JENUM_BASE<ENUM_SQL_COMPILER_TYPE> {
-        public static readonly ENUM_SQL_COMPILER_TYPE MSSQL = define("MSSQL");
-        public static readonly ENUM_SQL_COMPILER_TYPE MYSQL = define("MYSQL");
-        public static readonly ENUM_SQL_COMPILER_TYPE ORACLE = define("ORACLE");
-        public static readonly ENUM_SQL_COMPILER_TYPE FIREBIRD = define("FIREBIRD");
-        public static readonly ENUM_SQL_COMPILER_TYPE SQLLITE = define("SQLLITE");
-        public static readonly ENUM_SQL_COMPILER_TYPE POSTGRESQL = define("POSTGRESQL");
+    public class ENUM_SQL_COMPILER_TYPE : XENUM_BASE<ENUM_SQL_COMPILER_TYPE> {
+        public static readonly ENUM_SQL_COMPILER_TYPE MSSQL = Define("MSSQL");
+        public static readonly ENUM_SQL_COMPILER_TYPE MYSQL = Define("MYSQL");
+        public static readonly ENUM_SQL_COMPILER_TYPE ORACLE = Define("ORACLE");
+        public static readonly ENUM_SQL_COMPILER_TYPE FIREBIRD = Define("FIREBIRD");
+        public static readonly ENUM_SQL_COMPILER_TYPE SQLLITE = Define("SQLLITE");
+        public static readonly ENUM_SQL_COMPILER_TYPE POSTGRESQL = Define("POSTGRESQL");
     }
 }

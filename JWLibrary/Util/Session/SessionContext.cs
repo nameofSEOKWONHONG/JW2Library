@@ -1,5 +1,5 @@
 ﻿using System;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.Util.Cache;
 
 namespace JWLibrary.Util.Session {
@@ -9,13 +9,13 @@ namespace JWLibrary.Util.Session {
     }
 
     public class SessionContext : ISessionContext {
-        protected IUser User { get; private set; }
-        protected ICacheManager CacheManager { get; private set; }
-
         public SessionContext() {
             User = new User();
             CacheManager = new CacheManager();
         }
+
+        protected IUser User { get; }
+        protected ICacheManager CacheManager { get; }
 
         public IUser GetUser() {
             return User;
@@ -26,7 +26,7 @@ namespace JWLibrary.Util.Session {
         }
 
         public void Dispose() {
-            if (CacheManager.jIsNotNull())
+            if (CacheManager.xIsNotNull())
                 CacheManager.Dispose();
         }
     }

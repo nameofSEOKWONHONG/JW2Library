@@ -1,15 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using APIServer.Config;
 using APIServer.Util;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using JLiteDBFlex;
-using JWLibrary.Core;
 using JWLibrary.DI;
-using JWLibrary.EF;
 using JWLibrary.Util.Session;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
@@ -19,15 +15,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Service;
-using Service.Accounts;
-using Service.Config;
-using Service.WeatherForecast;
 
 namespace APIServer {
     public class Startup {
-
-        
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
@@ -163,10 +153,10 @@ namespace APIServer {
 
         private void OnShutdown() {
             LiteDbFlexerManager.Instance.Distroy();
-            
-            #if DEBUG
+
+#if DEBUG
             ServiceLocator.Current.GetInstance<ISessionContext>().GetCacheManager().Dispose();
-            #endif
+#endif
         }
     }
 

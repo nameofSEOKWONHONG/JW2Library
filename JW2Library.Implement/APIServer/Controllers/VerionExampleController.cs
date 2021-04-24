@@ -1,5 +1,5 @@
 ﻿using System;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,11 +14,9 @@ namespace APIServer.Controllers {
 
         [HttpGet]
         public string Hello() {
-            var str = "hello version 0.0" + DateTime.Now.ToString();
+            var str = "hello version 0.0" + DateTime.Now;
             var exists = Context.GetCacheManager().Get<string>(str);
-            if (!exists.jIsNullOrEmpty()) {
-                return str;
-            }
+            if (!exists.xIsNullOrEmpty()) return str;
 
             return str;
         }

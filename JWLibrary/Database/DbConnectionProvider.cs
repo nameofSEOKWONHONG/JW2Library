@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.Utils;
 using Microsoft.Extensions.Configuration;
 using Nito.AsyncEx;
@@ -42,9 +42,9 @@ namespace JWLibrary.Database {
         
         private static Dictionary<string, string> ProviderMaps {
             get {
-                if (_providerMaps.jIsNull()) {
+                if (_providerMaps.xIsNull()) {
                     using (_mutex.Lock()) {
-                        if (_providerMaps.jIsNull()) {
+                        if (_providerMaps.xIsNull()) {
                             _providerMaps = new Dictionary<string, string>();
                             var configuration = new ConfigurationBuilder()
                                 .AddJsonFile("./appsettings.json", true, true)

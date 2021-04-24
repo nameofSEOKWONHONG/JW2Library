@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using JWLibrary.Core;
+using eXtensionSharp;
 using LiteDB;
 using Nito.AsyncEx;
 
@@ -12,7 +12,7 @@ namespace JLiteDBFlex {
     public sealed class LiteDbFlexerManager {
         private readonly AsyncLock _mutex = new();
 
-        private readonly JHDictionary<Type, ILiteDbFlexer> _instanceMap =
+        private readonly XHDictionary<Type, ILiteDbFlexer> _instanceMap =
             new();
 
         private static Lazy<LiteDbFlexerManager> _instance =
@@ -31,14 +31,14 @@ namespace JLiteDBFlex {
         /// <returns>ValueTuple</returns>
         public (ILiteCollection<T> LiteCollection, string TableName, string FileName, ILiteDatabase LiteDatabase) Create<T>() where T : class {
             var exists = _instanceMap.FirstOrDefault(m => m.Key == typeof(T));
-            if (exists.Key.jIsNotNull()) {
+            if (exists.Key.xIsNotNull()) {
                 var result = exists.Value as LiteDbFlexer<T>;
                 return new(result.LiteCollection, result.TableName, result.FileName, result.LiteDatabase);
             }
 
             using (_mutex.Lock()) {
                 var newInstance = new LiteDbFlexer<T>();
-                if (_instanceMap.Keys.Contains(typeof(T)).jIsFalse()) {
+                if (_instanceMap.Keys.Contains(typeof(T)).xIsFalse()) {
                     _instanceMap.Add(typeof(T), newInstance);
                     return new(newInstance.LiteCollection, newInstance.TableName, newInstance.FileName, newInstance
                         .LiteDatabase);                        
@@ -53,8 +53,8 @@ namespace JLiteDBFlex {
         /// collection clear.
         /// </summary>
         public void Distroy() {
-            _instanceMap.jForeach(instance => {
-                if (instance.Value.jIsNotNull()) instance.Value.LiteDatabase?.Dispose();
+            _instanceMap.xForEach(instance => {
+                if (instance.Value.xIsNotNull()) instance.Value.LiteDatabase?.Dispose();
             });
 
             _instanceMap.Clear();

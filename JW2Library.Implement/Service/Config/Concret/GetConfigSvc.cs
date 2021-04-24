@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using eXtensionSharp;
 using FluentValidation;
-using JWLibrary.Core;
-using JWLibrary.ServiceExecutor;
-using LiteDB;
-using Service.Data;
 
 namespace Service.Config {
     public class GetConfigSvc : ConfigSvcBase<GetConfigSvc, GetConfigRequest, GetConfigResult>, IGetConfigSvc {
         public GetConfigSvc() {
-            this.SetValidator<Validator>();
+            SetValidator<Validator>();
         }
 
         public override void Execute() {
-            var bsonDocument = this.Collection.FindOne($"$.key='{this.Request.Key}'");
-            this.Result = new GetConfigResult() {
-                Key = this.Request.Key,
+            var bsonDocument = Collection.FindOne($"$.key='{Request.Key}'");
+            Result = new GetConfigResult {
+                Key = Request.Key,
                 Content = bsonDocument["value"].AsString
             };
         }
 
         public override void PostExecute() {
-            if (this.Result.Content.jIsNullOrEmpty()) throw new Exception("key is empty.");
+            if (Result.Content.xIsNullOrEmpty()) throw new Exception("key is empty.");
             base.PostExecute();
         }
 

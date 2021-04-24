@@ -1,5 +1,5 @@
 ﻿using System;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.Utils.Files;
 
 namespace Service.QueryConst {
@@ -11,7 +11,7 @@ namespace Service.QueryConst {
         public static T Self => _instance.Value;
 
         protected string ReadQueryJS(string javascriptFile) {
-            return javascriptFile.jFileReadLines().@join(CARRIAGE_RETURN);
+            return javascriptFile.jFileReadLines().xJoin(CARRIAGE_RETURN);
         }
     }
 }

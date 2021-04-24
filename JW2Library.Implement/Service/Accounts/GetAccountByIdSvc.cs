@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using JLiteDBFlex;
-using JWLibrary.Core;
+using JWLibrary;
 using JWService.Data.Models;
 using Service.Data;
 

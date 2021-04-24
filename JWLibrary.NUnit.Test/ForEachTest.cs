@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
+using eXtensionSharp;
 using JLiteDBFlex;
-using JWLibrary.Core;
-using NetFabric.Hyperlinq;
 using NUnit.Framework;
 
 namespace JWLibrary.NUnit.Test {
@@ -12,11 +10,11 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void foreach_test() {
             var num = 0;
-            Enumerable.Range(1, 10).jForeach(i => {
+            Enumerable.Range(1, 10).xForEach(i => {
                 num += i;
                 Console.WriteLine(num);
             });
-            
+
             Assert.Greater(num, 0);
         }
 
@@ -37,11 +35,11 @@ namespace JWLibrary.NUnit.Test {
         public void foreach_async_test2() {
             var manager = LiteDbFlexerManager.Instance.Create<UserDto>();
             manager.LiteDatabase.DropCollection(manager.TableName);
-            
-            var users = new JList<UserDto>();
-            users.Add(new UserDto() {Name = "a", Age = 1});
-            users.Add(new UserDto() {Name = "b", Age = 2});
-            users.Add(new UserDto() {Name = "c", Age = 3});
+
+            var users = new XList<UserDto>();
+            users.Add(new UserDto {Name = "a", Age = 1});
+            users.Add(new UserDto {Name = "b", Age = 2});
+            users.Add(new UserDto {Name = "c", Age = 3});
 
             users.jForeachAsync(item => {
                 var inserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Insert(item);
@@ -54,10 +52,10 @@ namespace JWLibrary.NUnit.Test {
         public void foreach_async_result_test() {
             var users = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection
                 .FindAll()
-                .jWhere(m => m.Name != null);
-            
+                .xWhere(m => m.Name != null);
+
             users.jForeachAsync(item => {
-                Console.WriteLine(item.fromObjectToJson());
+                Console.WriteLine(item.xFromObjectToJson());
                 Assert.NotNull(item);
                 return Task.CompletedTask;
             });

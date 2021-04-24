@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using eXtensionSharp;
 using FluentValidation;
-using JWLibrary.Core;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
 using Service.Data;
@@ -18,9 +18,7 @@ namespace JWService.WeatherForecast {
                     var compiler = new SqlServerCompiler();
                     var db = new QueryFactory(con, compiler);
                     var weathers = db.Query("dbo.WEATHER_FORECAST").Get<WEATHER_FORECAST>();
-                    weathers.jForeach(item => {
-                        item.TEMPERATURE_F = 32 + (int) (item.TEMPERATURE_C / 0.5556);
-                    });
+                    weathers.xForEach(item => { item.TEMPERATURE_F = 32 + (int) (item.TEMPERATURE_C / 0.5556); });
 
                     Result = weathers;
                 });

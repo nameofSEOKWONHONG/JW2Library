@@ -1,5 +1,5 @@
 ﻿using System;
-using JWLibrary.Core;
+using eXtensionSharp;
 
 namespace Service.Contract {
     public class ProviderContract : BasicContract {
@@ -58,9 +58,9 @@ namespace Service.Contract {
         /// <exception cref="NotImplementedException"></exception>
         public override bool PostContract(IUser user, IGoods goods, ICompany company) {
             //notice
-            Console.WriteLine(user.fromObjectToJson());
-            Console.WriteLine(goods.fromObjectToJson());
-            Console.WriteLine(company.fromObjectToJson());
+            Console.WriteLine(user.xFromObjectToJson());
+            Console.WriteLine(goods.xFromObjectToJson());
+            Console.WriteLine(company.xFromObjectToJson());
             return true;
         }
 

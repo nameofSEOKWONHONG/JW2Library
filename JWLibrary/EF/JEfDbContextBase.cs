@@ -1,4 +1,4 @@
-﻿using JWLibrary.Core;
+﻿using eXtensionSharp;
 using Microsoft.EntityFrameworkCore;
 
 namespace JWLibrary.EF {
@@ -8,7 +8,7 @@ namespace JWLibrary.EF {
     public abstract class JEfDbContextBase : DbContext {
         protected static bool IsCreated = false;
         protected JEfDbContextBase() {
-            if (IsCreated.jIsFalse()) {
+            if (IsCreated.xIsFalse()) {
                 IsCreated = true;
                 this.Database.Migrate();
                 this.Database.EnsureCreated();

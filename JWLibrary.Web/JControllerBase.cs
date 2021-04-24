@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.DI;
 using JWLibrary.ServiceExecutor;
-using JWLibrary.Util.Cache;
 using JWLibrary.Util.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,20 +11,21 @@ using Microsoft.Extensions.Logging;
 namespace JWLibrary.Web {
     [ApiController]
     [Route("api/[controller]/[action]")] //url version route
-    public class JControllerBase<TController> : ControllerBase, IDisposable 
+    public class JControllerBase<TController> : ControllerBase, IDisposable
         where TController : class {
         protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
         protected ILogger<TController> Logger;
+
         public JControllerBase(ILogger<TController> logger) {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
-            this.Logger = logger;
+            Logger = logger;
         }
+
         public virtual void Dispose() {
-            
         }
-        
-                /// <summary>
-        /// single execute
+
+        /// <summary>
+        ///     single execute
         /// </summary>
         /// <param name="serviceExecutor"></param>
         /// <param name="request"></param>
@@ -40,7 +40,7 @@ namespace JWLibrary.Web {
             var result = default(TResult);
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             executor.SetRequest(o => o.Request = request)
-                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
+                .AddFilter(o => func.xIsNotNull() ? func(serviceExecutor) : true)
                 .OnExecuted(o => {
                     result = o.Result;
                     return true;
@@ -54,7 +54,7 @@ namespace JWLibrary.Web {
             var result = default(TResult);
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             await executor.SetRequest(o => o.Request = request)
-                .AddFilter(o => func.jIsNotNull() ? func(serviceExecutor) : true)
+                .AddFilter(o => func.xIsNotNull() ? func(serviceExecutor) : true)
                 .OnExecutedAsync(async o => {
                     result = o.Result;
                     return true;
@@ -62,10 +62,11 @@ namespace JWLibrary.Web {
             return result;
         }
 
-        protected IEnumerable<TResult> CreateBulkService<TServiceExecutor, TRequest, TResult>(TServiceExecutor serviceExecutor,
-            IEnumerable<TRequest> requests, Func<TServiceExecutor, bool> func = null) 
+        protected IEnumerable<TResult> CreateBulkService<TServiceExecutor, TRequest, TResult>(
+            TServiceExecutor serviceExecutor,
+            IEnumerable<TRequest> requests, Func<TServiceExecutor, bool> func = null)
             where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
-            var results = new JList<TResult>();
+            var results = new XList<TResult>();
             using var bulkExecutor = new BulkServiceExecutorManager<TServiceExecutor, TRequest>(requests);
             bulkExecutor.SetRequest((o, c) => o.Request = c)
                 .AddFilter(func)
@@ -77,21 +78,21 @@ namespace JWLibrary.Web {
             return results;
         }
     }
+
     /// <summary>
     ///     base controller
     /// </summary>
-    
+
     //[Route("api/[controller]/[action]")] //normal route
     [Route("api/{v:apiVersion}/[controller]/[action]")] //url version route
     public class JVersionControllerBase<TController> : JControllerBase<TController>, IDisposable
         where TController : class {
         public JVersionControllerBase(ILogger<TController> logger) : base(logger) {
-            
         }
 
         public override void Dispose() {
             //your code...
-            
+
             base.Dispose();
         }
     }

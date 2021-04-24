@@ -1,5 +1,5 @@
 ﻿using System;
-using JWLibrary.Core;
+using eXtensionSharp;
 using NUnit.Framework;
 
 namespace JWLibrary.NUnit.Test {
@@ -13,7 +13,7 @@ namespace JWLibrary.NUnit.Test {
             var index = "test".IndexOf("");
             Assert.GreaterOrEqual(index, 0);
 
-            index = "test".indexOf("");
+            index = "test".xIndexOf("");
             Assert.Less(index, 0);
         }
 
@@ -22,25 +22,23 @@ namespace JWLibrary.NUnit.Test {
             var index = "test".LastIndexOf("");
             Assert.GreaterOrEqual(index, 0);
 
-            index = "test".lastIndexOf("");
+            index = "test".xLastIndexOf("");
             Assert.Less(index, 0);
         }
 
         [Test]
         public void JSplitTest() {
             var text = "1|2|3|4|5|6|7|8|9|10";
-            var result = text.jSplit('|');
-            result.jForeach(item => {
-                Console.WriteLine(item);
-            });
-            
+            var result = text.xSplit('|');
+            result.xForEach(item => { Console.WriteLine(item); });
+
             Assert.Pass();
         }
 
         [Test]
         public void JSubstringTest() {
             var text = "세상이 바뀌어도 그 본질은 바뀌지 않는다.";
-            var result = text.jSubstring(4, 1);
+            var result = text.xSubstring(4, 1);
             Assert.AreEqual("바", result);
         }
     }

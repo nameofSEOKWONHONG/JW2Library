@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using eXtensionSharp;
+using FluentValidation;
 using JLiteDBFlex;
-using JWLibrary.Core;
+using JWLibrary;
 using JWLibrary.ServiceExecutor;
 using JWService.Data.Models;
 using Service.Data;
@@ -20,7 +21,7 @@ namespace Service.Accounts {
             using var executor = new ServiceExecutorManager<IGetAccountByIdSvc>(_getAccountByIdSvc);
             executor.SetRequest(o => o.Request = Request)
                 .OnExecuted(o => {
-                    result = o.Result.jIsNotNull();
+                    result = o.Result.xIsNotNull();
                     return true;
                 });
 

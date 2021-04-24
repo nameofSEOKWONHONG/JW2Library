@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using Dapper;
+using eXtensionSharp;
 using FluentValidation;
-using JWLibrary.Core;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
 using Service.Data;
@@ -24,7 +24,7 @@ namespace JWService.WeatherForecast {
                     return true;
                 });
 
-            if (_removeObj.jIsNotNull()) return true;
+            if (_removeObj.xIsNotNull()) return true;
             return false;
         }
 

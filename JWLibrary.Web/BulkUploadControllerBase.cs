@@ -1,5 +1,4 @@
-﻿using JWLibrary.Core;
-using JWLibrary.Core.Data.BulkUpload;
+﻿using eXtensionSharp;
 using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
@@ -10,7 +9,7 @@ namespace JWLibrary.Web {
         public virtual bool Upload<T>(BulkUploadDto<T>[] items)
             where T : class {
             IBulkUploadValidator<T> validator = new BulkUploadValidator<T>();
-            items.jForeach(item => {
+            items.xForEach(item => {
                 validator.Validate(item);
                 return true;
             });
@@ -21,7 +20,7 @@ namespace JWLibrary.Web {
     public class BulkUploadValidator<T> : IBulkUploadValidator<T>
         where T : class {
         public void Validate(BulkUploadDto<T> item) {
-            if (item.Data.jIsNull()) {
+            if (item.Data.xIsNull()) {
                 item.IsValid = false;
                 item.ErrorMsg = "Data is null";
             }

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using JWLibrary.Core;
-using JWLibrary.Util.Session;
-using NetFabric.Hyperlinq;
+using eXtensionSharp;
 
 namespace JWLibrary.ServiceExecutor {
     public sealed class ServiceExecutorManager<TIService> : IDisposable
         where TIService : IServiceBase {
-        private readonly JList<Func<TIService, bool>> filters = new();
+        private readonly XList<Func<TIService, bool>> filters = new();
         private bool disposed;
         private TIService service;
 
@@ -41,7 +36,7 @@ namespace JWLibrary.ServiceExecutor {
         public bool OnExecuted(Func<TIService, bool> func) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.jIsFalse()) return false;
+                if (pass.xIsFalse()) return false;
             }
 
             if (service.Validate()) {
@@ -59,7 +54,7 @@ namespace JWLibrary.ServiceExecutor {
         public async Task<bool> OnExecutedAsync(Func<TIService, Task<bool>> func) {
             foreach (var filter in filters) {
                 var pass = filter(service);
-                if (pass.jIsFalse()) return false;
+                if (pass.xIsFalse()) return false;
             }
 
             if (service.Validate()) {
@@ -68,7 +63,7 @@ namespace JWLibrary.ServiceExecutor {
                 service.PostExecute();
                 
                 var executed = await func(service);
-                if (executed.jIsFalse()) {
+                if (executed.xIsFalse()) {
                     throw new Exception($"{typeof(TIService).Name} executed failed.");
                 }
                 return executed;

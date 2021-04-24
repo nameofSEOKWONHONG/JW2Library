@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using APIServer.Config;
-using JWLibrary.Core;
+using eXtensionSharp;
+using JWLibrary;
 using JWLibrary.Web;
 using JWService.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,7 @@ namespace APIServer.Controllers {
         public async Task<Account> GetMember(string userId, string passwd) {
             return await CreateServiceAsync<IGetAccountSvc, Account, Account>(_getAccountSvc,
                 new Account {UserId = userId, Passwd = passwd},
-                o => o.Request.jIsNotNull());
+                o => o.Request.xIsNotNull());
         }
 
         [Authorize]

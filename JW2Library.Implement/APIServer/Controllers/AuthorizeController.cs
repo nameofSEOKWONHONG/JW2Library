@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using APIServer.Config;
-using JWLibrary.Core;
+using eXtensionSharp;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Web;
 using JWService.Data.Models;
@@ -24,7 +24,7 @@ namespace APIServer.Controllers {
             Account result = null;
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_svc);
             await executor.SetRequest(o => o.Request = account)
-                .AddFilter(o => o.Request.jIsNotNull())
+                .AddFilter(o => o.Request.xIsNotNull())
                 .OnExecutedAsync(async o => {
                     result = o.Result;
                     return true;

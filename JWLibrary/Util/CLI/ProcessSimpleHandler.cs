@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using JWLibrary.Core;
+using eXtensionSharp;
 
 namespace JWLibrary.Utils {
     /// <summary>
@@ -11,7 +11,7 @@ namespace JWLibrary.Utils {
         private readonly Process _process;
 
         public ProcessSimpleHandler(string[] killProcessNames = null) {
-            if (_process.jIsNull()) _process = new Process();
+            if (_process.xIsNull()) _process = new Process();
         }
 
         public void Dispose() {
@@ -27,7 +27,7 @@ namespace JWLibrary.Utils {
         }
 
         public void Stop() {
-            if (_process.jIsNotNull()) {
+            if (_process.xIsNotNull()) {
                 _process.CloseMainWindow();
                 _process.Close();
             }

@@ -1,4 +1,4 @@
-﻿using JWLibrary.Core;
+﻿using eXtensionSharp;
 using LiteDB;
 
 namespace JLiteDBFlex {
@@ -24,7 +24,7 @@ namespace JLiteDBFlex {
             LiteDatabase = resolveInfo.liteDatabase;
 
             LiteCollection = resolveInfo.liteDatabase.GetCollection<T>(resolveInfo.tableName);
-            resolveInfo.indexItems.jForeach(indexItem => {
+            resolveInfo.indexItems.xForEach(indexItem => {
                 LiteCollection.EnsureIndex(indexItem.Key, indexItem.Value);
             }); 
         }

@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using eXtensionSharp;
 using FluentValidation;
-using JWLibrary.Core;
 
 namespace JWLibrary.ServiceExecutor {
     public class ServiceExecutor<TOwner, TRequest, TResult> : ServiceBase<TOwner>, IServiceExecutor<TRequest, TResult>
@@ -34,9 +32,9 @@ namespace JWLibrary.ServiceExecutor {
         }
 
         public override bool Validate() {
-            if (ServiceValidator.jIsNotNull()) {
+            if (ServiceValidator.xIsNotNull()) {
                 var result = ServiceValidator.Validate(Owner);
-                if (result.IsValid.jIsFalse()) {
+                if (result.IsValid.xIsFalse()) {
                     Debug.WriteLine($"service : {Owner.GetType().Name}");
                     Debug.WriteLine($"error : {result.Errors.First().ErrorMessage}");
                     return false;

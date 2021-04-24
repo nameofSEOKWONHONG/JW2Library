@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Transactions;
 using APIServer.Config;
-using JWLibrary.Core;
+using JWLibrary;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Web;
 using JWService.WeatherForecast;

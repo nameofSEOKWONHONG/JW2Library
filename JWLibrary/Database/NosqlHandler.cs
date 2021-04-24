@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using JWLibrary.Core;
+using eXtensionSharp;
 using LiteDB;
 using MongoDB.Driver;
 using StackExchange.Redis;
-using Collation = LiteDB.Collation;
 using ConnectionType = LiteDB.ConnectionType;
 
 namespace JWLibrary.Database {
@@ -87,7 +85,7 @@ namespace JWLibrary.Database {
             testobj.Age = 10;
             RedisClientHandler handler = new RedisClientHandler("ip");
             handler.Execute(db => {
-                var result = db.SetAdd("test", testobj.fromObjectToJson());
+                var result = db.SetAdd("test", testobj.xFromObjectToJson());
                 Console.WriteLine(result);
             });
             handler.Execute(db => {
@@ -106,7 +104,7 @@ namespace JWLibrary.Database {
             });
             handler.Execute<Test>("test", col => {
                 var result = col.Find(m => m.Name == "test").First();
-                Console.WriteLine(result.fromObjectToJson());
+                Console.WriteLine(result.xFromObjectToJson());
             });
         }
     }

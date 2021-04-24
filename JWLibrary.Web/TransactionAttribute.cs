@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Transactions;
-using JWLibrary.Core;
+using eXtensionSharp;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace JWLibrary.Web {
@@ -19,7 +19,7 @@ namespace JWLibrary.Web {
             using (var transactionScope = new TransactionScope(_transactionScopeOption, TimeSpan.FromSeconds(5),
                 TransactionScopeAsyncFlowOption.Enabled)) {
                 var action = await next();
-                if (action.Exception.jIsNull()) transactionScope.Complete();
+                if (action.Exception.xIsNull()) transactionScope.Complete();
             }
         }
     }
