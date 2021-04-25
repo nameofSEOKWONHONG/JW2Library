@@ -1,48 +1,35 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
+using Dapper;
+using JWLibrary.Database;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace JWLibrary.EF {
-    public interface IMigration {
-        void IfExistsTable(Func<string, string> func);
-        void CreateTable(Func<string, string> func);
-        void BackupTable(Func<string, string> func);
-        void IfExistsCreateTable(Func<string, string> func);
-    }
-    
-    public abstract class JMigration : IMigration {
-        public abstract void IfExistsTable(Func<string, string> func);
-
-        public abstract void CreateTable(Func<string, string> func);
-
-        public abstract void BackupTable(Func<string, string> func);
-
-        public abstract void IfExistsCreateTable(Func<string, string> func);
-    }
-    
     /// <summary>
-    /// Entity
+    ///     Entity
     /// </summary>
-    [Table("Blogs")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("Blogs")]
     public class Blog {
-        [Key]
+        [System.ComponentModel.DataAnnotations.Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+
         [MaxLength(100)]
-        [Required()]
+        [System.ComponentModel.DataAnnotations.Required]
         public string BLOG_NAME { get; set; }
+
         [MaxLength(30)]
-        [Required()]
+        [System.ComponentModel.DataAnnotations.Required]
         public string BLOG_AUTHOR { get; set; }
-        
-        [Required()]
+
+        [System.ComponentModel.DataAnnotations.Required]
         public DateTime WRITE_DT { get; set; }
-        
-        public class BlogMigration : JMigration {
-            public override void IfExistsTable(Func<string, string> func) {
-                func(@"
+
+        public class BlogMSSqlMigration : JMigration {
+            public override bool IsExistsTable(IDbConnection connection) {
+                var sql = @"
 IF (EXISTS (SELECT * 
             FROM INFORMATION_SCHEMA.TABLES 
             WHERE TABLE_SCHEMA = 'DBO' 
@@ -54,37 +41,109 @@ ELSE
 BEGIN
     SELECT FALSE;
 END
-");
+";
+                return connection.QueryFirst<bool>(sql);
             }
 
-            public override void CreateTable(Func<string, string> func) {
-                func(@"
+            public override void CreateTable(IDbConnection connection) {
+                var sql = @"
 CREATE TABLE [DBO].[BLOGS] (
     ID INT NOT NULL PRIMARY KEY IDENTITY (1,1),
     BLOG_NAME VARCHAR(100) NOT NULL,
     BLOG_AUTHOR VARCHAR(30) NOT NULL,
     WRITE_DT DATETIME NOT NULL
 )
-");
-                
+";
+                connection.Execute(sql);
             }
 
-            public override void BackupTable(Func<string, string> func) {
-                func(@"
+            public override void CreateTempTable(IDbConnection connection) {
+                var sql = @"
 DROP TABLE IF EXISTS BLOG_TEMP
 
 SELECT *
 INTO BLOG_TEMP
-FROM ACCT.DBO.BLOGS
-");
+FROM ACC.DBO.BLOGS
+";
+                connection.Execute(sql);
             }
 
-            public override void IfExistsCreateTable(Func<string, string> func) {
-                func(@"
-ALTER TABLE...
-");
+            public override void AfterProcess(IDbConnection connection) {
+                var sql = @"
+CREATE TABLE [DBO].[BLOGS] (
+    ID INT NOT NULL PRIMARY KEY IDENTITY (1,1),
+    BLOG_NAME VARCHAR(100) NOT NULL,
+    BLOG_AUTHOR VARCHAR(30) NOT NULL,
+    WRITE_DT DATETIME NOT NULL
+)
+
+SET IDENTITY_INSERT ACC.DBO.BLOG OFF
+
+INSERT INTO ACC.DBO.BLOG
+SELECT *
+FROM ACC.DBO.BLOG_TEMP
+
+SET IDENTITY_INSERT ACC.DBO.BLOG ON
+";
+                connection.Execute(sql);
             }
         }
+
+        public class BlogMySqlMigration : JMigration {
+            public override bool IsExistsTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTempTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void AfterProcess(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class BlogNpgSqlMigration : JMigration {
+            public override bool IsExistsTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTempTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void AfterProcess(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class BlogSqliteMigration : JMigration {
+            public override bool IsExistsTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTempTable(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+
+            public override void AfterProcess(IDbConnection connection) {
+                throw new NotImplementedException();
+            }
+        }
+
+        #region [no use - ef core migration builder]
 
         // public class BlogMigration : Migration {
         //     protected override void Up(MigrationBuilder migrationBuilder) {
@@ -99,23 +158,24 @@ ALTER TABLE...
         //                 table.PrimaryKey("PK_Blogs", x => x.Id);
         //             });
         //         migrationBuilder.AddColumn<DateTime>("WriteDate", "Blogs", unicode:false);
+        //         migrationBuilder.
         //     }
         // }
+
+        #endregion
     }
-    
+
     /// <summary>
-    /// mssql blog dbcontext
+    ///     mssql blog dbcontext
     /// </summary>
     public class BlogSqlContext : JSqlDbContext {
-        public DbSet<Blog> Blogs { get; set; }
-
         public BlogSqlContext() {
+        }
 
-        }
-        
         public BlogSqlContext(DbContextOptions<BlogSqlContext> options) : base(options) {
-            
         }
+
+        public DbSet<Blog> Blogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Blog>();
@@ -124,18 +184,16 @@ ALTER TABLE...
     }
 
     /// <summary>
-    /// sqlite blog dbcontext
+    ///     sqlite blog dbcontext
     /// </summary>
     public class BlogSqliteDbContext : JSqlLiteDbContext {
-        public DbSet<Blog> Blogs { get; set; }
-        
         public BlogSqliteDbContext() {
-            
         }
 
         public BlogSqliteDbContext(DbContextOptions<BlogSqliteDbContext> options) : base(options) {
-            
         }
+
+        public DbSet<Blog> Blogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             //base.OnModelCreating(modelBuilder);

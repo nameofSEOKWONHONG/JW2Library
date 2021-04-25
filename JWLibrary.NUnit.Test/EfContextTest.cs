@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using eXtensionSharp;
 using JWLibrary.EF;
@@ -87,5 +88,15 @@ namespace JWLibrary.NUnit.Test {
         }
 
         #endregion
+
+        [Test]
+        public void migration_test() {
+            // var executor = new MigrationExecutor(new[]{Path.Combine("".xToPath("bin\\debug\\net5.0"), "JWLibrary.dll")});
+            // executor.Execute();
+        }
+
+        [Test]
+        public void query_expression_test() {
+        }
     }
 }
