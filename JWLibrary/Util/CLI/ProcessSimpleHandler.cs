@@ -18,11 +18,13 @@ namespace JWLibrary.Utils {
             Stop();
         }
 
-        public void Run(string fileName, string args, string workingDir) {
+        public void Run(string fileName, string args, string workingDir, bool isCreateNoWindow = true, bool isUseShellExecute = false) {
             _process.StartInfo = new ProcessStartInfo();
             _process.StartInfo.FileName = "cmd";
             _process.StartInfo.Arguments = string.Format("/{0} {1}", "k", fileName, args);
             _process.StartInfo.WorkingDirectory = workingDir;
+            _process.StartInfo.CreateNoWindow = isCreateNoWindow;
+            _process.StartInfo.UseShellExecute = isUseShellExecute;
             _process.Start();
         }
 

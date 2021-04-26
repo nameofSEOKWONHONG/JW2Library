@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using eXtensionSharp;
+using JWLibrary.Database;
 using JWLibrary.EF;
 using NUnit.Framework;
 
@@ -91,8 +92,8 @@ namespace JWLibrary.NUnit.Test {
 
         [Test]
         public void migration_test() {
-            // var executor = new MigrationExecutor(new[]{Path.Combine("".xToPath("bin\\debug\\net5.0"), "JWLibrary.dll")});
-            // executor.Execute();
+            var executor = new MigrationExecutor(new[]{Path.Combine("".xToPath("bin\\debug\\net5.0"), "JWLibrary.dll")});
+            executor.Execute();
         }
 
         [Test]

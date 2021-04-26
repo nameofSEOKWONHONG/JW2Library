@@ -21,7 +21,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void foreach_async_test() {
             var num = 0;
-            Enumerable.Range(1, 10).jForeachAsync(async i => {
+            Enumerable.Range(1, 10).xForEachAsync(async i => {
                 await Task.Factory.StartNew(() => {
                     num += i;
                     Console.WriteLine(num);
@@ -41,7 +41,7 @@ namespace JWLibrary.NUnit.Test {
             users.Add(new UserDto {Name = "b", Age = 2});
             users.Add(new UserDto {Name = "c", Age = 3});
 
-            users.jForeachAsync(item => {
+            users.xForEachAsync(item => {
                 var inserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Insert(item);
                 Assert.NotNull(inserted.AsObjectId);
                 return Task.CompletedTask;
@@ -54,7 +54,7 @@ namespace JWLibrary.NUnit.Test {
                 .FindAll()
                 .xWhere(m => m.Name != null);
 
-            users.jForeachAsync(item => {
+            users.xForEachAsync(item => {
                 Console.WriteLine(item.xFromObjectToJson());
                 Assert.NotNull(item);
                 return Task.CompletedTask;
