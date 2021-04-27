@@ -165,6 +165,13 @@ SET IDENTITY_INSERT ACC.DBO.BLOG ON
         #endregion
     }
 
+    public class BlogDetail {
+        public int ID { get; set; }
+        
+        public int BLOG_ID { get; set; }
+        
+        public string CONTENTS { get; set; }
+    }
     /// <summary>
     ///     mssql blog dbcontext
     /// </summary>
