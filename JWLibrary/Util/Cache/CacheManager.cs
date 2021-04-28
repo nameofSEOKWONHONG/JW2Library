@@ -19,7 +19,7 @@ namespace JWLibrary.Util.Cache {
             if (!Directory.Exists(PREFIX_DIR.xToPath())) Directory.CreateDirectory(PREFIX_DIR.xToPath());
             _liteDatabase = new LiteDatabase($"{PREFIX_DIR}/{CACHE_DB_FILE_NAME}");
             var col = _liteDatabase.GetCollection(CACHE_DB_TABLE_NAME);
-            col.EnsureIndex("Key");
+            col.EnsureIndex("PK");
         }
 
         public void Dispose() {
@@ -41,7 +41,7 @@ namespace JWLibrary.Util.Cache {
 
             var col = _liteDatabase.GetCollection(CACHE_DB_TABLE_NAME);
             var cacheKey = obj.GetHashCode().ToString();
-            var exists = col.FindOne($"$.Key='{cacheKey}'");
+            var exists = col.FindOne($"$.PK='{cacheKey}'");
 
             if (exists == null) {
                 var cacheInfo = new CacheInfo {
