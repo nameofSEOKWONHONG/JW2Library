@@ -5,6 +5,11 @@ implement dotnet extensions and useful methods.
 - JWLibrary dotnet utility.
 - JWLibrary.Web asp.net extensions.
 
+### Caution
+This project is subject to change at any time for any reason.
+
+If you can't edit it, don't use it.
+
 ### Acknowledgements
 
 [JetBrains](https://www.jetbrains.com/?from=Mapster) kindly provides Mapster with a free open-source licence for their Resharper and Rider.
