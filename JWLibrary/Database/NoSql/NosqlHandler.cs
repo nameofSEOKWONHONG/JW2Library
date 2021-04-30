@@ -47,7 +47,7 @@ namespace JWLibrary.Database {
     }
 
     /// <summary>
-    /// 
+    /// litedb handler. dont'use this. replace JLiteDbFlex
     /// </summary>
     [Obsolete("Don't use", true)]
     public class LiteDbHandler : IDisposable {
@@ -76,41 +76,5 @@ namespace JWLibrary.Database {
         public void Dispose() {
             _database?.Dispose();
         }
-    }
-
-    public class NoSqlHandlerTest {
-        public void Run() {
-            var testobj = new Test();
-            testobj.Name = "test";
-            testobj.Age = 10;
-            RedisClientHandler handler = new RedisClientHandler("ip");
-            handler.Execute(db => {
-                var result = db.SetAdd("test", testobj.xFromObjectToJson());
-                Console.WriteLine(result);
-            });
-            handler.Execute(db => {
-                var result = db.StringGet("test");
-                Console.WriteLine(result);
-            });
-        }
-
-        public void Run2() {
-            MongoClientHandler handler = new MongoClientHandler("ip", "testdb");
-            handler.Execute<Test>("test", col => {
-                col.InsertOne(new Test() {
-                    Name = "test",
-                    Age = 10
-                });
-            });
-            handler.Execute<Test>("test", col => {
-                var result = col.Find(m => m.Name == "test").First();
-                Console.WriteLine(result.xFromObjectToJson());
-            });
-        }
-    }
-
-    public class Test {
-        public string Name { get; set; }
-        public int Age { get; set; }
     }
 }

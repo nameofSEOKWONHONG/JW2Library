@@ -17,20 +17,20 @@ namespace JWLibrary.Database {
             }
         }
         
-        public readonly string MSSQL = ProviderMaps["MSSQL"].toDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MSSQL = ProviderMaps["MSSQL"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string MYSQL = ProviderMaps["MYSQL"].toDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MYSQL = ProviderMaps["MYSQL"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE = ProviderMaps["SQLITE"].toDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string SQLITE = ProviderMaps["SQLITE"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE_IN_MEMORY = ProviderMaps["SQLITE_IN_MEMORY"].toDecAes256(
+        public readonly string SQLITE_IN_MEMORY = ProviderMaps["SQLITE_IN_MEMORY"].xToDecAes256(
             DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string NPGSQL = ProviderMaps["NPGSQL"].toDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string NPGSQL = ProviderMaps["NPGSQL"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
         public DbConnectionProvider() {
