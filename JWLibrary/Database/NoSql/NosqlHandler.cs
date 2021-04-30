@@ -1,23 +1,39 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using eXtensionSharp;
-using LiteDB;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using StackExchange.Redis;
-using ConnectionType = LiteDB.ConnectionType;
 
 namespace JWLibrary.Database {
     public class MongoClientHandler {
         private readonly IMongoClient _client;
         private IMongoDatabase _mongoDatabase;
 
-        public MongoClientHandler(string connnectionString, string database) {
+        private readonly string _database = null;
+        private readonly string _table = null;
+
+        public MongoClientHandler(string connnectionString, string database, string table = null) {
+            if (database.xIsNullOrEmpty()) throw new Exception("database is empty.");
+            _table = table;
             _client = new MongoClient(connnectionString);
             _mongoDatabase = _client.GetDatabase(database);
         }
 
-        public void Execute<T>(string table, Action<IMongoCollection<T>> execute) {
-            var collection = _mongoDatabase.GetCollection<T>(table);
+        public void Execute<T>(Action<IMongoCollection<BsonDocument>> execute) {
+            var collection = _mongoDatabase.GetCollection<BsonDocument>(typeof(T).Name);
+            execute(collection);
+        }
+        
+        public void Execute<T>(Action<IMongoCollection<T>> execute) {
+            var collection = _mongoDatabase.GetCollection<T>(typeof(T).Name);
+            execute(collection);
+        }
+
+        public void Execute(Action<IMongoCollection<BsonDocument>> execute) {
+            if (_table.xIsNullOrEmpty()) throw new Exception("table is empty.");
+            var collection = _mongoDatabase.GetCollection<BsonDocument>(_table);
             execute(collection);
         }
 
@@ -44,37 +60,5 @@ namespace JWLibrary.Database {
         public async Task<bool> ExecuteAsync(Func<IDatabase, Task<bool>> executeAsync) {
             return await executeAsync(_database);
         } 
-    }
-
-    /// <summary>
-    /// litedb handler. dont'use this. replace JLiteDbFlex
-    /// </summary>
-    [Obsolete("Don't use", true)]
-    public class LiteDbHandler : IDisposable {
-        private LiteDB.LiteDatabase _database;
-        
-
-        public LiteDbHandler(ConnectionString connectionString) {
-            connectionString.Connection = ConnectionType.Shared;
-            _database = new LiteDatabase(connectionString);
-        }
-
-        public void Execute<T>(string table, Action<ILiteCollection<T>> action)
-            where T : class {
-            var col = _database.GetCollection<T>(table);
-            action(col);
-        }
-
-        public async Task<bool> ExecuteAsync<T>(string table, Func<ILiteCollection<T>, Task<bool>> func) 
-            where T : class {
-            var col = _database.GetCollection<T>(table);
-            var result = await func(col);
-            return result;
-        }
-
-
-        public void Dispose() {
-            _database?.Dispose();
-        }
     }
 }

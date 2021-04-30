@@ -5,12 +5,14 @@ using System.Data;
 using Dapper;
 using JWLibrary.Database;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace JWLibrary.EF {
     /// <summary>
     ///     Entity
     /// </summary>
     [System.ComponentModel.DataAnnotations.Schema.Table("Blogs")]
+    [BsonIgnoreExtraElements]
     public class Blog {
         [System.ComponentModel.DataAnnotations.Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
