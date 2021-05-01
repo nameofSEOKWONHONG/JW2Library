@@ -82,7 +82,7 @@ namespace JWLibrary.Database {
         
         public JSqlExpression<T> Where(Expression<Func<T, bool>> predicate) {
             dynamic body = predicate.Body;
-            var sql = $"WHERE {body.Left.Member.Name} {SqlExpressionUtil.xFromExpressionToString(body.NodeType)} {SqlExpressionUtil.GetDbValue(body.Right.Value)}";
+            var sql = $"WHERE {body.Left.Member.Name} {SqlExpressionUtil.xExpressionToString(body.NodeType)} {SqlExpressionUtil.GetDbValue(body.Right.Value)}";
             _where.Add(sql);
             return this;
         }
@@ -109,7 +109,7 @@ namespace JWLibrary.Database {
                 }
             }
             else {
-                sql.Append($"{body.Left.Member.Name} {SqlExpressionUtil.xFromExpressionToString(body.NodeType)} {SqlExpressionUtil.GetDbValue(body.Right.Value)}");
+                sql.Append($"{body.Left.Member.Name} {SqlExpressionUtil.xExpressionToString(body.NodeType)} {SqlExpressionUtil.GetDbValue(body.Right.Value)}");
             }
             _where.Add(sql.ToString());
             return this;
@@ -134,7 +134,7 @@ namespace JWLibrary.Database {
                 }
             }
             else {
-                sql.Append($"{body.Left.Member.Name} {SqlExpressionUtil.xFromExpressionToString(body.NodeType)} {SqlExpressionUtil.GetDbValue(body.Right.Value)}");
+                sql.Append($"{body.Left.Member.Name} {SqlExpressionUtil.xExpressionToString(body.NodeType)} {SqlExpressionUtil.GetDbValue(body.Right.Value)}");
             }
             _where.Add(sql.ToString());
             return this;
@@ -172,7 +172,7 @@ namespace JWLibrary.Database {
             xsb.Append("ON ");
             dynamic body = expression.Body;
             xsb.Append($"{body.Operand.Left.Expression.Name}.{body.Operand.Left.Member.Name}");
-            xsb.Append($"{SqlExpressionUtil.xFromExpressionToString(body.Operand.NodeType)}");
+            xsb.Append($"{SqlExpressionUtil.xExpressionToString(body.Operand.NodeType)}");
             xsb.Append($"{body.Operand.Right.Expression.Name}.{body.Operand.Right.Member.Name}");
             var sql = string.Empty;
             xsb.Release(out sql);
@@ -185,7 +185,7 @@ namespace JWLibrary.Database {
             xsb.Append("AND ");
             dynamic body = expression.Body;
             xsb.Append($"{body.Operand.Left.Expression.Name}.{body.Operand.Left.Member.Name}");
-            xsb.Append($"{SqlExpressionUtil.xFromExpressionToString(body.Operand.NodeType)}");
+            xsb.Append($"{SqlExpressionUtil.xExpressionToString(body.Operand.NodeType)}");
             xsb.Append($"{body.Operand.Right.Expression.Name}.{body.Operand.Right.Member.Name}");
             var sql = string.Empty;
             xsb.Release(out sql);
@@ -200,7 +200,7 @@ namespace JWLibrary.Database {
             if (body.NodeType == ExpressionType.Convert) {
                 if (body.Operand.NodeType == ExpressionType.Equal) {
                     xsb.Append($"{body.Operand.Left.Expression.Name}.{body.Operand.Left.Member.Name}");
-                    xsb.Append($"{SqlExpressionUtil.xFromExpressionToString(body.Operand.NodeType)}");
+                    xsb.Append($"{SqlExpressionUtil.xExpressionToString(body.Operand.NodeType)}");
                     xsb.Append($"{body.Operand.Right.Value}");
                     var sql = string.Empty;
                     xsb.Release(out sql);
@@ -231,7 +231,7 @@ namespace JWLibrary.Database {
             if (body.NodeType == ExpressionType.Convert) {
                 if (body.Operand.NodeType == ExpressionType.Equal) {
                     xsb.Append($"{body.Operand.Left.Expression.Name}.{body.Operand.Left.Member.Name}");
-                    xsb.Append($"{SqlExpressionUtil.xFromExpressionToString(body.Operand.NodeType)}");
+                    xsb.Append($"{SqlExpressionUtil.xExpressionToString(body.Operand.NodeType)}");
                     xsb.Append($"{body.Operand.Right.Value}");
                     var sql = string.Empty;
                     xsb.Release(out sql);
@@ -321,7 +321,7 @@ namespace JWLibrary.Database {
             return sql;
         }
         
-        public static string xFromExpressionToString(ExpressionType eptype) {
+        public static string xExpressionToString(ExpressionType eptype) {
             switch (eptype) {
                 case ExpressionType.Equal: return "=";
                 case ExpressionType.NotEqual: return "<>";

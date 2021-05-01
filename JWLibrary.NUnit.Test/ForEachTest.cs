@@ -55,7 +55,7 @@ namespace JWLibrary.NUnit.Test {
                 .xWhere(m => m.Name != null);
 
             users.xForEachAsync(item => {
-                Console.WriteLine(item.xFromObjectToJson());
+                Console.WriteLine(item.xObjectToJson());
                 Assert.NotNull(item);
                 return Task.CompletedTask;
             });

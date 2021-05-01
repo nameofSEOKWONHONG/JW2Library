@@ -18,7 +18,7 @@ namespace JWLibrary.NUnit.Test {
                     BLOG_AUTHOR = "test",
                     WRITE_DT = DateTime.Now
                 };
-                var document = BsonDocument.Parse(blog.xFromObjectToJson());
+                var document = BsonDocument.Parse(blog.xObjectToJson());
                 collection.InsertOne(document);
             });
             
@@ -26,7 +26,7 @@ namespace JWLibrary.NUnit.Test {
                 var filter = Builders<BsonDocument>.Filter.Eq("BLOG_NAME", "test");
                 var exists = collection.Find(filter).FirstOrDefault();
                 Assert.IsTrue(exists.xIsNotNull());
-                var blog = exists.xFromBsonToObject<Blog>();
+                var blog = exists.xBsonToObject<Blog>();
                 Assert.AreEqual(blog.BLOG_NAME, "test");
             });
             

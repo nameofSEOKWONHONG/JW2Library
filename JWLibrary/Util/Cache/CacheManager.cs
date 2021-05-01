@@ -52,7 +52,7 @@ namespace JWLibrary.Util.Cache {
                 col.Insert(bsonDoc);
             }
             else {
-                result = exists["Value"].AsString.xFromJsonToObject<T>();
+                result = exists["Value"].AsString.xJsonToObject<T>();
             }
         }
     }

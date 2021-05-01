@@ -52,7 +52,7 @@ namespace JWUpdator {
             if (result.IsSuccessStatusCode) {
                 result.EnsureSuccessStatusCode();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                _updatorDto = content.xFromJsonToObject<UpdatorDto>();
+                _updatorDto = content.xJsonToObject<UpdatorDto>();
             }
 
             return true;

@@ -38,7 +38,7 @@ namespace JCoreSvcTest {
                     });
             }
 
-            result.xForEach(item => { Console.WriteLine(item.xFromObjectToJson()); });
+            result.xForEach(item => { Console.WriteLine(item.xObjectToJson()); });
         }
     }
 }
