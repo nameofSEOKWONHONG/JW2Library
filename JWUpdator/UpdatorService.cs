@@ -39,7 +39,7 @@ namespace JWUpdator {
                 var request = new JHttpRequest(_baseUrl);
                 request.DownloadAsync(downloadFile, localFileName).GetAwaiter().GetResult();
 
-                if (localFileName.jFileExists()) localFileName.jFileUnzip($"{"".xToPath()}{_unzipPath}");
+                if (localFileName.xFileExists()) localFileName.xFileUnzip($"{"".xToPath()}{_unzipPath}");
                 return true;
             });
 

@@ -41,12 +41,12 @@ namespace JWLibrary.Util {
         private static void ExecuteJavascriptFile(string fileName, Action<Context> preaction,
             Action<Context> endaction) {
             if (fileName.xIsNull()) throw new FileNotFoundException("jsPath is empty");
-            if (!fileName.jFileExists()) throw new FileNotFoundException();
+            if (!fileName.xFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".js")) throw new FileLoadException("file is not support javascript");
 
             var context = new Context();
             if (preaction.xIsNotNull()) preaction(context);
-            context.Eval(string.Join("\n", fileName.jFileReadLines()));
+            context.Eval(string.Join("\n", fileName.xFileReadLines()));
             if (endaction.xIsNotNull()) endaction(context);
         }
     }

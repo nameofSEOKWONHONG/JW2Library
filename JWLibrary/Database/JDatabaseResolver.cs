@@ -23,7 +23,7 @@ namespace JWLibrary.Database {
             if (typeof(TDatabase) == typeof(MySqlConnection))
                 return JDataBaseInfo.Value.Connections["MYSQL"];
             if (typeof(TDatabase) == typeof(NpgsqlConnection))
-                return JDataBaseInfo.Value.Connections["NPGSQL"];
+                return JDataBaseInfo.Value.Connections["POSTGRESQL"];
             throw new NotImplementedException();
         }
 

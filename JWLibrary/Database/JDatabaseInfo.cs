@@ -25,9 +25,9 @@ namespace JWLibrary.Database {
                     return new MySqlConnection(DbConnectionProvider.Instance.MYSQL);
                 }
             }, {
-                "NPGSQL", connectionString => {
+                "POSTGRESQL", connectionString => {
                     PostgreSqlBootstrap.Initialize();
-                    return new NpgsqlConnection(DbConnectionProvider.Instance.NPGSQL);
+                    return new NpgsqlConnection(DbConnectionProvider.Instance.POSTGRESQL);
                 }
             },
             // {

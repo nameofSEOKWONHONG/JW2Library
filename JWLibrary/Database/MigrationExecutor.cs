@@ -49,7 +49,7 @@ namespace JWLibrary.Database {
                     connection = new MySqlConnection(DbConnectionProvider.Instance.MYSQL);
                 }
                 else if (instance.GetType().Name.Contains("NPG")) {
-                    connection = new NpgsqlConnection(DbConnectionProvider.Instance.NPGSQL);
+                    connection = new NpgsqlConnection(DbConnectionProvider.Instance.POSTGRESQL);
                 }
                 else if (instance.GetType().Name.Contains("Sqlite"))
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using eXtensionSharp;
 
 namespace JWLibrary.Database {
     internal class DbCipherKeyIVProvider {
@@ -18,7 +19,10 @@ namespace JWLibrary.Database {
 
         public (string key, string iv) Get() {
             //setting key & iv, read file or http request
-            return new("asdfasdfasdfasdf", "asdfasdfasdfasdf");
+            var configFile = @"D:\workspace\JW2Library\JConfiguration\jconfig.json";
+            var configJson = configFile.xFileReadLine();
+            var jconfig = configJson.xJsonToObject<JConfig>();
+            return new(jconfig.DatabaseProvider.KEY, jconfig.DatabaseProvider.CHIPER);
         }
     }
 }

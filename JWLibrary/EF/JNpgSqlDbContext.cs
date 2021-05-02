@@ -12,7 +12,7 @@ namespace JWLibrary.EF {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseNpgsql(DbConnectionProvider.Instance.NPGSQL);
+            optionsBuilder.UseNpgsql(DbConnectionProvider.Instance.POSTGRESQL);
             //base.OnConfiguring(optionsBuilder);
         }
     }
