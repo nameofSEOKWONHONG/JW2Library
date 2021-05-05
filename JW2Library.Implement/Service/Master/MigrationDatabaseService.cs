@@ -17,7 +17,7 @@ namespace Service {
         public override void Execute() {
             var sql = string.Empty;
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor<bool>(con => {
+                .DbExecutor(con => {
                     InitDatabase(con);
                     InitTable(con);
                     Result = IsExistsTable(con);
@@ -27,7 +27,7 @@ namespace Service {
         public override async Task ExecuteAsync() {
             var sql = string.Empty;
             await JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutorAsync<bool>(async con => {
+                .DbExecutorAsync(async con => {
                     await InitDatabaseAsync(con);
                     await InitTableAsync(con);
                     var r = await IsExistsTableAsync(con);

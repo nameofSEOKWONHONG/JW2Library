@@ -10,7 +10,8 @@ namespace JLiteDBFlex {
         private LiteDbResolver() {
         }
 
-        public static (ILiteDatabase liteDatabase, string fileName, string tableName, Dictionary<string, bool> indexItems) Resolve<TEntity>()
+        public static (ILiteDatabase liteDatabase, string fileName, string tableName) 
+            Resolve<TEntity>(ConnectionType type = ConnectionType.Shared)
             where TEntity : class {
             var fileName =
                 typeof(TEntity).xGetAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.FileName);
@@ -18,17 +19,27 @@ namespace JLiteDBFlex {
             var tableName =
                 typeof(TEntity).xGetAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.TableName);
             
-            var indexItems =
-                typeof(TEntity).xGetAttrValue((LiteDbTableAttribute indexAttribute) => indexAttribute.IndexItems);
-
             var conStr = new ConnectionString() {
                 Filename = fileName,
-                Connection = ConnectionType.Shared,
+                Connection = type,
             };
 
             var database = new LiteDatabase(conStr);
             
-            return (database, fileName, tableName, indexItems);
+            return (database, fileName, tableName);
+        }
+
+        public static (ILiteDatabase liteDatabase, string fileName, string tableName) 
+            Resolve(string fileName, string tableName, Dictionary<string, bool> indexItems = null, ConnectionType type = ConnectionType.Shared) {
+
+            var conStr = new ConnectionString() {
+                Filename = fileName,
+                Connection = type
+            };
+
+            var database = new LiteDatabase(conStr);
+
+            return (database, fileName, tableName);
         }
     }
 }

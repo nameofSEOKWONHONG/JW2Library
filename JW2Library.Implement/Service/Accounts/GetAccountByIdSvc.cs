@@ -13,7 +13,7 @@ namespace Service.Accounts {
 
         public override void Execute() {
             var litedb = LiteDbFlexerManager.Instance.Create<Account>();
-            Result = litedb.LiteCollection.FindById(Request.Data);
+            Result = litedb.LiteDatabase.GetCollection<Account>().FindById(Request.Data);
         }
 
         public class GetAccountByIdSvcValidator : AbstractValidator<GetAccountByIdSvc> {

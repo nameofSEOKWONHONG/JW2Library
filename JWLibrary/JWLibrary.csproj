@@ -10,12 +10,18 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>dotnet utility</Description>
     <Copyright>seokwon hong</Copyright>
-    <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/nameofSEOKWONHONG/JW2Library</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nameofSEOKWONHONG/JW2Library</RepositoryUrl>
     <PackageTags>dotnet utility</PackageTags>
     <PackageReleaseNotes>new jwlibrary</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1701;1702;0168;NU5118;NU5100</NoWarn>
+    <WarningsAsErrors>;NU1605</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +30,6 @@
     <PackageReference Include="FluentValidation" Version="10.0.3" />
     <PackageReference Include="IronPython" Version="2.7.11" />
     <PackageReference Include="IronPython.StdLib" Version="2.7.11" />
-    <PackageReference Include="LiteDbFlex" Version="1.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="5.0.5" />
@@ -70,7 +75,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JLiteDBFlex\JLiteDBFlex.csproj" />
-    <ProjectReference Include="..\JWLibrary.Core\JWLibrary.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

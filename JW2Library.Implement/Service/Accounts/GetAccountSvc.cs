@@ -11,7 +11,7 @@ namespace Service.Accounts {
 
         public override void Execute() {
             var litedb = LiteDbFlexerManager.Instance.Create<Account>();
-            var account = litedb.LiteCollection
+            var account = litedb.LiteDatabase.GetCollection<Account>()
                 .FindOne(m => m.UserId == Request.UserId && m.Passwd == Request.Passwd);
 
             Result = account;

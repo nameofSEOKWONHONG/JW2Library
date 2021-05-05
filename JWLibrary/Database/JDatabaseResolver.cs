@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -18,12 +19,9 @@ namespace JWLibrary.Database {
 
         public static IDbConnection Resolve<TDatabase>()
             where TDatabase : IDbConnection {
-            if (typeof(TDatabase) == typeof(SqlConnection))
-                return JDataBaseInfo.Value.Connections["MSSQL"];
-            if (typeof(TDatabase) == typeof(MySqlConnection))
-                return JDataBaseInfo.Value.Connections["MYSQL"];
-            if (typeof(TDatabase) == typeof(NpgsqlConnection))
-                return JDataBaseInfo.Value.Connections["POSTGRESQL"];
+            if (typeof(TDatabase) == typeof(SqlConnection)) return JDataBaseInfo.Value.Connections["MSSQL"];
+            if (typeof(TDatabase) == typeof(MySqlConnection)) return JDataBaseInfo.Value.Connections["MYSQL"];
+            if (typeof(TDatabase) == typeof(NpgsqlConnection)) return JDataBaseInfo.Value.Connections["POSTGRESQL"];
             throw new NotImplementedException();
         }
 

@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using eXtensionSharp;
 using JWLibrary.Utils;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
+using Nito.AsyncEx;
 
 namespace JWLibrary.Database {
     public class NoSqlConnectionProvider {
@@ -27,7 +27,7 @@ namespace JWLibrary.Database {
         //public readonly string REDIS = ProviderMaps["REDIS"]
         
         private static Dictionary<string, string> _providerMaps;
-        private static AsyncLock _mutex = new AsyncLock(); 
+        private static AsyncLock _mutex = new(); 
         
         private static Dictionary<string, string> ProviderMaps {
             get {

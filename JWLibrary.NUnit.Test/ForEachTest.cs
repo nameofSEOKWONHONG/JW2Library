@@ -42,7 +42,10 @@ namespace JWLibrary.NUnit.Test {
             users.Add(new UserDto {Name = "c", Age = 3});
 
             users.xForEachAsync(item => {
-                var inserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Insert(item);
+                var inserted = LiteDbFlexerManager
+                    .Instance.Create<UserDto>()
+                    .LiteDatabase.GetCollection<UserDto>()
+                    .Insert(item);
                 Assert.NotNull(inserted.AsObjectId);
                 return Task.CompletedTask;
             });
@@ -50,7 +53,8 @@ namespace JWLibrary.NUnit.Test {
 
         [Test]
         public void foreach_async_result_test() {
-            var users = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection
+            var users = LiteDbFlexerManager.Instance.Create<UserDto>()
+                .LiteDatabase.GetCollection<UserDto>()
                 .FindAll()
                 .xWhere(m => m.Name != null);
 

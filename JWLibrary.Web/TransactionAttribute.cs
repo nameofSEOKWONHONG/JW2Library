@@ -5,6 +5,11 @@ using eXtensionSharp;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace JWLibrary.Web {
+    /// <summary>
+    /// use only single database transaction.
+    /// dotnet core & 5 not support multiple database transactions.
+    /// </summary>
+    //[Obsolete("use only single database transaction.", false)]
     public class TransactionAttribute : Attribute, IAsyncActionFilter {
         //make sure filter marked as not reusable
         private readonly TransactionScopeOption _transactionScopeOption;

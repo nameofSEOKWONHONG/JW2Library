@@ -12,7 +12,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\eXtensionSharp\src\eXtensionSharp.csproj" />
-      <ProjectReference Include="..\JWLibrary.Core\JWLibrary.Core.csproj" />
     </ItemGroup>
 
 </Project>

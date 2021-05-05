@@ -10,15 +10,9 @@ namespace JLiteDBFlex {
         public string FileName { get; }
         public string TableName { get; }
         
-        public readonly Dictionary<string, bool> IndexItems = new();
-        
-        public LiteDbTableAttribute(string fileName, string tableName, string[] indexNames = null) {
+        public LiteDbTableAttribute(string fileName, string tableName) {
             FileName = fileName;
             TableName = tableName;
-            if (indexNames != null)
-                for (var i = 0; i < indexNames.Length; i++) {
-                    IndexItems.Add(indexNames[i], true);
-                }
         }
     }
 }

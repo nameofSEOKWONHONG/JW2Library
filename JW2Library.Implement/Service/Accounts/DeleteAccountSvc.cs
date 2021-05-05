@@ -31,7 +31,7 @@ namespace Service.Accounts {
         public override void Execute() {
             var litedb = LiteDbFlexerManager.Instance.Create<Account>();
             litedb.LiteDatabase.BeginTrans();
-            Result = litedb.LiteCollection.Delete(Request.Data);
+            Result = litedb.LiteDatabase.GetCollection<Account>().Delete(Request.Data);
             litedb.LiteDatabase.Commit();
         }
 

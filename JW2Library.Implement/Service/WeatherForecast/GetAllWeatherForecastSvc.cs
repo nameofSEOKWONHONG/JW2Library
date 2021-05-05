@@ -14,7 +14,7 @@ namespace JWService.WeatherForecast {
         IGetAllWeatherForecastSvc {
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor<WEATHER_FORECAST>(con => {
+                .DbExecutor(con => {
                     var compiler = new SqlServerCompiler();
                     var db = new QueryFactory(con, compiler);
                     var weathers = db.Query("dbo.WEATHER_FORECAST").Get<WEATHER_FORECAST>();

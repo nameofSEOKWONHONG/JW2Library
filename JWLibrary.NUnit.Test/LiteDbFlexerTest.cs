@@ -1,6 +1,7 @@
 ﻿using eXtensionSharp;
 using JLiteDBFlex;
 using NUnit.Framework;
+using Service.Contract;
 
 namespace JWLibrary.NUnit.Test {
     public class LiteDbFlexerTest {
@@ -28,7 +29,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void get_companyinfo_test() {
             var exists = LiteDbFlexerManager.Instance.Create<CompanyDto>()
-                .LiteCollection
+                .LiteDatabase.GetCollection<CompanyDto>()
                 .FindOne(m => m.Name == "red worker");
 
             Assert.NotNull(exists);
@@ -37,7 +38,7 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void insert_companyinfo_test() {
             var inserted = LiteDbFlexerManager.Instance.Create<CompanyDto>()
-                .LiteCollection
+                .LiteDatabase.GetCollection<CompanyDto>()
                 .Insert(companyDto);
             Assert.Greater(inserted.AsInt32, 0);
         }
@@ -45,7 +46,8 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void update_companyinfo_test() {
             var exists = LiteDbFlexerManager.Instance.Create<CompanyDto>()
-                .LiteCollection.FindOne(m => m.Name == "red worker");
+                .LiteDatabase.GetCollection<CompanyDto>()
+                .FindOne(m => m.Name == "red worker");
 
             Assert.NotNull(exists);
 
@@ -54,7 +56,8 @@ namespace JWLibrary.NUnit.Test {
             exists.Cfo = temp;
 
             var updated = LiteDbFlexerManager.Instance.Create<CompanyDto>()
-                .LiteCollection.Update(exists);
+                .LiteDatabase.GetCollection<CompanyDto>()
+                .Update(exists);
 
             Assert.IsTrue(updated);
         }
@@ -63,14 +66,15 @@ namespace JWLibrary.NUnit.Test {
 
         [Test]
         public void insert_test() {
-            var exists = LiteDbFlexerManager.Instance.Create<CompanyDto>().LiteCollection
+            var exists = LiteDbFlexerManager.Instance.Create<CompanyDto>()
+                .LiteDatabase.GetCollection<CompanyDto>()
                 .FindOne(m => m.Name == "red worker");
 
             Assert.NotNull(exists);
 
-            var ceoinserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Insert(exists.Ceo);
-            var cfoinserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Insert(exists.Cfo);
-            var ctoinserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Insert(exists.Cto);
+            var ceoinserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().Insert(exists.Ceo);
+            var cfoinserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().Insert(exists.Cfo);
+            var ctoinserted = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().Insert(exists.Cto);
 
             Assert.Greater(ceoinserted.AsInt32, 0);
             Assert.Greater(cfoinserted.AsInt32, 0);
@@ -79,54 +83,55 @@ namespace JWLibrary.NUnit.Test {
 
         [Test]
         public void get_test() {
-            var ceo = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "kim");
+            var ceo = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().FindOne(m => m.Name == "kim");
             Assert.NotNull(ceo);
         }
 
         [Test]
         public void get_delete_test() {
-            var exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "kim");
-            if (exists.xIsNotNull()) LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Delete(exists.Name);
+            var exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().FindOne(m => m.Name == "kim");
+            if (exists.xIsNotNull()) LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().Delete(exists.Name);
 
-            exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "kim");
+            exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().FindOne(m => m.Name == "kim");
 
             Assert.IsNull(exists);
         }
 
         [Test]
         public void get_update_test() {
-            var exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "hwang");
+            var exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().FindOne(m => m.Name == "hwang");
             if (exists.xIsNotNull()) {
                 exists.Age = 22;
-                var result = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.Update(exists);
+                var result = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().Update(exists);
                 Assert.IsTrue(result);
             }
 
-            exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection.FindOne(m => m.Name == "hwang");
+            exists = LiteDbFlexerManager.Instance.Create<UserDto>().LiteDatabase.GetCollection<UserDto>().FindOne(m => m.Name == "hwang");
             Assert.AreEqual(22, exists.Age);
         }
 
         [Test]
         public void get_flexermanager_test() {
             var exists = LiteDbFlexerManager.Instance.Create<UserDto>()
-                .LiteCollection
+                .LiteDatabase.GetCollection<UserDto>()
                 .FindOne(m => m.Name == "test");
 
             if (exists != null) {
                 exists.Age = 40;
                 var updated = LiteDbFlexerManager.Instance.Create<UserDto>()
-                    .LiteCollection
+                    .LiteDatabase.GetCollection<UserDto>()
                     .Update(exists);
 
                 Assert.IsTrue(updated);
 
                 exists = LiteDbFlexerManager.Instance.Create<UserDto>()
-                    .LiteCollection
+                    .LiteDatabase.GetCollection<UserDto>()
                     .FindOne(m => m.Name == "test");
 
                 Assert.AreEqual(40, exists.Age);
 
-                var removed = LiteDbFlexerManager.Instance.Create<UserDto>().LiteCollection
+                var removed = LiteDbFlexerManager.Instance.Create<UserDto>()
+                    .LiteDatabase.GetCollection<UserDto>()
                     .Delete(exists.Name);
 
                 Assert.IsTrue(removed);
@@ -136,7 +141,7 @@ namespace JWLibrary.NUnit.Test {
         #endregion
     }
 
-    [LiteDbTable("cominfo.db", "user", new[] {"Name"})]
+    [LiteDbTable("cominfo.db", "user")]
     public class UserDto {
         //auto-increment
         //id가 명시적으로 없을 경우 _oid를 생성함. 해당 hash값이 고유값이 됨. Key와는 다른 의미임.
@@ -145,7 +150,7 @@ namespace JWLibrary.NUnit.Test {
         public int Age { get; set; }
     }
 
-    [LiteDbTable("cominfo.db", "company", new[] {"Name"})]
+    [LiteDbTable("cominfo.db", "company")]
     public class CompanyDto {
         public int Id { get; set; }
         public string Name { get; set; }

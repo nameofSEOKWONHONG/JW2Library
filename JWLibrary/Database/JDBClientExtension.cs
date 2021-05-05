@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using eXtensionSharp;
 
@@ -77,44 +80,41 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static void DbExecutor<T>(this IDbConnection connection, Action<IDbConnection> action) {
+        public static void DbExecutor(this IDbConnection connection, Action<IDbConnection> action, bool isTran = false) {
             try {
-                if (connection.State != ConnectionState.Open)
-                    connection.Open();
-
+                JTransaction.Instance.Add(connection, isTran);
+                connection.xOpen();
                 action(connection);
+                JTransaction.Instance.Commit(connection);
+            }
+            catch {
+                JTransaction.Instance.Rollback(connection);
+                throw;
             }
             finally {
                 connection.Close();
             }
         }
 
-        public static void DbExecutor(this IDbConnection connection, Action<IDbConnection> action) {
+        public static void DbExecutor(this Tuple<IDbConnection, IDbConnection> connections,
+            Action<IDbConnection, IDbConnection> action, bool isTran = false) {
             try {
-                if (connection.State != ConnectionState.Open)
-                    connection.Open();
+                JTransaction.Instance.Adds(new[] {connections.Item1, connections.Item2}, isTran);
 
-                action(connection);
-            }
-            finally {
-                connection.Close();
-            }
-        }
-
-        public static void DbExecutor<T>(this Tuple<IDbConnection, IDbConnection> connections,
-            Action<IDbConnection, IDbConnection> action) {
-            try {
-                if (connections.Item1.State != ConnectionState.Open)
-                    connections.Item1.Open();
-
-                if (connections.Item2.State != ConnectionState.Open)
-                    connections.Item2.Open();
+                connections.Item1.xOpen();
+                connections.Item2.xOpen();
 
                 action(connections.Item1, connections.Item2);
+
+                JTransaction.Instance.Commits(new[] {connections.Item1, connections.Item2});
+            }
+            catch {
+                JTransaction.Instance.Rollbacks(new[]{connections.Item1, connections.Item2});
+                throw;
             }
             finally {
-                connections.Item1.Close();
-                connections.Item2.Close();
+                connections.Item1.xClose();
+                connections.Item2.xClose();
             }
         }
 
@@ -125,35 +125,120 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static async Task DbExecutorAsync<T>(this IDbConnection connection, Func<IDbConnection, Task> func) {
+        public static async Task DbExecutorAsync(this IDbConnection connection, Func<IDbConnection, Task> func, bool isTran = false) {
             try {
-                if (connection.State != ConnectionState.Open)
-                    connection.Open();
+                JTransaction.Instance.Add(connection, isTran);
+                connection.xOpen();
 
                 await func(connection);
+                
+                JTransaction.Instance.Commit(connection);
+            }
+            catch {
+                JTransaction.Instance.Rollback(connection);
+                throw;
             }
             finally {
-                connection.Close();
+                connection.xClose();
             }
         }
 
-        public static async void DbExecutorAsync<T>(this Tuple<IDbConnection, IDbConnection> connections,
-            Func<IDbConnection, IDbConnection, Task> func) {
+        public static async void DbExecutorAsync(this Tuple<IDbConnection, IDbConnection> connections,
+            Func<IDbConnection, IDbConnection, Task> func, bool isTran = false) {
             try {
-                if (connections.Item1.State != ConnectionState.Open)
-                    connections.Item1.Open();
-
-                if (connections.Item2.State != ConnectionState.Open)
-                    connections.Item2.Open();
+                JTransaction.Instance.Adds(new[] {connections.Item1, connections.Item2}, isTran);
+                connections.Item1.xOpen();
+                connections.Item2.xOpen();
 
                 await func(connections.Item1, connections.Item2);
+                
+                JTransaction.Instance.Commits(new[]{connections.Item1, connections.Item2});
+            }
+            catch {
+                JTransaction.Instance.Rollbacks(new[] {connections.Item1, connections.Item2});
+                throw;
             }
             finally {
-                connections.Item1.Close();
-                connections.Item2.Close();
+                connections.Item1.xClose();
+                connections.Item2.xClose();
             }
+        }
+
+        public static void xOpen(this IDbConnection connection) {
+            if(connection.State != ConnectionState.Open) connection.Open();
+        }
+
+        public static void xClose(this IDbConnection connection) {
+            if(connection.State == ConnectionState.Open) connection.Close();
         }
 
         #endregion [self impletment func method]
+    }
+
+    public class JTransaction {
+        private static Lazy<JTransaction> _instance = new Lazy<JTransaction>(() => new JTransaction());
+
+        public static JTransaction Instance {
+            get {
+                return _instance.Value;
+            }
+        }
+        
+        public ConcurrentDictionary<int, IDbTransaction>
+            _transactions = new ConcurrentDictionary<int, IDbTransaction>();
+
+        public JTransaction() {
+            
+        }
+
+        public void Add(IDbConnection connection, bool isTran = false) {
+            if (isTran) {
+                var result = _transactions.TryAdd(connection.GetHashCode(), connection.BeginTransaction());
+                if (result.xIsFalse()) {
+                    Trace.WriteLine($"transaction add failed : {connection.GetHashCode()}, {connection.ConnectionString}");
+                }
+            }
+        }
+
+        public void Adds(IEnumerable<IDbConnection> connections, bool isTran = false) {
+            if (isTran) {
+                connections.xForEach(connection => {
+                    Add(connection, isTran);
+                });
+            }
+        }
+
+        public IDbTransaction Get(IDbConnection connection) {
+            return _transactions.GetOrAdd(connection.GetHashCode(), (i => _transactions[i] ));
+        }
+
+        public void Commit(IDbConnection connection) {
+            _transactions.xForEach(tran => {
+                if (tran.Key == connection.GetHashCode()) {
+                    tran.Value.Commit();
+                }
+            });
+        }
+
+        public void Commits(IEnumerable<IDbConnection> connections) {
+            connections.xForEach(connection => {
+                Commit(connection);
+            });
+        }
+
+        public void Rollback(IDbConnection connection) {
+            _transactions.xForEach(tran => {
+                if (tran.Key == connection.GetHashCode()) {
+                    tran.Value.Rollback();
+                }
+            });
+        }
+
+        public void Rollbacks(IEnumerable<IDbConnection> connections) {
+            connections.xForEach(connection => {
+                Rollback(connection);
+            });
+        }
+        
     }
 }

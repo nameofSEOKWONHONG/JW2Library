@@ -72,7 +72,7 @@ namespace JWLibrary.ServiceExecutor {
             return false;
         }
 
-        protected void Dispose(bool disposing) {
+        public void Dispose(bool disposing) {
             if (disposed) return;
             if (disposing) service.Dispose();
 

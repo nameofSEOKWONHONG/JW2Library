@@ -8,17 +8,15 @@ using StackExchange.Redis;
 
 namespace JWLibrary.Database {
     public class MongoClientHandler {
-        private readonly IMongoClient _client;
         private IMongoDatabase _mongoDatabase;
 
-        private readonly string _database = null;
         private readonly string _table = null;
 
         public MongoClientHandler(string connnectionString, string database, string table = null) {
             if (database.xIsNullOrEmpty()) throw new Exception("database is empty.");
             _table = table;
-            _client = new MongoClient(connnectionString);
-            _mongoDatabase = _client.GetDatabase(database);
+            IMongoClient client = new MongoClient(connnectionString);
+            _mongoDatabase = client.GetDatabase(database);
         }
 
         public void Execute<T>(Action<IMongoCollection<BsonDocument>> execute) {
@@ -45,12 +43,11 @@ namespace JWLibrary.Database {
     }
 
     public class RedisClientHandler {
-        private readonly ConnectionMultiplexer _muxer;
         private IDatabase _database;
 
         public RedisClientHandler(string connectionString) {
-            _muxer = ConnectionMultiplexer.Connect(connectionString);
-            _database = _muxer.GetDatabase();
+            var muxer = ConnectionMultiplexer.Connect(connectionString);
+            _database = muxer.GetDatabase();
         }
 
         public void Execute(Action<IDatabase> execute) {

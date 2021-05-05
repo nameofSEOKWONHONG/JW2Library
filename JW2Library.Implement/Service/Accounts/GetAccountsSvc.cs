@@ -17,7 +17,7 @@ namespace Service.Accounts {
 
         public override void Execute() {
             var litedb = LiteDbFlexerManager.Instance.Create<Account>();
-            var query = litedb.LiteCollection.Query();
+            var query = litedb.LiteDatabase.GetCollection<Account>().Query();
             if (Request.Data.xIsNotNull()) {
                 if (Request.Data.Id > 0) query = query.Where(m => m.Id >= Request.Data.Id);
                 if (Request.Data.UserId.xIsNullOrEmpty())
@@ -27,7 +27,7 @@ namespace Service.Accounts {
                     .ToList();
 
                 var result = Request.Adapt<PagingResultDto<IEnumerable<Account>>>();
-                result.TotalCount = litedb.LiteCollection.Count();
+                result.TotalCount = litedb.LiteDatabase.GetCollection<Account>().Count();
                 result.Data = accounts;
                 Result = result;
             }

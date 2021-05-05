@@ -19,7 +19,7 @@ namespace Service.WeatherForecast {
             //use sqlkata
             var query = new Query("WEATHER_FORECAST").Where("ID", Request.ID).Select("*");
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor<WEATHER_FORECAST>(con => {
+                .DbExecutor(con => {
                     var compiler = new SqlServerCompiler();
                     var db = new QueryFactory(con, compiler);
                     var weather = db.Query("dbo.WEATHER_FORECAST").Where("ID", Request.ID)

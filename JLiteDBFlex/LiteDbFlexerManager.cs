@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using eXtensionSharp;
 using LiteDB;
@@ -12,7 +13,7 @@ namespace JLiteDBFlex {
     public sealed class LiteDbFlexerManager {
         private readonly AsyncLock _mutex = new();
 
-        private readonly XHDictionary<Type, ILiteDbFlexer> _instanceMap =
+        private readonly ConcurrentDictionary<string, ILiteDbFlexer> _instanceMap =
             new();
 
         private static Lazy<LiteDbFlexerManager> _instance =
@@ -25,27 +26,70 @@ namespace JLiteDBFlex {
         }
 
         /// <summary>
-        /// create instance of litedb
+        /// create instance by entity attribute
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>ValueTuple</returns>
-        public (ILiteCollection<T> LiteCollection, string TableName, string FileName, ILiteDatabase LiteDatabase) Create<T>() where T : class {
-            var exists = _instanceMap.FirstOrDefault(m => m.Key == typeof(T));
+        public ILiteDbFlexer Create<T>(ConnectionType type = ConnectionType.Shared) where T : class {
+            var fileName = typeof(T).xGetAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.FileName);
+            if (fileName.xIsNullOrEmpty()) throw new Exception("entity file name attribute is empty.");
+            var tableName = typeof(T).xGetAttrValue((LiteDbTableAttribute tableAttribute) => tableAttribute.TableName);
+            if (tableName.xIsNullOrEmpty()) throw new Exception("entity table name attribute is empty.");
+            
+            var exists = _instanceMap.FirstOrDefault(m => m.Key == fileName);
             if (exists.Key.xIsNotNull()) {
-                var result = exists.Value as LiteDbFlexer<T>;
-                return new(result.LiteCollection, result.TableName, result.FileName, result.LiteDatabase);
+                return exists.Value as LiteDbFlexer<T>;
             }
-
+            
             using (_mutex.Lock()) {
-                var newInstance = new LiteDbFlexer<T>();
-                if (_instanceMap.Keys.Contains(typeof(T)).xIsFalse()) {
-                    _instanceMap.Add(typeof(T), newInstance);
-                    return new(newInstance.LiteCollection, newInstance.TableName, newInstance.FileName, newInstance
-                        .LiteDatabase);                        
+                exists = _instanceMap.FirstOrDefault(m => m.Key == fileName);
+                if (exists.Key.xIsNotNull()) {
+                    return exists.Value as LiteDbFlexer<T>;
+                }
+                
+                var newInstance = new LiteDbFlexer<T>(type);
+                if (_instanceMap.Keys.Contains(fileName).xIsFalse()) {
+                    if (_instanceMap.TryAdd(fileName, newInstance)) {
+                        return newInstance;
+                    } 
                 }
             }
 
-            return new (null, null, null, null);
+            return null;
+        }
+
+        /// <summary>
+        /// create instance by manual
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="tableName"></param>
+        /// <param name="type"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public ILiteDbFlexer Create<T>(string fileName, string tableName, ConnectionType type = ConnectionType.Shared) where T : class {
+            if (fileName.xIsNullOrEmpty()) throw new Exception("file name is empty");
+            if (tableName.xIsNullOrEmpty()) throw new Exception("table name is empty");
+            var exists = _instanceMap.FirstOrDefault(m => m.Key == fileName);
+            if (exists.Key.xIsNotNull()) {
+                return exists.Value as LiteDbFlexer;
+            }
+
+            using (_mutex.Lock()) {
+                exists = _instanceMap.FirstOrDefault(m => m.Key == fileName);
+                if (exists.Key.xIsNotNull()) {
+                    return exists.Value as LiteDbFlexer;
+                }
+                
+                var newInstance = new LiteDbFlexer<T>(type);
+                if (_instanceMap.Keys.Contains(fileName).xIsFalse()) {
+                    if (_instanceMap.TryAdd(fileName, newInstance)) {
+                        return newInstance;
+                    } 
+                }
+            }
+            
+            return null;
         }
 
         /// <summary>

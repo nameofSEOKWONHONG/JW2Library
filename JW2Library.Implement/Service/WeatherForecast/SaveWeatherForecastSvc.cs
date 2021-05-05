@@ -32,7 +32,7 @@ namespace Service.WeatherForecast {
 
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor<int>(db => {
+                .DbExecutor(db => {
                     if (_exists.xIsNotNull()) Result = db.Update(Request);
                     Result = db.Insert(Request).Value;
                 });

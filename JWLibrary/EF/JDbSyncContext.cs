@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using DnsClient.Internal;
 using eXtensionSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Scripting.Utils;
@@ -50,7 +51,7 @@ namespace JWLibrary.EF {
                     context.SaveChanges();
                 });
             }
-            catch (Exception e) {
+            catch(Exception e) {
                 _isRollback = true;
             }
         }
@@ -61,7 +62,7 @@ namespace JWLibrary.EF {
                 _srcDbContext.Add<T>(entity);
                 await _srcDbContext.SaveChangesAsync();
 
-                _destDbContexts.xForEachAsync(async context => {
+                await _destDbContexts.xForEachAsync(async context => {
                     context.Add<T>(entity);
                     await context.SaveChangesAsync();
                 });
@@ -94,7 +95,7 @@ namespace JWLibrary.EF {
                 _srcDbContext.Update<T>(entity);
                 await _srcDbContext.SaveChangesAsync();
             
-                _destDbContexts.xForEachAsync(async context => {
+                await _destDbContexts.xForEachAsync(async context => {
                     context.Update<T>(entity);
                     await context.SaveChangesAsync();
                 });
@@ -126,7 +127,7 @@ namespace JWLibrary.EF {
                 _srcDbContext.Remove<T>(entity);
                 await _srcDbContext.SaveChangesAsync();
 
-                _destDbContexts.xForEachAsync(async context => {
+                await _destDbContexts.xForEachAsync(async context => {
                     context.Remove<T>(entity);
                     await context.SaveChangesAsync();
                 });

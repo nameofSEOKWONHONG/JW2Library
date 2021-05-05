@@ -68,8 +68,9 @@ namespace JWLibrary.Database {
                     
                     trans.Commit();
                 }
-                catch (Exception e) {
+                catch {
                     trans.Rollback();
+                    throw;
                 }
             });
         }
