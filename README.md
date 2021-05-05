@@ -1,7 +1,7 @@
 # JW2Library
 implement dotnet extensions and useful methods.
 (original source from [JWLibrary](https://github.com/nameofSEOKWONHONG/JWLibrary).)
-- JWLibrary.Core dotnet extension methods.
+- ~~JWLibrary.Core dotnet extension methods.~~ to [eXtensionSharp](https://github.com/nameofSEOKWONHONG/eXtensionSharp)
 - JWLibrary dotnet utility.
 - JWLibrary.Web asp.net extensions.
 
