@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using Dapper;
 using eXtensionSharp;
 using NetFabric.Hyperlinq;
 
@@ -13,6 +17,7 @@ namespace JWLibrary.Database {
         public JSqlExpression() {
             
         }
+
         
         public JSqlExpression<T> Select<T>(Expression<Func<T, object>> predicate = null) 
             where T : class {
@@ -69,6 +74,10 @@ namespace JWLibrary.Database {
         private string _on = string.Empty;
         private XList<string> _where = new XList<string>();
         
+        private Dictionary<string, SqlParameter> _parameters = new Dictionary<string, SqlParameter>();
+        private int _parameterCnt = 1;
+
+        
         public JSqlExpression(string select, string from) {
             _select = select;
             _from = from;
@@ -82,7 +91,9 @@ namespace JWLibrary.Database {
         
         public JSqlExpression<T> Where(Expression<Func<T, bool>> predicate) {
             dynamic body = predicate.Body;
-            var sql = $"WHERE {body.Left.Member.Name} {SqlExpressionUtil.xExpressionToString(body.NodeType)} {SqlExpressionUtil.GetDbValue(body.Right.Value)}";
+            
+            _parameters.Add($"@p{_parameterCnt}", new SqlParameter() { ParameterName = $"@p{_parameterCnt}", Value = SqlExpressionUtil.GetDbValue(body.Right.Value)});
+            var sql = $"WHERE {body.Left.Member.Name} {SqlExpressionUtil.xExpressionToString(body.NodeType)} @p{_parameterCnt}";
             _where.Add(sql);
             return this;
         }
@@ -148,6 +159,14 @@ namespace JWLibrary.Database {
                 sb.AppendLine(where);
             });
             return sb.ToString();
+        }
+
+        public IEnumerable<T> Query<T>(ENUM_DATABASE_TYPE type) {
+            IEnumerable<T> result = null;
+            JDatabaseResolver.Resolve(type).DbExecutor(db => {
+                result = db.Query<T>(this.Build(), _parameters.Select(m => m.Value));
+            });
+            return result;
         }
     }
 

@@ -13,19 +13,31 @@ namespace JWLibrary.Database {
     ///     Database Information Master
     /// </summary>
     internal class JDatabaseInfo {
+        #region [lazy instance]
+        private static readonly Lazy<JDatabaseInfo> _instance = 
+            new(() => { return new JDatabaseInfo(); });
+
+        public static JDatabaseInfo Instance {
+            get {
+                return _instance.Value;
+            }
+        }
+        #endregion
+
+        #region [1st class variable]
         private readonly Dictionary<string, Func<string, IDbConnection>> _connectionMaps = new() {
             {
-                "MSSQL", connectionString => {
+                ENUM_DATABASE_TYPE.MSSQL.Value, connectionString => {
                     SqlServerBootstrap.Initialize();
                     return new SqlConnection(DbConnectionProvider.Instance.MSSQL);
                 }
             }, {
-                "MYSQL", connectionString => {
+                ENUM_DATABASE_TYPE.MYSQL.Value, connectionString => {
                     MySqlBootstrap.Initialize();
                     return new MySqlConnection(DbConnectionProvider.Instance.MYSQL);
                 }
             }, {
-                "POSTGRESQL", connectionString => {
+                ENUM_DATABASE_TYPE.POSTGRESQL.Value, connectionString => {
                     PostgreSqlBootstrap.Initialize();
                     return new NpgsqlConnection(DbConnectionProvider.Instance.POSTGRESQL);
                 }
@@ -36,20 +48,19 @@ namespace JWLibrary.Database {
             //     }
             // },
         };
-
-        public JDatabaseInfo() {
-            var serviceCollection = new ServiceCollection();
-            InitConfig(serviceCollection);
-        }
-
+        #endregion
+        
         public Dictionary<string, IDbConnection> Connections { get; } =
             new();
 
-        private void InitConfig(IServiceCollection serviceCollection) {
+        #region [ctor]
+        public JDatabaseInfo() {
+            var serviceCollection = new ServiceCollection();
             _connectionMaps.xForEach((item, index) => {
                 Connections.Add(item.Key, item.Value(item.Key));
                 return true;
             });
         }
+        #endregion
     }
 }

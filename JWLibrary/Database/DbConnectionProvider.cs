@@ -17,20 +17,20 @@ namespace JWLibrary.Database {
             }
         }
         
-        public readonly string MSSQL = ProviderMaps["MSSQL"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MSSQL = ProviderMaps[ENUM_DATABASE_TYPE.MSSQL.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string MYSQL = ProviderMaps["MYSQL"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MYSQL = ProviderMaps[ENUM_DATABASE_TYPE.MYSQL.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE = ProviderMaps["SQLITE"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string SQLITE = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE_IN_MEMORY = ProviderMaps["SQLITE_IN_MEMORY"].xToDecAes256(
+        public readonly string SQLITE_IN_MEMORY = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value].xToDecAes256(
             DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string POSTGRESQL = ProviderMaps["POSTGRESQL"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string POSTGRESQL = ProviderMaps[ENUM_DATABASE_TYPE.POSTGRESQL.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
         public DbConnectionProvider() {
@@ -50,13 +50,13 @@ namespace JWLibrary.Database {
                             var configJson = configFile.xFileReadLine();
 
                             var jconfig = configJson.xJsonToObject<JConfig>();
-                            _providerMaps.Add("MSSQL", jconfig.DatabaseProvider.MSSQL);
-                            _providerMaps.Add("MYSQL", jconfig.DatabaseProvider.MYSQL);
-                            _providerMaps.Add("SQLITE", jconfig.DatabaseProvider.SQLITE);
-                            _providerMaps.Add("SQLITE_IN_MEMORY", jconfig.DatabaseProvider.SQLITE_IN_MEMORY);
-                            _providerMaps.Add("POSTGRESQL", jconfig.DatabaseProvider.POSTGRESQL);    
-                            _providerMaps.Add("REDIS", jconfig.DatabaseProvider.REDIS);
-                            _providerMaps.Add("MONGODB", jconfig.DatabaseProvider.MONGODB);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.MSSQL.Value, jconfig.DatabaseProvider.MSSQL);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.MYSQL.Value, jconfig.DatabaseProvider.MYSQL);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE.Value, jconfig.DatabaseProvider.SQLITE);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value, jconfig.DatabaseProvider.SQLITE_IN_MEMORY);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.POSTGRESQL.Value, jconfig.DatabaseProvider.POSTGRESQL);    
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.REDIS.Value, jconfig.DatabaseProvider.REDIS);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.MONGODB.Value, jconfig.DatabaseProvider.MONGODB);
                         }
                     }
                 }

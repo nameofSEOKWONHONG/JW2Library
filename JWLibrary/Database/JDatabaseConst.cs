@@ -5,7 +5,7 @@ using SqlKata.Compilers;
 
 namespace JWLibrary.Database {
     public class JDatabaseConst {
-        public static readonly Dictionary<ENUM_SQL_COMPILER_TYPE, Compiler> COMPILER_MAP =
+        public static readonly Dictionary<ENUM_SQL_COMPILER_TYPE, Compiler> SQLKATA_COMPILERS =
             new() {
                 {ENUM_SQL_COMPILER_TYPE.MSSQL, new SqlServerCompiler()},
                 {ENUM_SQL_COMPILER_TYPE.MYSQL, new MySqlCompiler()},
