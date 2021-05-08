@@ -1,0 +1,36 @@
+﻿@using TodoBlazor.TodoList
+
+<div class="TodoListItem-virtualized">
+  <div class="TodoListItem">
+    <div class=checkbox, @onclick="OnToggle">
+      @{
+        if (Item.IsToggle) {
+          <input class="checkbox" value=""/>
+        }
+      }
+      @* {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />} *@
+      <div class="text">@Item.Text</div>
+    </div>
+    <div class="remove" @onclick="OnRemove">
+      @* <MdRemoveCircleOutline /> *@
+    </div>
+  </div>
+</div>
+
+@code {
+  [Parameter]
+  public string Style { get; set; }
+  [Parameter]
+  public TodoItem Item { get; set; }
+
+  public void OnToggle() {
+    Item.IsToggle = !Item.IsToggle;
+  // var exists = TodoItems.First(m => m.Id == Id);
+  // exists.IsToggle = true;
+  }
+
+  public void OnRemove() {
+    // var exists = TodoItems.First(m => m.Id == Id);
+    // TodoItems.Remove(exists);
+  }
+}

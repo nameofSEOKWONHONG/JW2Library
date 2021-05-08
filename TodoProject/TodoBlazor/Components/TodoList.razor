@@ -1,0 +1,13 @@
+﻿@using TodoBlazor.TodoList
+
+<ul>
+    @foreach (var todo in TodoItems) {
+        <TodoListItem Item=@todo></TodoListItem>
+                                       
+    }
+</ul>
+
+@code {
+    [Parameter]
+    public List<TodoItem> TodoItems { get; set; }
+}
