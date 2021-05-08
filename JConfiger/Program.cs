@@ -10,8 +10,8 @@ using JWLibrary.Utils;
 namespace JConfiger {
     class Program {
         static void Main(string[] args) {
-            var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 16);
-            var chiper = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 16);
+            var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).xSubstring(0, 16);
+            var chiper = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).xSubstring(0, 16);
             var dbProviderObj = new JDatabaseProviderConfig();
             #if __SURFACE__
             dbProviderObj.MSSQL =

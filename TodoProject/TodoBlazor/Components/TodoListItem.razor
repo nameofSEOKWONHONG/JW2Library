@@ -1,36 +1,40 @@
 ﻿@using TodoBlazor.TodoList
 
 <div class="TodoListItem-virtualized">
-  <div class="TodoListItem">
-    <div class=checkbox, @onclick="OnToggle">
-      @{
-        if (Item.IsToggle) {
-          <input class="checkbox" value=""/>
-        }
-      }
-      @* {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />} *@
-      <div class="text">@Item.Text</div>
+    <div class="TodoListItem">
+        <div class="checkbox">
+            <input class="checkbox" type="checkbox" @onclick="OnToggle"/>
+            @if (@Item.IsDone) {
+                <div class="text" style="text-decoration:line-through;">@Item.Text</div>    
+            }
+            else {
+                <div class="text">@Item.Text</div>
+            }
+            
+        </div>
+        @* {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />} *@
+    
+        <div class="remove">
+            <input class="remove" type="button" value="remove" @onclick="OnRemove"/>
+            @* <MdRemoveCircleOutline /> *@
+        </div>
     </div>
-    <div class="remove" @onclick="OnRemove">
-      @* <MdRemoveCircleOutline /> *@
-    </div>
-  </div>
 </div>
 
 @code {
-  [Parameter]
-  public string Style { get; set; }
-  [Parameter]
-  public TodoItem Item { get; set; }
+    [Parameter]
+    public TodoItem Item { get; set; }
 
-  public void OnToggle() {
-    Item.IsToggle = !Item.IsToggle;
-  // var exists = TodoItems.First(m => m.Id == Id);
-  // exists.IsToggle = true;
-  }
+    [Parameter]
+    public EventCallback<int> OnRemoveCallback { get; set; }
+    [Parameter]
+    public EventCallback<int> OnToggleCallback { get; set; }
+    
+    public async Task OnToggle() {
+        await OnToggleCallback.InvokeAsync(Item.Id);
+    }
 
-  public void OnRemove() {
-    // var exists = TodoItems.First(m => m.Id == Id);
-    // TodoItems.Remove(exists);
-  }
+    public async Task OnRemove() {
+        await OnRemoveCallback.InvokeAsync(Item.Id);
+    }
 }

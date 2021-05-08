@@ -27,7 +27,7 @@
 }
 .TodoListItem .checkbox.checked .text {
     color: #adb5bd;
-    text-decoration: line-through;
+    /*text-decoration: line-through;*/
 }
 .TodoListItem .remove {
     display: flex;

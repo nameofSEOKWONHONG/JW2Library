@@ -2,12 +2,27 @@
 
 <ul>
     @foreach (var todo in TodoItems) {
-        <TodoListItem Item=@todo></TodoListItem>
-                                       
+        <li class="TodoList">
+            <TodoListItem Item=@todo OnRemoveCallback="@OnRemove" OnToggleCallback="@OnToggle" ></TodoListItem>    
+        </li>
     }
 </ul>
 
 @code {
     [Parameter]
     public List<TodoItem> TodoItems { get; set; }
+
+    public void OnRemove(int id) {
+        var exists = TodoItems.FirstOrDefault(m => m.Id == id);
+        if (exists != null) {
+            TodoItems.Remove(exists);
+        }
+    }
+
+    public void OnToggle(int id) {
+        var exists = TodoItems.FirstOrDefault(m => m.Id == id);
+        if (exists != null) {
+            exists.IsDone = !exists.IsDone;
+        }
+    }
 }
