@@ -2,7 +2,7 @@
 
 <ul>
     @foreach (var todo in TodoItems) {
-        <li class="TodoList">
+        <li class="list-group">
             <TodoListItem Item=@todo OnRemoveCallback="@OnRemove" OnToggleCallback="@OnToggle" ></TodoListItem>    
         </li>
     }

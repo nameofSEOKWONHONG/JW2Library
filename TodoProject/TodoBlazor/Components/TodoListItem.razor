@@ -1,23 +1,21 @@
 ﻿@using TodoBlazor.TodoList
 
-<div class="TodoListItem-virtualized">
-    <div class="TodoListItem">
-        <div class="checkbox">
-            <input class="checkbox" type="checkbox" @onclick="OnToggle"/>
-            @if (@Item.IsDone) {
-                <div class="text" style="text-decoration:line-through;">@Item.Text</div>    
-            }
-            else {
-                <div class="text">@Item.Text</div>
-            }
-            
-        </div>
-        
-        <div class="remove">
-            <input class="remove" type="button" value="remove" @onclick="OnRemove"/>
-            @* <MdRemoveCircleOutline /> *@
-        </div>
+<div class="list-group-item">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" @onclick="OnToggle">
+        @if (Item.IsDone) {
+            <label class="form-check-label" for="flexCheckDefault" style="text-decoration:line-through;">
+                @Item.Text
+            </label>            
+        }
+        else {
+            <label class="form-check-label" for="flexCheckDefault">
+                @Item.Text
+            </label>            
+        }
+        <input class="btn btn-danger" type="button" @onclick="OnRemove" value="remove"/>
     </div>
+
 </div>
 
 @code {

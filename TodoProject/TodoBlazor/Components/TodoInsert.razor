@@ -1,15 +1,15 @@
 ﻿@using TodoBlazor.TodoList
-<form className="TodoInsert" @onsubmit="OnSubmit">
+<form class="TodoInsert" @onsubmit="OnSubmit">
   <input
     placeholder="할 일을 입력하세요"
     @bind="@Text" 
-    @* @oninput="(eventArgs) => {OnChangeAsync(eventArgs.Value.ToString());}" *@
+    
     />
-  <button type="submit" value="save" @onsubmit="OnSubmit">
-  </button>
+  <button class="btn btn-primary" type="submit" @onsubmit="OnSubmit">save</button>
 </form>
 
 @code {
+      //@oninput="(eventArgs) => {OnChangeAsync(eventArgs.Value.ToString());}"
   public string Text { get; set; }
   
   [Parameter]
