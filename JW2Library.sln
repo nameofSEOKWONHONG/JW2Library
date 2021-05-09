@@ -60,6 +60,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TodoProject", "TodoProject"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoBlazor", "TodoProject\TodoBlazor\TodoBlazor.csproj", "{BC760C62-065D-468E-831F-2CCB996BCB4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoBlazorReact", "TodoProject\TodoBlazorReact\TodoBlazorReact.csproj", "{D1624F5D-0516-455D-9E73-27F3C65D4B99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +160,10 @@ Global
 		{BC760C62-065D-468E-831F-2CCB996BCB4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC760C62-065D-468E-831F-2CCB996BCB4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC760C62-065D-468E-831F-2CCB996BCB4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1624F5D-0516-455D-9E73-27F3C65D4B99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1624F5D-0516-455D-9E73-27F3C65D4B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1624F5D-0516-455D-9E73-27F3C65D4B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1624F5D-0516-455D-9E73-27F3C65D4B99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -178,6 +184,7 @@ Global
 		{EC2A4114-31DA-42FC-880B-DABE5C7D788C} = {97800186-2606-4ED3-9201-A0332B814739}
 		{CB135FA8-8698-4FE5-A773-04D486C745D9} = {97800186-2606-4ED3-9201-A0332B814739}
 		{BC760C62-065D-468E-831F-2CCB996BCB4C} = {185AD61E-54B4-415C-91E5-C27A29B498A9}
+		{D1624F5D-0516-455D-9E73-27F3C65D4B99} = {185AD61E-54B4-415C-91E5-C27A29B498A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA4FE31B-843B-4816-B5F9-3592A7FF5240}

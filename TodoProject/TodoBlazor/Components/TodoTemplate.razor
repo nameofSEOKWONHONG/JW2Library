@@ -3,12 +3,12 @@
 <div class="TodoTemplate">
   <div class="app-title">일정 관리</div>
   <div class="content">
-      <TodoBlazor.Components.TodoList TodoItems="@TodoItems"></TodoBlazor.Components.TodoList>
+    <TodoInsert OnSubmitCallback="@OnAdd"></TodoInsert>
+    <TodoBlazor.Components.TodoList TodoItems="@TodoItems"></TodoBlazor.Components.TodoList>
   </div>
 </div>
 
 @code {
-
   public List<TodoItem> TodoItems = new List<TodoItem>() {
     new TodoItem() {Id = 1, Text = "test1", IsDone = false, IsToggle = false},
     new TodoItem() {Id = 2, Text = "test2", IsDone = false, IsToggle = false},
@@ -18,4 +18,8 @@
     new TodoItem() {Id = 6, Text = "test6", IsDone = false, IsToggle = false},
   };
 
+  public void OnAdd(TodoItem todo) {
+    todo.Id = TodoItems.Max(m => m.Id) + 1;
+    TodoItems.Add(todo);
+  }
 }

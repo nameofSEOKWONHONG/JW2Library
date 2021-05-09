@@ -25,6 +25,10 @@ namespace JLiteDBFlex {
             }
         }
 
+        private LiteDbFlexerManager() {
+            
+        }
+
         /// <summary>
         /// create instance by entity attribute
         /// </summary>

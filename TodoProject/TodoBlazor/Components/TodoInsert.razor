@@ -1,0 +1,32 @@
+﻿@using TodoBlazor.TodoList
+<form className="TodoInsert" @onsubmit="OnSubmit">
+  <input
+    placeholder="할 일을 입력하세요"
+    @bind="@Text" 
+    @* @oninput="(eventArgs) => {OnChangeAsync(eventArgs.Value.ToString());}" *@
+    />
+  <button type="submit" value="save" @onsubmit="OnSubmit">
+  </button>
+</form>
+
+@code {
+  public string Text { get; set; }
+  
+  [Parameter]
+  public EventCallback<TodoItem> OnSubmitCallback { get; set; }
+
+  public async Task OnSubmit() {
+    Console.WriteLine(this.Text);
+    await OnSubmitCallback.InvokeAsync(new TodoItem() {
+      Id = 0,
+      IsDone = false,
+      IsToggle = false,
+      Text = this.Text
+    });
+  }
+
+  // public async Task OnChangeAsync(string value) {
+  //   Console.WriteLine("text:" + this.Text);
+  //   Console.WriteLine("change:" + value);
+  // }
+}
