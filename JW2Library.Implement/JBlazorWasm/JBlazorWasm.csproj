@@ -32,4 +32,8 @@
       <Protobuf Include="Proto\weatherForecast.proto" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Component" />
+    </ItemGroup>
+
 </Project>
