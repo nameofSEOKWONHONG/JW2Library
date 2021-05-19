@@ -37,7 +37,12 @@
   };
 
   public void OnAdd(TodoItem todo) {
-    todo.Id = TodoItems.Max(m => m.Id) + 1;
-    TodoItems.Add(todo);
+      if(TodoItems.xCount() <= 0) {
+          todo.Id = 1;
+      }
+      else {
+          todo.Id = TodoItems.Max(m => m.Id) + 1;      
+      }
+      TodoItems.Add(todo);
   }
 }
