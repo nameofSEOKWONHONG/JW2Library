@@ -1,12 +1,30 @@
 ﻿@using TodoBlazor.TodoList
 
-<div class="TodoTemplate">
-  <div class="app-title">일정 관리</div>
-  <div class="content">
-    <TodoInsert OnSubmitCallback="@OnAdd"></TodoInsert>
-    <TodoBlazor.Components.TodoList TodoItems="@TodoItems"></TodoBlazor.Components.TodoList>
-  </div>
-</div>
+<MudDrawerHeader>
+    <h1>일정관리</h1>
+</MudDrawerHeader>
+<MudGrid>
+    <MudItem xs="12">
+        <MudGrid Spacing="2" Justify="Justify.Center">
+            <MudItem>
+                <MudPaper Style="height:auto;width:auto">
+                    <TodoInsert OnSubmitCallback="@OnAdd"></TodoInsert>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+<MudGrid Style="padding: 30px;">
+    <MudItem xs="12">
+        <MudGrid Spacing="2" Justify="Justify.Center">
+            <MudItem>
+                <MudPaper Style="height:auto;width:auto">
+                    <TodoBlazor.Components.TodoList TodoItems="@TodoItems"></TodoBlazor.Components.TodoList>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>
 
 @code {
   public List<TodoItem> TodoItems = new List<TodoItem>() {

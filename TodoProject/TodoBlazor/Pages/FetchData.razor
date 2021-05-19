@@ -4,42 +4,75 @@
 @inject WeatherForecastService ForecastService
 
 <h1>Weather forecast</h1>
+<h2>Elements : @forecasts.Length</h2>
 
 <p>This component demonstrates fetching data from a service.</p>
-
-@if (forecasts == null) {
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var forecast in forecasts) {
-            <tr>
-                <td>@forecast.Date.ToShortDateString()</td>
-                <td>@forecast.TemperatureC</td>
-                <td>@forecast.TemperatureF</td>
-                <td>@forecast.Summary</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+@* Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" *@
+<MudTable Items="@forecasts" Filter="new Func<WeatherForecast,bool>(FilterFunc)" @bind-SelectedItem="SelectedItem">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+        <MudToolBarSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Date</MudTh>
+        <MudTh>Temp. (C)</MudTh>
+        <MudTh>Temp. (F)</MudTh>
+        <MudTh>Summary</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Date">@context.Date.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Temp. (C)">@context.TemperatureC</MudTd>
+        <MudTd DataLabel="Temp. (F)">@context.TemperatureF</MudTd>
+        <MudTd DataLabel="Summary">@context.Summary</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+@* @if (forecasts == null) { *@
+@*     <p> *@
+@*         <em>Loading...</em> *@
+@*     </p> *@
+@* } *@
+@* else { *@
+@*     <table class="table"> *@
+@*         <thead> *@
+@*         <tr> *@
+@*             <th>Date</th> *@
+@*             <th>Temp. (C)</th> *@
+@*             <th>Temp. (F)</th> *@
+@*             <th>Summary</th> *@
+@*         </tr> *@
+@*         </thead> *@
+@*         <tbody> *@
+@*         @foreach (var forecast in forecasts) { *@
+@*             <tr> *@
+@*                 <td>@forecast.Date.ToShortDateString()</td> *@
+@*                 <td>@forecast.TemperatureC</td> *@
+@*                 <td>@forecast.TemperatureF</td> *@
+@*                 <td>@forecast.Summary</td> *@
+@*             </tr> *@
+@*         } *@
+@*         </tbody> *@
+@*     </table> *@
+@* } *@
 
 @code {
     private WeatherForecast[] forecasts;
+    private string searchString = "";
+    public WeatherForecast SelectedItem { get; private set; }
 
     protected override async Task OnInitializedAsync() {
         forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
     }
 
+    private bool FilterFunc(WeatherForecast element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Summary.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
 }

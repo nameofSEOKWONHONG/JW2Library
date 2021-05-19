@@ -1,19 +1,52 @@
 ﻿@using TodoBlazor.TodoList
+@using MudBlazor.Extensions
 
-<ul>
-    @foreach (var todo in TodoItems) {
-        <li class="list-group">
-            <TodoListItem Item=@todo OnRemoveCallback="@OnRemove" OnToggleCallback="@OnToggle" ></TodoListItem>    
-        </li>
-    }
-</ul>
+<MudGrid Style="padding: 20px;">
+    <MudItem xs="12">
+        @* <MudText Typo="Typo.h6" GutterBottom="true">Icons with text</MudText> *@
+        <MudPaper Width="100%">
+            @* Dense="@Dense" DisableGutters="@Gutters" *@
+            <MudList Clickable="@Clickable">
+                @if (TodoItems.Count > 0) {
+                    @foreach (var todo in TodoItems) {
+                        <MudListItem>
+                            @if (!todo.IsDone) {
+                                <MudCheckBox @bind-Checked="@todo.IsDone" Label="@todo.Text" Color="Color.Primary"></MudCheckBox>
+                            }
+                            else {
+                                <MudCheckBox @bind-Checked="@todo.IsDone" Disabled="true" Label="@todo.Text"></MudCheckBox>
+                            }
+                            <MudButton Style="padding: 10px; margin: 10px;" Variant="Variant.Filled" Color="Color.Secondary" OnClick="() => OnRemove(todo)">Remove</MudButton>
+                        </MudListItem>
+                        <MudDivider/>
+                    }
+                @* <MudListItem Text="Single List Item" Icon="@Icons.Filled.Bookmark" IconColor="Color.Secondary"/> *@
+                }
+                else {
+                    <MudListItem Text="No Items"/>
+                }
+            </MudList>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+@* <ul> *@
+@*     @foreach (var todo in TodoItems) { *@
+@*         <li class="list-group"> *@
+@*             <TodoListItem Item=@todo OnRemoveCallback="@OnRemove" OnToggleCallback="@OnToggle" ></TodoListItem>     *@
+@*         </li> *@
+@*     } *@
+@* </ul> *@
 
 @code {
+    public bool Dense { get; set; } = false;
+    public bool Clickable { get; set; } = true;
+    public bool Gutters { get; set; } = false;
+    
     [Parameter]
     public List<TodoItem> TodoItems { get; set; }
 
-    public void OnRemove(int id) {
-        var exists = TodoItems.FirstOrDefault(m => m.Id == id);
+    public void OnRemove(TodoItem item) {
+        var exists = TodoItems.FirstOrDefault(m => m.Id == item.Id);
         if (exists != null) {
             TodoItems.Remove(exists);
         }
@@ -24,5 +57,13 @@
         if (exists != null) {
             exists.IsDone = !exists.IsDone;
         }
+    }
+
+    private string GetLabel(bool isDone) {
+        if (!isDone) {
+            return "Disabled";
+        }
+
+        return "Primary";
     }
 }

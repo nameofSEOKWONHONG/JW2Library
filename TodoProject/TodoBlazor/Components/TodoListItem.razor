@@ -1,37 +1,38 @@
-﻿@using TodoBlazor.TodoList
-
-<div class="list-group-item">
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" @onclick="OnToggle">
-        @if (Item.IsDone) {
-            <label class="form-check-label" for="flexCheckDefault" style="text-decoration:line-through;">
-                @Item.Text
-            </label>            
-        }
-        else {
-            <label class="form-check-label" for="flexCheckDefault">
-                @Item.Text
-            </label>            
-        }
-        <input class="btn btn-danger" type="button" @onclick="OnRemove" value="remove"/>
-    </div>
-
-</div>
-
-@code {
-    [Parameter]
-    public TodoItem Item { get; set; }
-
-    [Parameter]
-    public EventCallback<int> OnRemoveCallback { get; set; }
-    [Parameter]
-    public EventCallback<int> OnToggleCallback { get; set; }
-    
-    public async Task OnToggle() {
-        await OnToggleCallback.InvokeAsync(Item.Id);
-    }
-
-    public async Task OnRemove() {
-        await OnRemoveCallback.InvokeAsync(Item.Id);
-    }
-}
+﻿@*no use this*@
+@* @using TodoBlazor.TodoList *@
+@* *@
+@* <div class="list-group-item"> *@
+@*     <div class="form-check"> *@
+@*         <input class="form-check-input" type="checkbox" value="" @onclick="OnToggle"> *@
+@*         @if (Item.IsDone) { *@
+@*             <label class="form-check-label" for="flexCheckDefault" style="text-decoration:line-through;"> *@
+@*                 @Item.Text *@
+@*             </label>             *@
+@*         } *@
+@*         else { *@
+@*             <label class="form-check-label" for="flexCheckDefault"> *@
+@*                 @Item.Text *@
+@*             </label>             *@
+@*         } *@
+@*         <input class="btn btn-danger" type="button" @onclick="OnRemove" value="remove"/> *@
+@*     </div> *@
+@* *@
+@* </div> *@
+@* *@
+@* @code { *@
+@*     [Parameter] *@
+@*     public TodoItem Item { get; set; } *@
+@* *@
+@*     [Parameter] *@
+@*     public EventCallback<int> OnRemoveCallback { get; set; } *@
+@*     [Parameter] *@
+@*     public EventCallback<int> OnToggleCallback { get; set; } *@
+@*      *@
+@*     public async Task OnToggle() { *@
+@*         await OnToggleCallback.InvokeAsync(Item.Id); *@
+@*     } *@
+@* *@
+@*     public async Task OnRemove() { *@
+@*         await OnRemoveCallback.InvokeAsync(Item.Id); *@
+@*     } *@
+@* } *@

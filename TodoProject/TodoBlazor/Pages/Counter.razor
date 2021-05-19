@@ -2,9 +2,32 @@
 
 <h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+@* <p>Current count: @currentCount</p> *@
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<MudGrid>
+    <MudItem xs="6">
+        <MudBadge Content="@currentCount" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+            <MudIcon Icon="@Icons.Material.Filled.SmartButton" Color="Color.Default"/>
+        </MudBadge>
+    </MudItem>
+    <MudItem xs="6">
+        <MudBadge Content="@currentCount" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+            <MudIcon Icon="@Icons.Material.Filled.Alarm" Color="Color.Error"/>
+        </MudBadge>        
+    </MudItem>
+    <MudItem xs="12">
+        <MudBadge Icon="@Icons.Material.Filled.Alarm" Color="Color.Error" Class="mx-6 my-4">
+            <MudButton Color="Color.Error" Variant="Variant.Filled" DisableElevation="true">Security Issues</MudButton>
+        </MudBadge>        
+    </MudItem>
+    <MudItem xs="12">
+        @* <button class="btn btn-primary" @onclick="IncrementCount">Click me</button> *@
+        <MudItem xs="3">
+            <MudButton OnClick="IncrementCount" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="mr-1">Click me</MudButton>
+        </MudItem>        
+    </MudItem>
+</MudGrid>
+
 
 @code {
     private int currentCount = 0;

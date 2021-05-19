@@ -1,32 +1,65 @@
 ﻿@using TodoBlazor.TodoList
-<form class="TodoInsert" @onsubmit="OnSubmit">
-  <input
-    placeholder="할 일을 입력하세요"
-    @bind="@Text" 
-    
-    />
-  <button class="btn btn-primary" type="submit" @onsubmit="OnSubmit">save</button>
-</form>
+
+<div style="max-width: 400px;">
+  <MudCard>
+    <MudCardContent>
+      <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+        <MudTextField @ref="_todoText" T="string" Label="Todo" Required="true" RequiredError="Todo text is required!" HelperText="Input todo text."
+                      Validation="@(new Func<string, string>(TodoCheck))"/>
+        <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Class="ml-n2"
+                     Label="I agree that MudBlazor is awesome!"/>
+      </MudForm>
+    </MudCardContent>
+    <MudCardActions>
+      <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="OnSubmit">Register</MudButton>
+    </MudCardActions>
+  </MudCard>
+</div>
+
+@* <form class="TodoInsert" @onsubmit="OnSubmit"> *@
+@*   $1$ <input #1# *@
+@*   $1$   placeholder="할 일을 입력하세요" #1# *@
+@*   $1$   @bind="@Text"  #1# *@
+@*   $1$    #1# *@
+@*   $1$ /> #1# *@
+@*   <MudElement HtmlTag="input" Style="border: solid 1px #869E9E; padding: 0px 8px; height:28px;" @Text="Text"/> *@
+@*   $1$ <button class="btn btn-primary" type="submit" @onsubmit="OnSubmit">save</button> #1# *@
+@*    *@
+@* </form> *@
 
 @code {
-      //@oninput="(eventArgs) => {OnChangeAsync(eventArgs.Value.ToString());}"
-  public string Text { get; set; }
+  bool success;
+  string[] errors = { };
+  //input form validator base
+  MudForm form;
+  //input field use mudtextfield
+  MudTextField<string> _todoText;
   
   [Parameter]
   public EventCallback<TodoItem> OnSubmitCallback { get; set; }
 
   public async Task OnSubmit() {
-    Console.WriteLine(this.Text);
-    await OnSubmitCallback.InvokeAsync(new TodoItem() {
-      Id = 0,
-      IsDone = false,
-      IsToggle = false,
-      Text = this.Text
-    });
+    if (success) {
+      Console.WriteLine(_todoText.Value);
+      await OnSubmitCallback.InvokeAsync(new TodoItem() {
+        Id = 0,
+        IsDone = false,
+        IsToggle = false,
+        Text = _todoText.Value
+      });
+      form.Reset();
+    }
   }
 
   // public async Task OnChangeAsync(string value) {
   //   Console.WriteLine("text:" + this.Text);
   //   Console.WriteLine("change:" + value);
   // }
+  
+  private string TodoCheck(string arg)
+  {
+    if (string.IsNullOrEmpty(arg))
+      return "Todo text is empty.";
+    return null;
+  }
 }
