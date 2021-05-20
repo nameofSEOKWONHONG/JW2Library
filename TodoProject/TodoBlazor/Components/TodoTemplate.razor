@@ -1,7 +1,7 @@
 ﻿@using TodoBlazor.TodoList
 
 <MudDrawerHeader>
-    <h1>일정관리</h1>
+    <h1>Todo's</h1>
 </MudDrawerHeader>
 <MudGrid>
     <MudItem xs="12">
@@ -27,16 +27,21 @@
 </MudGrid>
 
 @code {
-  public List<TodoItem> TodoItems = new List<TodoItem>() {
-    new TodoItem() {Id = 1, Text = "test1", IsDone = false, IsToggle = false},
-    new TodoItem() {Id = 2, Text = "test2", IsDone = false, IsToggle = false},
-    new TodoItem() {Id = 3, Text = "test3", IsDone = false, IsToggle = false},
-    new TodoItem() {Id = 4, Text = "test4", IsDone = false, IsToggle = false},
-    new TodoItem() {Id = 5, Text = "test5", IsDone = false, IsToggle = false},
-    new TodoItem() {Id = 6, Text = "test6", IsDone = false, IsToggle = false},
-  };
+    public List<TodoItem> TodoItems = new List<TodoItem>();
 
-  public void OnAdd(TodoItem todo) {
+    protected override void OnInitialized() {
+        Enumerable.Range(1, 10).xForEach(i => {
+            TodoItems.Add(new TodoItem() {
+                Id = i,
+                Text = $"test{i}",
+                IsDone = false,
+                IsToggle = false
+            });
+        });
+        base.OnInitialized();
+    }
+
+    public void OnAdd(TodoItem todo) {
       if(TodoItems.xCount() <= 0) {
           todo.Id = 1;
       }

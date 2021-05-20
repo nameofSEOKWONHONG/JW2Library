@@ -2,31 +2,47 @@
 @using MudBlazor.Extensions
 
 <MudGrid Style="padding: 20px;">
+    @* <MudItem xs="12"> *@
+    @*     $1$ <MudText Typo="Typo.h6" GutterBottom="true">Icons with text</MudText> #1# *@
+    @*     <MudPaper Width="100%"> *@
+    @*         $1$ Dense="@Dense" DisableGutters="@Gutters" #1# *@
+    @*         <MudList Clickable="@Clickable"> *@
+    @*             @if (TodoItems.Count > 0) { *@
+    @*                 @foreach (var todo in TodoItems) { *@
+    @*                     <MudListItem> *@
+    @*                         @if (!todo.IsDone) { *@
+    @*                             <MudCheckBox @bind-Checked="@todo.IsDone" Label="@todo.Text" Color="Color.Primary"></MudCheckBox> *@
+    @*                         } *@
+    @*                         else { *@
+    @*                             <MudCheckBox @bind-Checked="@todo.IsDone" Disabled="true" Label="@todo.Text"></MudCheckBox> *@
+    @*                         } *@
+    @*                         <MudButton Style="padding: 10px; margin: 10px;" Variant="Variant.Filled" Color="Color.Secondary" OnClick="() => OnRemove(todo)">Remove</MudButton> *@
+    @*                     </MudListItem> *@
+    @*                     <MudDivider/> *@
+    @*                 } *@
+    @*             $1$ <MudListItem Text="Single List Item" Icon="@Icons.Filled.Bookmark" IconColor="Color.Secondary"/> #1# *@
+    @*             } *@
+    @*             else { *@
+    @*                 <MudListItem Text="No Items"/> *@
+    @*             } *@
+    @*         </MudList> *@
+    @*     </MudPaper> *@
+    @* </MudItem> *@
     <MudItem xs="12">
-        @* <MudText Typo="Typo.h6" GutterBottom="true">Icons with text</MudText> *@
-        <MudPaper Width="100%">
-            @* Dense="@Dense" DisableGutters="@Gutters" *@
-            <MudList Clickable="@Clickable">
-                @if (TodoItems.Count > 0) {
-                    @foreach (var todo in TodoItems) {
-                        <MudListItem>
-                            @if (!todo.IsDone) {
-                                <MudCheckBox @bind-Checked="@todo.IsDone" Label="@todo.Text" Color="Color.Primary"></MudCheckBox>
-                            }
-                            else {
-                                <MudCheckBox @bind-Checked="@todo.IsDone" Disabled="true" Label="@todo.Text"></MudCheckBox>
-                            }
-                            <MudButton Style="padding: 10px; margin: 10px;" Variant="Variant.Filled" Color="Color.Secondary" OnClick="() => OnRemove(todo)">Remove</MudButton>
-                        </MudListItem>
-                        <MudDivider/>
-                    }
-                @* <MudListItem Text="Single List Item" Icon="@Icons.Filled.Bookmark" IconColor="Color.Secondary"/> *@
-                }
-                else {
-                    <MudListItem Text="No Items"/>
-                }
-            </MudList>
-        </MudPaper>
+        <div id="another_unique_identifier" class="ma-0" style="width:600px;height:300px;overflow: auto;">
+            <MudPaper Elevation="0" Height="3500px" Class="d-flex flex-column justify-space-between py-6">
+                <Virtualize Items="@TodoItems" Context="item">
+                    <MudCheckBox @bind-Checked="@item.IsDone" Label="@item.Text" Color="Color.Primary">
+                    <MudButton Style="padding: 10px; margin: 10px;" Variant="Variant.Filled" Color="Color.Secondary" OnClick="() => OnRemove(item)">Remove</MudButton>    
+                    </MudCheckBox>
+                    
+                    <MudDivider/>
+                </Virtualize>
+                <MudScrollToTop TopOffset="100" Selector="#another_unique_identifier" Style="z-index:2001;">
+                    <div class="mud-theme-secondary px-3 py-6 mud-elevation-16 rounded-xl fixed" style="bottom:20px;left:20px;">Scroll to top custom button</div>
+                </MudScrollToTop>
+            </MudPaper>
+        </div>
     </MudItem>
 </MudGrid>
 @* <ul> *@
