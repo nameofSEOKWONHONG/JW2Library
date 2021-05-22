@@ -27,7 +27,12 @@ namespace TodoWebApi {
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "TodoWebApi", Version = "v1"});
             });
-            services.ServiceLoad();
+            
+            //ServiceRegistry 구현을 로드한다.
+            services.Load();
+            //BulkInstance 생성을 위한 ServiceLocator 등록
+            //직접 선언을 위해 사용할 수 있지만 권장하지 않는다.
+            //비즈니스는 ServiceRegistry를 통해서 구현함.
             ServiceLocator.SetLocatorProvider(services.BuildServiceProvider());
         }
 

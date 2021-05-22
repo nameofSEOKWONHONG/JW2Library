@@ -6,12 +6,14 @@ using TodoWebApi.Services;
 
 namespace TodoWebApi {
     public static class ServiceLoader {
-        private static readonly IEnumerable<IServiceRegister> _serviceRegisters = new XList<IServiceRegister> {
-            new TodoSvcRegister()
-        };
-
-        public static void ServiceLoad(this IServiceCollection services) {
-            _serviceRegisters.xForEach(item => { item.ServiceRegistry(services); });
+        public static void Load(this IServiceCollection services) {
+            //TODO : 동적으로 처리 가능한가? 확인하자.
+            var serviceRegisters = new XList<IServiceRegister> {
+                new TodoSvcRegister()
+            };
+            serviceRegisters.xForEach(item => {
+                item.ServiceRegistry(services);
+            });
         }
     }
 }

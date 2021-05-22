@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace JWLibrary.Web {
     /// <summary>
-    /// use only single database transaction.
-    /// dotnet core & 5 not support multiple database transactions.
+    /// dotnet-core/dotnet 5는 단일 데이터 베이스 트랜젝션에서만 동작한다.  
+    /// dotnet-framework에서만 복합 데이터 베이스 트랜젝션을 지원한다.
     /// </summary>
     //[Obsolete("use only single database transaction.", false)]
     public class TransactionAttribute : Attribute, IAsyncActionFilter {

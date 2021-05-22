@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
+    /// <summary>
+    /// 컨트롤러 베이스
+    /// </summary>
+    /// <typeparam name="TController"></typeparam>
     [ApiController]
     [Route("api/[controller]/[action]")] //url version route
     public class JControllerBase<TController> : ControllerBase, IDisposable
@@ -25,7 +29,7 @@ namespace JWLibrary.Web {
         }
 
         /// <summary>
-        ///     single execute
+        /// 서비스 생성 메서드
         /// </summary>
         /// <param name="serviceExecutor"></param>
         /// <param name="request"></param>
@@ -48,6 +52,16 @@ namespace JWLibrary.Web {
             return result;
         }
 
+        /// <summary>
+        /// 비동기 서비스 생성 메서드
+        /// </summary>
+        /// <param name="serviceExecutor"></param>
+        /// <param name="request"></param>
+        /// <param name="func"></param>
+        /// <typeparam name="TServiceExecutor"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
         protected async Task<TResult> CreateServiceAsync<TServiceExecutor, TRequest, TResult>
             (TServiceExecutor serviceExecutor, TRequest request, Func<TServiceExecutor, bool> func = null)
             where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
@@ -62,6 +76,15 @@ namespace JWLibrary.Web {
             return result;
         }
 
+        /// <summary>
+        /// 대량 서비스 생성을 위한 메서드
+        /// 비공유 인스턴스 생성을 위해 servicelocator를 사용함.
+        /// </summary>
+        /// <param name="requests"></param>
+        /// <typeparam name="TServiceExecutor"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
         protected IEnumerable<TResult> CreateBulkService<TServiceExecutor, TRequest, TResult>(
             IEnumerable<TRequest> requests)
             where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
@@ -78,10 +101,9 @@ namespace JWLibrary.Web {
     }
 
     /// <summary>
-    ///     base controller
+    /// 버전 관리 컨트롤러
+    /// 버전을 관리하기 위한 컬트롤러 베이스
     /// </summary>
-
-    //[Route("api/[controller]/[action]")] //normal route
     [Route("api/{v:apiVersion}/[controller]/[action]")] //url version route
     public class JVersionControllerBase<TController> : JControllerBase<TController>, IDisposable
         where TController : class {
