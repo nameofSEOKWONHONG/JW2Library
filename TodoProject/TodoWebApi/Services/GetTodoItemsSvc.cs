@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using TodoWebApi.Entities;
 
 namespace TodoWebApi.Services {
+    /// <summary>
+    /// todo list 조회
+    /// </summary>
     public class GetTodoItemsSvc : ServiceExecutor<GetTodoItemsSvc, string, IEnumerable<TODO>>,
         IGetTodoItemsSvc{
         public GetTodoItemsSvc() {

@@ -10,6 +10,9 @@ using SharpCompress.Archives;
 using TodoWebApi.Entities;
 
 namespace TodoWebApi.Services {
+    /// <summary>
+    /// todo 삭제
+    /// </summary>
     public class DeleteTodoItemSvc : ServiceExecutor<DeleteTodoItemSvc, int, bool>, IDeleteTodoItemSvc {
         private TODO _exists;
         private readonly IGetTodoItemSvc _getTodoItemSvc;

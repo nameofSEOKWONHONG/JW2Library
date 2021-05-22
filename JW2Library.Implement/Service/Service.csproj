@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\JW2Library\JWLibrary.Core\JWLibrary.Core.csproj" />
     <ProjectReference Include="..\..\..\JW2Library\JWLibrary\JWLibrary.csproj" />
+    <ProjectReference Include="..\..\JWLibrary.Web\JWLibrary.Web.csproj" />
     <ProjectReference Include="..\..\Service.QueryConst\Service.QueryConst.csproj" />
     <ProjectReference Include="..\Service.Data\Service.Data.csproj" />
   </ItemGroup>

@@ -7,6 +7,9 @@ using Microsoft.Data.SqlClient;
 using TodoWebApi.Entities;
 
 namespace TodoWebApi.Services {
+    /// <summary>
+    /// todo 저장
+    /// </summary>
     public class SaveTodoItemSvc : ServiceExecutor<SaveTodoItemSvc, TODO, int>,
         ISaveTodoItemSvc {
         private TODO _exists;

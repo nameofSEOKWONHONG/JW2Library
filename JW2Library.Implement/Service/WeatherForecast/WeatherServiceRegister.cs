@@ -1,4 +1,5 @@
-﻿using JWService.WeatherForecast;
+﻿using JWLibrary.Web;
+using JWService.WeatherForecast;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Service.WeatherForecast {

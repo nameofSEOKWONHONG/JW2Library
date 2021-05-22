@@ -4,6 +4,7 @@ using APIServer.Config;
 using APIServer.Util;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using eXtensionSharp;
 using JLiteDBFlex;
 using JWLibrary.DI;
 using JWLibrary.Util.Session;
@@ -15,6 +16,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Service.Accounts;
+using Service.Config;
+using Service.WeatherForecast;
 
 namespace APIServer {
     public class Startup {
@@ -78,7 +82,11 @@ namespace APIServer {
             //services.AddDbContext<BlogContext>(ServiceLifetime.Scoped);
 
             //register manual service
-            services.ServiceLoad();
+            services.Load(new XList<IServiceRegister>() {
+                new AccountServiceRegister(),
+                new ConfigServiceRegister(),
+                new WeatherServiceRegister()
+            });
             // services.AccountServiceLoader();
             // services.WeatherServiceLoader();
             // services.ConfigServiceLoader();

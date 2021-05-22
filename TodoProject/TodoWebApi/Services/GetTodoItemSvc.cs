@@ -7,6 +7,9 @@ using JWLibrary.ServiceExecutor;
 using TodoWebApi.Entities;
 
 namespace TodoWebApi.Services {
+    /// <summary>
+    /// Todo 조회
+    /// </summary>
     public class GetTodoItemSvc : ServiceExecutor<GetTodoItemSvc, int, TODO>, IGetTodoItemSvc {
         public GetTodoItemSvc() {
             this.SetValidator<Validator>();

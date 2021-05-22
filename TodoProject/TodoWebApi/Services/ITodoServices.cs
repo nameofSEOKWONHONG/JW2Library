@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using JWLibrary;
 using JWLibrary.ServiceExecutor;
 using TodoWebApi.Entities;
-
+/*
+ * todo 인터페이스
+ */
 namespace TodoWebApi.Services {
     public interface IGetTodoItemSvc : IServiceExecutor<int, TODO> {
         

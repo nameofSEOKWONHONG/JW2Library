@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eXtensionSharp;
 using JWLibrary.DI;
+using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using TodoWebApi.Services;
 
 namespace TodoWebApi {
     public class Startup {
@@ -29,7 +32,10 @@ namespace TodoWebApi {
             });
             
             //ServiceRegistry 구현을 로드한다.
-            services.Load();
+            //TODO : 동적으로 할 수 있는지 확인하자.
+            services.Load(new XList<IServiceRegister>() {
+                new TodoSvcRegister()
+            });
             //BulkInstance 생성을 위한 ServiceLocator 등록
             //직접 선언을 위해 사용할 수 있지만 권장하지 않는다.
             //비즈니스는 ServiceRegistry를 통해서 구현함.
