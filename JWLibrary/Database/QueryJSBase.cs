@@ -2,7 +2,7 @@
 using eXtensionSharp;
 using JWLibrary.Utils.Files;
 
-namespace Service.QueryConst {
+namespace JWLibrary.Database {
     public class QueryJSBase<T>
         where T : class, new() {
         private const string CARRIAGE_RETURN = "\n";

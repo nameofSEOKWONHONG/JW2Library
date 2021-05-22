@@ -15,8 +15,8 @@ namespace APIServer.Controllers {
         [HttpGet]
         public string Hello() {
             var str = "hello version 0.0" + DateTime.Now;
-            var exists = Context.GetCacheManager().Get<string>(str);
-            if (!exists.xIsNullOrEmpty()) return str;
+            //var exists = Context.GetCacheManager().Get<string>(str);
+            //if (!exists.xIsNullOrEmpty()) return str;
 
             return str;
         }

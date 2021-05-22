@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using eXtensionSharp;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
 using Npgsql;
 using RepoDb;
@@ -29,7 +29,9 @@ namespace JWLibrary.Database {
             {
                 ENUM_DATABASE_TYPE.MSSQL.Value, connectionString => {
                     SqlServerBootstrap.Initialize();
-                    return new SqlConnection(DbConnectionProvider.Instance.MSSQL);
+                    //no more use System.Data.SqlClient.SqlConnection
+                    //replace Microsoft.Data.SqlClient.SqlConnection
+                    return new Microsoft.Data.SqlClient.SqlConnection(DbConnectionProvider.Instance.MSSQL);
                 }
             }, {
                 ENUM_DATABASE_TYPE.MYSQL.Value, connectionString => {
@@ -53,13 +55,17 @@ namespace JWLibrary.Database {
         public Dictionary<string, IDbConnection> Connections { get; } =
             new();
 
+        public IDbConnection GetConnection(ENUM_DATABASE_TYPE dbType) {
+            return _connectionMaps[dbType.Value].Invoke(dbType.Value);
+        }
+
         #region [ctor]
         public JDatabaseInfo() {
-            var serviceCollection = new ServiceCollection();
-            _connectionMaps.xForEach((item, index) => {
-                Connections.Add(item.Key, item.Value(item.Key));
-                return true;
-            });
+            // var serviceCollection = new ServiceCollection();
+            // _connectionMaps.xForEach((item, index) => {
+            //     Connections.Add(item.Key, item.Value(item.Key));
+            //     return true;
+            // });
         }
         #endregion
     }

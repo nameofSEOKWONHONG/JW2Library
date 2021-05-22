@@ -1,4 +1,4 @@
-﻿//#define __SURFACE__
+﻿#define __SURFACE__
 
 using System;
 using System.IO;

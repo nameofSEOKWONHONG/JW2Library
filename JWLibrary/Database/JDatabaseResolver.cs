@@ -11,7 +11,8 @@ namespace JWLibrary.Database {
     public class JDatabaseResolver {
         public static IDbConnection Resolve<TDatabase>()
             where TDatabase : IDbConnection {
-            if (typeof(TDatabase) == typeof(SqlConnection)) return JDatabaseInfo.Instance.Connections["MSSQL"];
+            if (typeof(TDatabase) == typeof(Microsoft.Data.SqlClient.SqlConnection)) return JDatabaseInfo.Instance
+                .GetConnection(ENUM_DATABASE_TYPE.MSSQL);
             if (typeof(TDatabase) == typeof(MySqlConnection)) return JDatabaseInfo.Instance.Connections["MYSQL"];
             if (typeof(TDatabase) == typeof(NpgsqlConnection)) return JDatabaseInfo.Instance.Connections["POSTGRESQL"];
             throw new NotImplementedException();
@@ -19,7 +20,7 @@ namespace JWLibrary.Database {
 
         public static IDbConnection Resolve(ENUM_DATABASE_TYPE type) {
             if (type == ENUM_DATABASE_TYPE.MSSQL)
-                return JDatabaseInfo.Instance.Connections[ENUM_DATABASE_TYPE.MSSQL.Value];
+                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MSSQL);
             else if (type == ENUM_DATABASE_TYPE.MYSQL)
                 return JDatabaseInfo.Instance.Connections[ENUM_DATABASE_TYPE.MYSQL.Value];
             else if (type == ENUM_DATABASE_TYPE.POSTGRESQL)

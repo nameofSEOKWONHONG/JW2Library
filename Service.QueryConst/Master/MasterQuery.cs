@@ -1,4 +1,6 @@
-﻿namespace Service.QueryConst {
+﻿using JWLibrary.Database;
+
+namespace Service.QueryConst {
     public class MasterQuery : QueryJSBase<MasterQuery> {
         public readonly string CREATE_DATABASE;
         public readonly string CREATE_TABLE;

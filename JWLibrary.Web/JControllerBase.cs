@@ -13,7 +13,7 @@ namespace JWLibrary.Web {
     [Route("api/[controller]/[action]")] //url version route
     public class JControllerBase<TController> : ControllerBase, IDisposable
         where TController : class {
-        protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
+        //protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
         protected ILogger<TController> Logger;
 
         public JControllerBase(ILogger<TController> logger) {
