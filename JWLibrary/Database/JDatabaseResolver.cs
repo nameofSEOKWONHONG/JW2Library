@@ -13,8 +13,8 @@ namespace JWLibrary.Database {
             where TDatabase : IDbConnection {
             if (typeof(TDatabase) == typeof(Microsoft.Data.SqlClient.SqlConnection)) return JDatabaseInfo.Instance
                 .GetConnection(ENUM_DATABASE_TYPE.MSSQL);
-            if (typeof(TDatabase) == typeof(MySqlConnection)) return JDatabaseInfo.Instance.Connections["MYSQL"];
-            if (typeof(TDatabase) == typeof(NpgsqlConnection)) return JDatabaseInfo.Instance.Connections["POSTGRESQL"];
+            if (typeof(TDatabase) == typeof(MySqlConnection)) return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MYSQL);
+            if (typeof(TDatabase) == typeof(NpgsqlConnection)) return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.POSTGRESQL);
             throw new NotImplementedException();
         }
 
@@ -22,13 +22,13 @@ namespace JWLibrary.Database {
             if (type == ENUM_DATABASE_TYPE.MSSQL)
                 return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MSSQL);
             else if (type == ENUM_DATABASE_TYPE.MYSQL)
-                return JDatabaseInfo.Instance.Connections[ENUM_DATABASE_TYPE.MYSQL.Value];
+                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MYSQL);
             else if (type == ENUM_DATABASE_TYPE.POSTGRESQL)
-                return JDatabaseInfo.Instance.Connections[ENUM_DATABASE_TYPE.POSTGRESQL.Value];
+                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.POSTGRESQL);
             else if (type == ENUM_DATABASE_TYPE.REDIS)
-                return JDatabaseInfo.Instance.Connections[ENUM_DATABASE_TYPE.REDIS.Value];
+                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.REDIS);
             else if (type == ENUM_DATABASE_TYPE.MONGODB)
-                return JDatabaseInfo.Instance.Connections[ENUM_DATABASE_TYPE.MONGODB.Value];
+                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MONGODB);
             else
                 throw new NotImplementedException();
         }

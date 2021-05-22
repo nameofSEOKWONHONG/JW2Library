@@ -18,7 +18,7 @@ namespace TodoWebApi.Services {
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutor(db => {
-                    this.Owner.Result = db.GetList<TODO>();
+                    this.Result = db.GetList<TODO>($"WHERE TODO_TEXT LIKE '%{this.Request}%'");
                 });
         }
     }

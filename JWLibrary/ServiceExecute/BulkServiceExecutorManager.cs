@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,6 +23,17 @@ namespace JWLibrary.ServiceExecutor {
                     Reqeust = request
                 });
                 return true;
+            });
+        }
+
+        public BulkServiceExecutorManager(TIService service, IEnumerable<TRequest> requests) {
+            this._bulkServices = new List<BulkService<TIService, TRequest>>(requests.Count());
+            requests.xForEach(request => {
+                var serviceExecutorManager = new ServiceExecutorManager<TIService>(service);
+                this._bulkServices.Add(new BulkService<TIService, TRequest>() {
+                    SvcExecManager = serviceExecutorManager,
+                    Reqeust = request
+                });
             });
         }
         

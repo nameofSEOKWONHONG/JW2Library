@@ -6,6 +6,8 @@ namespace TodoWebApi.Services {
         public void ServiceRegistry(IServiceCollection services) {
             services.AddScoped<IGetTodoItemSvc, GetTodoItemSvc>();
             services.AddScoped<IGetTodoItemsSvc, GetTodoItemsSvc>();
+            services.AddTransient<ISaveTodoItemSvc, SaveTodoItemSvc>();
+            services.AddTransient<IDeleteTodoItemSvc, DeleteTodoItemSvc>();
         }
     }
 }

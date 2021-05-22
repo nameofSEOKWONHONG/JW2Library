@@ -63,13 +63,11 @@ namespace JWLibrary.Web {
         }
 
         protected IEnumerable<TResult> CreateBulkService<TServiceExecutor, TRequest, TResult>(
-            TServiceExecutor serviceExecutor,
-            IEnumerable<TRequest> requests, Func<TServiceExecutor, bool> func = null)
+            IEnumerable<TRequest> requests)
             where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
             var results = new XList<TResult>();
             using var bulkExecutor = new BulkServiceExecutorManager<TServiceExecutor, TRequest>(requests);
             bulkExecutor.SetRequest((o, c) => o.Request = c)
-                .AddFilter(func)
                 .OnExecuted(o => {
                     results.Add(o.Result);
                     return true;

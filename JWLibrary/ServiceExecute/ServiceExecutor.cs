@@ -11,7 +11,7 @@ namespace JWLibrary.ServiceExecutor {
             Owner = (TOwner) this;
         }
 
-        public TOwner Owner { get; }
+        private TOwner Owner { get; }
         public IValidator<TOwner> ServiceValidator { get; private set; }
         public TRequest Request { get; set; }
         public TResult Result { get; set; }
@@ -23,12 +23,12 @@ namespace JWLibrary.ServiceExecutor {
         public override Task ExecuteAsync() {
             return Task.CompletedTask;
         }
-
-        public override void PostExecute() {
-        }
-
+        
         public override bool PreExecute() {
             return true;
+        }
+        
+        public override void PostExecute() {
         }
 
         public override bool Validate() {

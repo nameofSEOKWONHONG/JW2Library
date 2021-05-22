@@ -1,4 +1,4 @@
-﻿#define __SURFACE__
+﻿//#define __SURFACE__
 
 using System;
 using System.IO;
@@ -53,7 +53,7 @@ namespace JConfiger {
             config.DatabaseProvider = dbProviderObj;
             var json = config.xObjectToJson();
 
-            using var fs = new FileStream(@"D:\workspace\JW2Library\JConfiguration\jconfig.json", FileMode.OpenOrCreate, FileAccess.Write);
+            using var fs = new FileStream(@"D:\workspace\JW2Library\JConfiguration\jconfig.json", FileMode.OpenOrCreate, FileAccess.ReadWrite);
             using var sw = new StreamWriter(fs);
             sw.Write(json);
             sw.Close();

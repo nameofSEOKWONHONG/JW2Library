@@ -13,7 +13,7 @@ namespace TodoWebApi.Services {
         
     }
 
-    public interface IUpsertTodoItemSvc : IServiceExecutor<TODO, bool> {
+    public interface ISaveTodoItemSvc : IServiceExecutor<TODO, int> {
         
     }
 
@@ -21,7 +21,7 @@ namespace TodoWebApi.Services {
         
     }
 
-    public interface IDeleteTodoITemsSvc : IServiceExecutor<IEnumerable<int>, bool> {
+    public interface IDeleteTodoItemsSvc : IServiceExecutor<IEnumerable<int>, bool> {
         
     }
 }
