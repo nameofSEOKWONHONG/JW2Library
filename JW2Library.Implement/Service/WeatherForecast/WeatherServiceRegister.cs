@@ -1,4 +1,4 @@
-﻿using JWLibrary.Web;
+﻿using JWLibrary.ServiceExecutor;
 using JWService.WeatherForecast;
 using Microsoft.Extensions.DependencyInjection;
 

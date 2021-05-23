@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Service.Data;
 
 namespace APIServer.Controllers {
-    public class MemberController : JControllerBase<MemberController> {
+    public class MemberController : JController<MemberController> {
         private readonly IDeleteAccountSvc _deleteAccountSvc;
         private readonly IGetAccountByIdSvc _getAccountByIdSvc;
         private readonly IGetAccountsSvc _getAccountsSvc;

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Service.Data;
 
 namespace APIServer.Controllers {
-    public class AuthorizeController : JControllerBase<AuthorizeController> {
+    public class AuthorizeController : JController<AuthorizeController> {
         private readonly IGetAccountSvc _svc;
 
         public AuthorizeController(ILogger<AuthorizeController> logger,

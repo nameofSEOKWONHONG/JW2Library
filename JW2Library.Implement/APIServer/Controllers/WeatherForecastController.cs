@@ -17,7 +17,7 @@ namespace APIServer.Controllers {
     ///     ref : http://www.binaryintellect.net/articles/03f580c4-84ad-4d78-847f-43103b4e4691.aspx
     /// </summary>
     [ApiVersion("0.0")]
-    public class WeatherForecastController : JControllerBase<WeatherForecastController> {
+    public class WeatherForecastController : JVersionControllerBase<WeatherForecastController> {
         private readonly IDeleteWeatherForecastSvc _deleteWeatherForecastSvc;
         private readonly IGetAllWeatherForecastSvc _getAllWeatherForecastSvc;
         private readonly IGetWeatherForecastSvc _getWeatherForecastSvc;

@@ -8,7 +8,7 @@ namespace APIServer.Controllers {
     [ApiVersion("1.0", Deprecated = true)] //비추천 공지함.
     [ApiVersion("1.1")]
     [ApiVersion("2.0")]
-    public class VerionExampleController : JControllerBase<VerionExampleController> {
+    public class VerionExampleController : JVersionControllerBase<VerionExampleController> {
         public VerionExampleController(ILogger<VerionExampleController> logger) : base(logger) {
         }
 

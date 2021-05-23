@@ -10,7 +10,7 @@ using Service.Config;
 
 namespace APIServer.Controllers {
     [ApiVersion("1")]
-    public class ConfigStorageController : JControllerBase<ConfigStorageController> {
+    public class ConfigStorageController : JVersionControllerBase<ConfigStorageController> {
         private IGetConfigSvc _getConfigSvc;
         private IGetListConfigSvc _getListConfigSvc;
         private ISaveConfigSvc _saveConfigSvc;

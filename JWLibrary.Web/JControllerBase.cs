@@ -9,26 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
-    /// <summary>
-    /// 컨트롤러 베이스
-    /// </summary>
-    /// <typeparam name="TController"></typeparam>
     [ApiController]
-    [Route("api/[controller]/[action]")] //url version route
-    public class JControllerBase<TController> : ControllerBase, IDisposable
+    public abstract class JControllerBase<TController> : ControllerBase, IDisposable 
         where TController : class {
-        //protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
         protected ILogger<TController> Logger;
 
         public JControllerBase(ILogger<TController> logger) {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
             Logger = logger;
         }
-
-        public virtual void Dispose() {
-        }
-
-        /// <summary>
+        
+                /// <summary>
         /// 서비스 생성 메서드
         /// </summary>
         /// <param name="serviceExecutor"></param>
@@ -98,22 +89,36 @@ namespace JWLibrary.Web {
 
             return results;
         }
+
+        public abstract void Dispose();
+    }
+    /// <summary>
+    /// 컨트롤러 베이스
+    /// </summary>
+    /// <typeparam name="TController"></typeparam>
+    [Route("api/[controller]/[action]")] //url version route
+    public class JController<TController> : JControllerBase<TController>
+        where TController : class {
+        //protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
+        public JController(ILogger<TController> logger) : base(logger) {
+        }
+
+        public override void Dispose() {
+            
+        }
     }
 
     /// <summary>
-    /// 버전 관리 컨트롤러
-    /// 버전을 관리하기 위한 컬트롤러 베이스
+    /// 버전 관리 컨트롤러 베이스
     /// </summary>
-    [Route("api/{v:apiVersion}/[controller]/[action]")] //url version route
-    public class JVersionControllerBase<TController> : JControllerBase<TController>, IDisposable
+    //[Route("api/v{version:apiVersion}/[controller]/[action]")] //url version route
+    public class JVersionControllerBase<TController> : JControllerBase<TController>
         where TController : class {
         public JVersionControllerBase(ILogger<TController> logger) : base(logger) {
         }
 
         public override void Dispose() {
-            //your code...
-
-            base.Dispose();
+            
         }
     }
 }

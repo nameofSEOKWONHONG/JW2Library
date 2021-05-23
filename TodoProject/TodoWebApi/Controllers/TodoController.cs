@@ -8,7 +8,7 @@ using TodoWebApi.Entities;
 using TodoWebApi.Services;
 
 namespace TodoWebApi.Controllers {
-    public class TodoController : JControllerBase<TodoController> {
+    public class TodoController : JController<TodoController> {
         private IGetTodoItemSvc _getTodoItemSvc;
         private IGetTodoItemsSvc _getTodoItemsSvc;
         private ISaveTodoItemSvc _saveTodoItemSvc;

@@ -1,3 +1,4 @@
+#region [using]
 using System;
 using System.IO;
 using APIServer.Config;
@@ -7,6 +8,7 @@ using Autofac.Extensions.DependencyInjection;
 using eXtensionSharp;
 using JLiteDBFlex;
 using JWLibrary.DI;
+using JWLibrary.ServiceExecutor;
 using JWLibrary.Util.Session;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +21,7 @@ using Microsoft.OpenApi.Models;
 using Service.Accounts;
 using Service.Config;
 using Service.WeatherForecast;
+#endregion
 
 namespace APIServer {
     public class Startup {
@@ -82,7 +85,7 @@ namespace APIServer {
             //services.AddDbContext<BlogContext>(ServiceLifetime.Scoped);
 
             //register manual service
-            services.Load(new XList<IServiceRegister>() {
+            services.SvcLoad(new XList<IServiceRegister> {
                 new AccountServiceRegister(),
                 new ConfigServiceRegister(),
                 new WeatherServiceRegister()

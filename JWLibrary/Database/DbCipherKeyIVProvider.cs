@@ -19,10 +19,14 @@ namespace JWLibrary.Database {
 
         public (string key, string iv) Get() {
             //setting key & iv, read file or http request
-            var configFile = @"D:\workspace\JW2Library\JConfiguration\jconfig.json";
+            var configFile = ConfigConst.DB_CONFIG_PATH;
             var configJson = configFile.xFileReadLine();
             var jconfig = configJson.xJsonToObject<JConfig>();
             return new(jconfig.DatabaseProvider.KEY, jconfig.DatabaseProvider.CHIPER);
         }
+    }
+
+    public class ConfigConst {
+        public const string DB_CONFIG_PATH = "D:\\WebConfig\\Database.config.json";
     }
 }

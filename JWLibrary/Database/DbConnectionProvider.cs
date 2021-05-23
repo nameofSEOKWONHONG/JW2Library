@@ -46,7 +46,7 @@ namespace JWLibrary.Database {
                     using (_mutex.Lock()) {
                         if (_providerMaps.xIsNull()) {
                             _providerMaps = new Dictionary<string, string>();
-                            var configFile = @"D:\workspace\JW2Library\JConfiguration\jconfig.json";
+                            var configFile = ConfigConst.DB_CONFIG_PATH;
                             var configJson = configFile.xFileReadLine();
 
                             var jconfig = configJson.xJsonToObject<JConfig>();

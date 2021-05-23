@@ -1,8 +1,9 @@
-﻿//#define __SURFACE__
+﻿#define __SURFACE__
 
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
 using eXtensionSharp;
 using JWLibrary.Database;
 using JWLibrary.Utils;
@@ -53,11 +54,16 @@ namespace JConfiger {
             config.DatabaseProvider = dbProviderObj;
             var json = config.xObjectToJson();
 
-            using var fs = new FileStream(@"D:\workspace\JW2Library\JConfiguration\jconfig.json", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            using var sw = new StreamWriter(fs);
-            sw.Write(json);
-            sw.Close();
-            fs.Close();
+            var configPath = "D:\\WebConfig\\Database.config.json";
+            configPath.xFileCreateAll();
+            Thread.Sleep(1000);
+
+            using (var fs = File.Open(configPath, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+                using var sw = new StreamWriter(fs);
+                sw.Write(json);
+                sw.Close();
+                fs.Close();
+            }
         }
     }
 

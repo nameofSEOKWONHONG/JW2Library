@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 
 namespace JWLibrary.Web {
-    public class BulkUploadControllerBase : JControllerBase<BulkUploadControllerBase> {
+    public class BulkUploadControllerBase : JController<BulkUploadControllerBase> {
         public BulkUploadControllerBase(ILogger<BulkUploadControllerBase> logger) : base(logger) {
         }
 

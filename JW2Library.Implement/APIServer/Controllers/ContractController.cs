@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Service.Contract;
 
 namespace APIServer.Controllers {
-    public class ContractController : JControllerBase<ContractController> {
+    public class ContractController : JController<ContractController> {
         public ContractController(ILogger<ContractController> logger) : base(logger) {
         }
 

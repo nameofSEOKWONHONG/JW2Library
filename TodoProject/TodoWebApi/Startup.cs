@@ -1,20 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eXtensionSharp;
 using JWLibrary.DI;
+using JWLibrary.ServiceExecutor;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using TodoWebApi.Services;
 
 namespace TodoWebApi {
     public class Startup {
@@ -30,15 +22,16 @@ namespace TodoWebApi {
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "TodoWebApi", Version = "v1"});
             });
-            
+            services.AddVersionConfig();
+
             //ServiceRegistry 구현을 로드한다.
-            //TODO : 동적으로 할 수 있는지 확인하자.
-            services.Load(new XList<IServiceRegister>() {
-                new TodoSvcRegister()
-            });
+            //동적 로딩으로 구현
+            services.SvcLoad();
+
             //BulkInstance 생성을 위한 ServiceLocator 등록
             //직접 선언을 위해 사용할 수 있지만 권장하지 않는다.
             //비즈니스는 ServiceRegistry를 통해서 구현함.
+            //TodoController.cs > DeleteTodoItems 메서드 확인하라.
             ServiceLocator.SetLocatorProvider(services.BuildServiceProvider());
         }
 

@@ -31,16 +31,11 @@ namespace JWLibrary.Utils {
             var byteIV = Encoding.UTF8.GetBytes(cipherIV);
             var byteBuff = cipherText.toHmac(format);
             using (var aesCrytoProvider = new AesCryptoServiceProvider()) {
-                try {
-                    aesCrytoProvider.Mode = cipherMode;
-                    aesCrytoProvider.Padding = paddingMode;
-                    var dec = aesCrytoProvider.CreateDecryptor(byteKey, byteIV)
-                        .TransformFinalBlock(byteBuff, 0, byteBuff.Length);
-                    return Encoding.UTF8.GetString(dec);
-                }
-                finally {
-                    aesCrytoProvider.Dispose();
-                }
+                aesCrytoProvider.Mode = cipherMode;
+                aesCrytoProvider.Padding = paddingMode;
+                var dec = aesCrytoProvider.CreateDecryptor(byteKey, byteIV)
+                    .TransformFinalBlock(byteBuff, 0, byteBuff.Length);
+                return Encoding.UTF8.GetString(dec);
             }
         }
     }
