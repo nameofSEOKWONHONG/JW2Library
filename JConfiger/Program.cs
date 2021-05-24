@@ -1,5 +1,3 @@
-﻿#define __SURFACE__
-
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -11,10 +9,13 @@ using JWLibrary.Utils;
 namespace JConfiger {
     class Program {
         static void Main(string[] args) {
+            var settingText = args[0];
+            var filePath = args[1];
+
             var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).xSubstring(0, 16);
             var chiper = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).xSubstring(0, 16);
             var dbProviderObj = new JDatabaseProviderConfig();
-            #if __SURFACE__
+            if(settingsText.ToUpper() == "SURFACE") {
             dbProviderObj.MSSQL =
                 "Data Source=192.168.137.245;Initial Catalog=testdb;User ID=sa;Password=1q2w3e4r!Q@W#E$R;".xToEncAes256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
@@ -30,7 +31,7 @@ namespace JConfiger {
                 key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
             dbProviderObj.SQLITE_IN_MEMORY = "Data Source=:memory:;Version=3;New=True;".xToEncAes256(
                 key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-            #else
+            } else {
             dbProviderObj.MSSQL =
                 "Data Source=192.168.137.233;Initial Catalog=testdb;User ID=sa;Password=1q2w3e4r!Q@W#E$R;".xToEncAes256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
@@ -46,7 +47,7 @@ namespace JConfiger {
                 key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
             dbProviderObj.SQLITE_IN_MEMORY = "Data Source=:memory:;Version=3;New=True;".xToEncAes256(
                 key, chiper, CipherMode.CBC, PaddingMode.PKCS7);            
-            #endif
+            }
             dbProviderObj.KEY = key;
             dbProviderObj.CHIPER = chiper;
 
@@ -54,7 +55,7 @@ namespace JConfiger {
             config.DatabaseProvider = dbProviderObj;
             var json = config.xObjectToJson();
 
-            var configPath = "D:\\WebConfig\\Database.config.json";
+            var configPath = filePath;
             configPath.xFileCreateAll();
             Thread.Sleep(1000);
 
