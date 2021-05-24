@@ -1,9 +1,13 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using eXtensionSharp;
 using FluentValidation;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
+using LiteDB;
 using Microsoft.Data.SqlClient;
+using MySql.Data.MySqlClient;
+using SqlKata.Execution;
 using TodoWebApi.Entities;
 
 namespace TodoWebApi.Services {
@@ -30,6 +34,51 @@ namespace TodoWebApi.Services {
         }
 
         public override void Execute() {
+#if __SQLKATA__
+#if __MYSQLKATA__
+            JDatabaseResolver.Resolve<MySqlConnection>()
+                .DbExecutorKata(db => {
+                    if (_exists.xIsNotNull()) {
+                        var effectedRow = db.Query("TODO").Where("ID", _exists.ID).Delete();
+                        if (effectedRow > 0) {
+                            this.Result = db.Query("TODO").InsertGetId<int>(new {
+                                TODO_TEXT = this.Request.TODO_TEXT,
+                                W_DATE = DateTime.Now,
+                                M_DATE = DateTime.Now
+                            });
+                        }
+                    }
+                    else {
+                        this.Result = db.Query("TODO").InsertGetId<int>(new {
+                            TODO_TEXT = this.Request.TODO_TEXT,
+                            W_DATE = DateTime.Now,
+                            M_DATE = DateTime.Now
+                        });
+                    }
+                });
+#else
+            JDatabaseResolver.Resolve<SqlConnection>()
+                .DbExecutorKata(db => {
+                    if (_exists.xIsNotNull()) {
+                        var effectedRow = db.Query("TODO").Where("ID", _exists.ID).Delete();
+                        if (effectedRow > 0) {
+                            this.Result = db.Query("TODO").InsertGetId<int>(new {
+                                TODO_TEXT = this.Request.TODO_TEXT,
+                                W_DATE = DateTime.Now,
+                                M_DATE = DateTime.Now
+                            });
+                        }
+                    }
+                    else {
+                        this.Result = db.Query("TODO").InsertGetId<int>(new {
+                            TODO_TEXT = this.Request.TODO_TEXT,
+                            W_DATE = DateTime.Now,
+                            M_DATE = DateTime.Now
+                        });
+                    }
+                });
+#endif
+#else
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecutor(db => {
                     if (_exists.xIsNotNull()) {
@@ -41,6 +90,7 @@ namespace TodoWebApi.Services {
                         this.Result =  db.Insert<TODO>(this.Request).Value;
                     }
                 });
+#endif
         }
 
         private class Validator : AbstractValidator<SaveTodoItemSvc> {

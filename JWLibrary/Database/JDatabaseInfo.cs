@@ -28,19 +28,16 @@ namespace JWLibrary.Database {
         private readonly Dictionary<string, Func<string, IDbConnection>> _connectionMaps = new() {
             {
                 ENUM_DATABASE_TYPE.MSSQL.Value, connectionString => {
-                    SqlServerBootstrap.Initialize();
                     //no more use System.Data.SqlClient.SqlConnection
                     //replace Microsoft.Data.SqlClient.SqlConnection
                     return new Microsoft.Data.SqlClient.SqlConnection(DbConnectionProvider.Instance.MSSQL);
                 }
             }, {
                 ENUM_DATABASE_TYPE.MYSQL.Value, connectionString => {
-                    MySqlBootstrap.Initialize();
                     return new MySqlConnection(DbConnectionProvider.Instance.MYSQL);
                 }
             }, {
                 ENUM_DATABASE_TYPE.POSTGRESQL.Value, connectionString => {
-                    PostgreSqlBootstrap.Initialize();
                     return new NpgsqlConnection(DbConnectionProvider.Instance.POSTGRESQL);
                 }
             },

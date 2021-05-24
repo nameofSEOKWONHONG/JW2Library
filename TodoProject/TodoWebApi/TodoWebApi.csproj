@@ -4,8 +4,11 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DefineConstants>TRACECOREAPP;__SQLKATA__;__MYSQLKATA__;</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
-        <PackageReference Include="Dapper.SimpleCRUD" Version="2.3.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     </ItemGroup>
 

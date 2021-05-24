@@ -22,7 +22,7 @@ namespace TodoWebApi {
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "TodoWebApi", Version = "v1"});
             });
-            services.AddVersionConfig();
+            //services.AddVersionConfig();
 
             //ServiceRegistry 구현을 로드한다.
             //동적 로딩으로 구현

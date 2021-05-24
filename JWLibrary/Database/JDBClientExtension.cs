@@ -7,10 +7,15 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using eXtensionSharp;
+using MySql.Data.MySqlClient;
+using Npgsql;
+using SqlKata.Compilers;
+using SqlKata.Execution;
 
 namespace JWLibrary.Database {
     /// <summary>
     ///     Database Client Extension
+    /// TODO:Transaction Commit 부분 변경해야 함.
     /// </summary>
     public static partial class JdbClientExtension {
         /// <summary>
@@ -85,6 +90,27 @@ namespace JWLibrary.Database {
                 JTransaction.Instance.Add(connection, isTran);
                 connection.xOpen();
                 action(connection);
+                JTransaction.Instance.Commit(connection);
+            }
+            catch {
+                JTransaction.Instance.Rollback(connection);
+                throw;
+            }
+            finally {
+                connection.Close();
+            }
+        }
+
+        public static void DbExecutorKata(this IDbConnection connection, Action<QueryFactory> action, bool isTran = false) {
+            try {
+                JTransaction.Instance.Add(connection, isTran);
+                connection.xOpen();
+
+                var queryFactory = SqlKataCompilerFactory.CreateInstance(connection);
+                if (queryFactory.xIsNull()) throw new NotImplementedException();
+
+                action(queryFactory);
+                    
                 JTransaction.Instance.Commit(connection);
             }
             catch {

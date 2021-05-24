@@ -60,9 +60,9 @@ namespace JWLibrary.Web {
             using var executor = new ServiceExecutorManager<TServiceExecutor>(serviceExecutor);
             await executor.SetRequest(o => o.Request = request)
                 .AddFilter(o => func.xIsNotNull() ? func(serviceExecutor) : true)
-                .OnExecutedAsync(async o => {
+                .OnExecutedAsync(o => {
                     result = o.Result;
-                    return true;
+                    return Task.FromResult(true);
                 });
             return result;
         }
