@@ -30,14 +30,17 @@ namespace JWLibrary.Database {
                 ENUM_DATABASE_TYPE.MSSQL.Value, connectionString => {
                     //no more use System.Data.SqlClient.SqlConnection
                     //replace Microsoft.Data.SqlClient.SqlConnection
+                    RepoDb.SqlServerBootstrap.Initialize();
                     return new Microsoft.Data.SqlClient.SqlConnection(DbConnectionProvider.Instance.MSSQL);
                 }
             }, {
                 ENUM_DATABASE_TYPE.MYSQL.Value, connectionString => {
+                    RepoDb.MySqlBootstrap.Initialize();
                     return new MySqlConnection(DbConnectionProvider.Instance.MYSQL);
                 }
             }, {
                 ENUM_DATABASE_TYPE.POSTGRESQL.Value, connectionString => {
+                    RepoDb.PostgreSqlBootstrap.Initialize();
                     return new NpgsqlConnection(DbConnectionProvider.Instance.POSTGRESQL);
                 }
             },

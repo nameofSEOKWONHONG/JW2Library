@@ -37,11 +37,11 @@ namespace TodoWebApi.Services {
 #if __SQLKATA__
 #if __MYSQLKATA__
             JDatabaseResolver.Resolve<MySqlConnection>()
-                .DbExecutorKata(db => {
+                .DbExecuteKata((db, query) => {
                     if (_exists.xIsNotNull()) {
-                        var effectedRow = db.Query("TODO").Where("ID", _exists.ID).Delete();
+                        var effectedRow = query.Query("TODO").Where("ID", _exists.ID).Delete();
                         if (effectedRow > 0) {
-                            this.Result = db.Query("TODO").InsertGetId<int>(new {
+                            this.Result = query.Query("TODO").InsertGetId<int>(new {
                                 TODO_TEXT = this.Request.TODO_TEXT,
                                 W_DATE = DateTime.Now,
                                 M_DATE = DateTime.Now
@@ -49,7 +49,7 @@ namespace TodoWebApi.Services {
                         }
                     }
                     else {
-                        this.Result = db.Query("TODO").InsertGetId<int>(new {
+                        this.Result = query.Query("TODO").InsertGetId<int>(new {
                             TODO_TEXT = this.Request.TODO_TEXT,
                             W_DATE = DateTime.Now,
                             M_DATE = DateTime.Now
@@ -58,7 +58,7 @@ namespace TodoWebApi.Services {
                 });
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutorKata(db => {
+                .DbExecuteKata(db => {
                     if (_exists.xIsNotNull()) {
                         var effectedRow = db.Query("TODO").Where("ID", _exists.ID).Delete();
                         if (effectedRow > 0) {
@@ -80,7 +80,7 @@ namespace TodoWebApi.Services {
 #endif
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor(db => {
+                .DbExecute(db => {
                     if (_exists.xIsNotNull()) {
                         if (db.Delete<TODO>(_exists) > 0) {
                             this.Result = db.Insert<TODO>(this.Request).Value;    

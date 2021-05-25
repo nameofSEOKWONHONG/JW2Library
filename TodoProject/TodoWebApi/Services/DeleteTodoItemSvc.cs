@@ -33,20 +33,20 @@ namespace TodoWebApi.Services {
 #if __SQLKATA__
 #if __MYSQLKATA__
             JDatabaseResolver.Resolve<MySqlConnection>()
-                .DbExecutorKata(db => {
-                    var todo = db.Query("TODO").Where("ID", Request).First<TODO>();
-                    if (todo.xIsNotEmpty()) Result = db.Query("TODO").Where("ID", todo.ID).Delete() > 0;
+                .DbExecuteKata((db, query) => {
+                    var todo = query.Query("TODO").Where("ID", Request).First<TODO>();
+                    if (todo.xIsNotEmpty()) Result = query.Query("TODO").Where("ID", todo.ID).Delete() > 0;
                 });
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutorKata(db => {
+                .DbExecuteKata(db => {
                     var todo = db.Query("TODO").Where("ID", Request).First<TODO>();
                     if (todo.xIsNotEmpty()) Result = db.Query("TODO").Where("ID", todo.ID).Delete() > 0;
                 });
 #endif
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor(db => {
+                .DbExecute(db => {
                     var exists = db.Get<TODO>(this.Request);
                     if (exists.xIsNotNull()) {
                         this.Result = db.Delete<TODO>(exists) > 0;

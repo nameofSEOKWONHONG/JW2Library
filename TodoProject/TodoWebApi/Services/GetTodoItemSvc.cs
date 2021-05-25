@@ -21,18 +21,18 @@ namespace TodoWebApi.Services {
 #if __SQLKATA__
 #if __MYSQLKATA__
             JDatabaseResolver.Resolve<MySqlConnection>()
-                .DbExecutorKata(db => {
-                    this.Result = db.Query("TODO").Where("ID", Request).FirstOrDefault<TODO>();
+                .DbExecuteKata((db, query) => {
+                    this.Result = query.Query("TODO").Where("ID", Request).FirstOrDefault<TODO>();
                 });
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutorKata(db => {
+                .DbExecuteKata(db => {
                     this.Result = db.Query("TODO").Where("ID", Request).FirstOrDefault<TODO>();
                 });
 #endif
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor(db => {
+                .DbExecute(db => {
                     this.Result = db.Get<TODO>(this.Request);
                 });
 #endif

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using eXtensionSharp;
 using JWLibrary;
 using JWLibrary.ServiceExecutor;
 using TodoWebApi.Entities;
@@ -26,4 +27,9 @@ namespace TodoWebApi.Services {
     public interface IDeleteTodoItemsSvc : IServiceExecutor<IEnumerable<int>, bool> {
         
     }
+
+    public interface ITransactionSampleSvc : IServiceExecutor<bool, XList<TODO>> {
+        
+    }
+    
 }

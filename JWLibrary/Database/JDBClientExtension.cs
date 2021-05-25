@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using eXtensionSharp;
+using MongoDB.Bson.IO;
 using MySql.Data.MySqlClient;
 using Npgsql;
 using SqlKata.Compilers;
@@ -17,7 +20,7 @@ namespace JWLibrary.Database {
     ///     Database Client Extension
     /// TODO:Transaction Commit 부분 변경해야 함.
     /// </summary>
-    public static partial class JdbClientExtension {
+    public class JDbClientBulkExtension {
         /// <summary>
         ///     bulk insert, use datatable
         /// </summary>
@@ -25,7 +28,7 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="bulkDatas"></param>
         /// <param name="tableName"></param>
-        public static void BulkInsert<T>(this IDbConnection connection, IEnumerable<T> bulkDatas,
+        public void BulkInsert<T>(IDbConnection connection, IEnumerable<T> bulkDatas,
             string tableName = null)
             where T : class, new() {
             try {
@@ -48,7 +51,7 @@ namespace JWLibrary.Database {
             }
         }
 
-        public static async Task BulkInsertAsync<T>(this IDbConnection connection, IEnumerable<T> bulkDatas,
+        public async Task BulkInsertAsync<T>(IDbConnection connection, IEnumerable<T> bulkDatas,
             string tableName = null)
             where T : class, new() {
             try {
@@ -75,7 +78,22 @@ namespace JWLibrary.Database {
     /// <summary>
     ///     create dbconnection only
     /// </summary>
-    public static partial class JdbClientExtension {
+    public class JDbClientExecutor : IDisposable {
+        private bool _isThrow;
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
+
+        private Func<IDbConnection, IDbTransaction> _addTran;
+
+        public JDbClientExecutor(IDbConnection connection) {
+            _connection = connection;
+        }
+
+        public JDbClientExecutor AddTran() {
+            _addTran = connection => connection.BeginTransaction(); 
+            return this;
+        }
+        
         #region [self impletment func method]
 
         /// <summary>
@@ -85,111 +103,81 @@ namespace JWLibrary.Database {
         /// <param name="connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static void DbExecutor(this IDbConnection connection, Action<IDbConnection> action, bool isTran = false) {
+        public JDbClientExecutor DbExecute(Action<IDbConnection, IDbTransaction> action) {
             try {
-                JTransaction.Instance.Add(connection, isTran);
-                connection.xOpen();
-                action(connection);
-                JTransaction.Instance.Commit(connection);
+                _connection.xOpen();
+                if (_addTran.xIsNotNull()) {
+                    _transaction = _addTran(_connection);    
+                }
+                action(_connection, _transaction);
             }
             catch {
-                JTransaction.Instance.Rollback(connection);
+                if(_transaction.xIsNotNull()) _transaction.Rollback();
+                _transaction = null;
                 throw;
             }
-            finally {
-                connection.Close();
-            }
+
+            return this;
         }
 
-        public static void DbExecutorKata(this IDbConnection connection, Action<QueryFactory> action, bool isTran = false) {
+        public JDbClientExecutor DbExecuteKata(Action<IDbConnection, QueryFactory> action) {
             try {
-                JTransaction.Instance.Add(connection, isTran);
-                connection.xOpen();
+                _connection.xOpen();
 
-                var queryFactory = SqlKataCompilerFactory.CreateInstance(connection);
+                if (_addTran.xIsNotNull()) {
+                    _transaction = _addTran(_connection);    
+                }
+                
+                var queryFactory = SqlKataCompilerFactory.CreateInstance(_connection);
                 if (queryFactory.xIsNull()) throw new NotImplementedException();
 
-                action(queryFactory);
-                    
-                JTransaction.Instance.Commit(connection);
+                action(_connection, queryFactory);
             }
             catch {
-                JTransaction.Instance.Rollback(connection);
+                if(_transaction.xIsNotNull()) _transaction.Rollback();
+                _transaction = null;
                 throw;
             }
-            finally {
-                connection.Close();
-            }
-        }
 
-        public static void DbExecutor(this Tuple<IDbConnection, IDbConnection> connections,
-            Action<IDbConnection, IDbConnection> action, bool isTran = false) {
-            try {
-                JTransaction.Instance.Adds(new[] {connections.Item1, connections.Item2}, isTran);
-
-                connections.Item1.xOpen();
-                connections.Item2.xOpen();
-
-                action(connections.Item1, connections.Item2);
-
-                JTransaction.Instance.Commits(new[] {connections.Item1, connections.Item2});
-            }
-            catch {
-                JTransaction.Instance.Rollbacks(new[]{connections.Item1, connections.Item2});
-                throw;
-            }
-            finally {
-                connections.Item1.xClose();
-                connections.Item2.xClose();
-            }
+            return this;
         }
 
         /// <summary>
         ///     async execute(select, update, delete, insert) db, use any code on func method. (use dapper, ef and so on...)
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="connection"></param>
+        /// <param name="_connection"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static async Task DbExecutorAsync(this IDbConnection connection, Func<IDbConnection, Task> func, bool isTran = false) {
+        public async Task<JDbClientExecutor> DbExecutorAsync(Func<IDbConnection, Task> func) {
             try {
-                JTransaction.Instance.Add(connection, isTran);
-                connection.xOpen();
-
-                await func(connection);
-                
-                JTransaction.Instance.Commit(connection);
+                _connection.xOpen();
+                if (_addTran.xIsNotNull()) {
+                    _transaction = _addTran(_connection);    
+                }
+                await func(_connection);
             }
             catch {
-                JTransaction.Instance.Rollback(connection);
+                if(_transaction.xIsNotNull()) _transaction.Rollback();
+                _transaction = null;
                 throw;
             }
-            finally {
-                connection.xClose();
+
+            return this;
+        }
+        
+        #endregion [self impletment func method]
+        public void Dispose() {
+            if (_transaction.xIsNotNull()) {
+                _transaction.Commit();
+            }
+            if (_connection.xIsNotNull()) {
+                _connection.xClose();
             }
         }
+    }
 
-        public static async void DbExecutorAsync(this Tuple<IDbConnection, IDbConnection> connections,
-            Func<IDbConnection, IDbConnection, Task> func, bool isTran = false) {
-            try {
-                JTransaction.Instance.Adds(new[] {connections.Item1, connections.Item2}, isTran);
-                connections.Item1.xOpen();
-                connections.Item2.xOpen();
-
-                await func(connections.Item1, connections.Item2);
-                
-                JTransaction.Instance.Commits(new[]{connections.Item1, connections.Item2});
-            }
-            catch {
-                JTransaction.Instance.Rollbacks(new[] {connections.Item1, connections.Item2});
-                throw;
-            }
-            finally {
-                connections.Item1.xClose();
-                connections.Item2.xClose();
-            }
-        }
-
+    public static class JDbExtension {
         public static void xOpen(this IDbConnection connection) {
             if(connection.State != ConnectionState.Open) connection.Open();
         }
@@ -197,74 +185,54 @@ namespace JWLibrary.Database {
         public static void xClose(this IDbConnection connection) {
             if(connection.State == ConnectionState.Open) connection.Close();
         }
-
-        #endregion [self impletment func method]
     }
 
-    public class JTransaction {
-        private static Lazy<JTransaction> _instance = new Lazy<JTransaction>(() => new JTransaction());
-
-        public static JTransaction Instance {
-            get {
-                return _instance.Value;
-            }
-        }
-        
-        public ConcurrentDictionary<int, IDbTransaction>
-            _transactions = new ConcurrentDictionary<int, IDbTransaction>();
-
-        public JTransaction() {
-            
-        }
-
-        public void Add(IDbConnection connection, bool isTran = false) {
-            if (isTran) {
-                var result = _transactions.TryAdd(connection.GetHashCode(), connection.BeginTransaction());
-                if (result.xIsFalse()) {
-                    Trace.WriteLine($"transaction add failed : {connection.GetHashCode()}, {connection.ConnectionString}");
-                }
-            }
-        }
-
-        public void Adds(IEnumerable<IDbConnection> connections, bool isTran = false) {
-            if (isTran) {
-                connections.xForEach(connection => {
-                    Add(connection, isTran);
-                });
-            }
-        }
-
-        public IDbTransaction Get(IDbConnection connection) {
-            return _transactions.GetOrAdd(connection.GetHashCode(), (i => _transactions[i] ));
-        }
-
-        public void Commit(IDbConnection connection) {
-            _transactions.xForEach(tran => {
-                if (tran.Key == connection.GetHashCode()) {
-                    tran.Value.Commit();
-                }
-            });
-        }
-
-        public void Commits(IEnumerable<IDbConnection> connections) {
-            connections.xForEach(connection => {
-                Commit(connection);
-            });
-        }
-
-        public void Rollback(IDbConnection connection) {
-            _transactions.xForEach(tran => {
-                if (tran.Key == connection.GetHashCode()) {
-                    tran.Value.Rollback();
-                }
-            });
-        }
-
-        public void Rollbacks(IEnumerable<IDbConnection> connections) {
-            connections.xForEach(connection => {
-                Rollback(connection);
-            });
-        }
-        
-    }
+    // TODO : 쓸것인가 말것인가... using 안쓸려면 이걸로 해야 하는데...
+    // public class JTransaction {
+    //     private IDbConnection _connection;
+    //     private ConcurrentStack<IDbTransaction>
+    //         _transactions = new ConcurrentStack<IDbTransaction>();
+    //
+    //     public int Count {
+    //         get {
+    //             return _transactions.Count();
+    //         }
+    //     }
+    //
+    //     public JTransaction(IDbConnection connection) {
+    //         _connection = connection;
+    //     }
+    //
+    //     public void BeginTran() {
+    //         IDbTransaction tran = _connection.BeginTransaction();
+    //         _transactions.Push(tran);
+    //     }
+    //
+    //     public void Commit() {
+    //         _transactions.xFor(tran => {
+    //             tran.Commit();
+    //         });
+    //         
+    //         (0, _transactions.Count()).xForeach(i => {
+    //             IDbTransaction tran = null;
+    //             if (_transactions.TryPop(out tran)) {
+    //                 tran.Commit();
+    //             }
+    //         });
+    //     }
+    //
+    //     public void Rollback() {
+    //         _transactions.xFor(tran => {
+    //             tran.Rollback();
+    //         });
+    //         
+    //         (0, _transactions.Count()).xForeach(i => {
+    //             IDbTransaction tran = null;
+    //             if (_transactions.TryPop(out tran)) {
+    //                 tran.Rollback();
+    //             }
+    //         });
+    //     }
+    //     
+    // }
 }

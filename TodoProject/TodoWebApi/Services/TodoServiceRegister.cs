@@ -11,6 +11,7 @@ namespace TodoWebApi.Services {
             services.AddScoped<IGetTodoItemsSvc, GetTodoItemsSvc>();
             services.AddTransient<ISaveTodoItemSvc, SaveTodoItemSvc>();
             services.AddTransient<IDeleteTodoItemSvc, DeleteTodoItemSvc>();
+            services.AddTransient<ITransactionSampleSvc, TransactionSampleSvc>();
         }
     }
 }

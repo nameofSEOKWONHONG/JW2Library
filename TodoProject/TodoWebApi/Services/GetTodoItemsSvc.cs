@@ -25,14 +25,14 @@ namespace TodoWebApi.Services {
 #if __SQLKATA__
 #if __MYSQLKATA__
             JDatabaseResolver.Resolve<MySqlConnection>()
-                .DbExecutorKata(db => {
-                    this.Result = db.Query("TODO")
+                .DbExecuteKata((db, query) => {
+                    this.Result = query.Query("TODO")
                         .WhereStarts("TODO_TEXT", this.Request.xValue(), true)//WHERE TODO_TEXT LIKE '[TEXT]%'
                         .Get<TODO>();
                 });
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutorKata(db => {
+                .DbExecuteKata((db, query) => {
                     this.Result = db.Query("TODO")
                         .WhereStarts("TODO_TEXT", this.Request.xValue(), true)//WHERE TODO_TEXT LIKE '[TEXT]%'
                         .Get<TODO>();
@@ -40,7 +40,7 @@ namespace TodoWebApi.Services {
 #endif       
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecutor(db => {
+                .DbExecute(db => {
                     this.Result = db.GetList<TODO>($"WHERE TODO_TEXT LIKE '%{this.Request}%'");
                 });
 #endif

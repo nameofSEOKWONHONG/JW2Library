@@ -9,35 +9,52 @@ namespace JWLibrary.Database {
     ///     create database connection Resolver
     /// </summary>
     public class JDatabaseResolver {
-        public static IDbConnection Resolve<TDatabase>()
+        public static JDbClientExecutor Resolve<TDatabase>()
             where TDatabase : IDbConnection {
-            if (typeof(TDatabase) == typeof(Microsoft.Data.SqlClient.SqlConnection)) return JDatabaseInfo.Instance
-                .GetConnection(ENUM_DATABASE_TYPE.MSSQL);
-            if (typeof(TDatabase) == typeof(MySqlConnection)) return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MYSQL);
-            if (typeof(TDatabase) == typeof(NpgsqlConnection)) return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.POSTGRESQL);
-            throw new NotImplementedException();
+            IDbConnection connection = null;
+            if (typeof(TDatabase) == typeof(Microsoft.Data.SqlClient.SqlConnection)) {
+                
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MSSQL);
+            }
+            else if (typeof(TDatabase) == typeof(MySqlConnection)) {
+                
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MYSQL);
+            }
+            else if (typeof(TDatabase) == typeof(NpgsqlConnection)) {
+                
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.POSTGRESQL);
+            }
+            else {
+                throw new NotImplementedException();    
+            }
+
+            var executor = new JDbClientExecutor(connection);
+            return executor;
         }
 
-        public static IDbConnection Resolve(ENUM_DATABASE_TYPE type) {
-            if (type == ENUM_DATABASE_TYPE.MSSQL)
-                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MSSQL);
-            else if (type == ENUM_DATABASE_TYPE.MYSQL)
-                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MYSQL);
-            else if (type == ENUM_DATABASE_TYPE.POSTGRESQL)
-                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.POSTGRESQL);
-            else if (type == ENUM_DATABASE_TYPE.REDIS)
-                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.REDIS);
-            else if (type == ENUM_DATABASE_TYPE.MONGODB)
-                return JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MONGODB);
-            else
+        public static JDbClientExecutor Resolve(ENUM_DATABASE_TYPE type) {
+            IDbConnection connection = null;
+            if (type == ENUM_DATABASE_TYPE.MSSQL) {
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MSSQL);
+            }
+            else if (type == ENUM_DATABASE_TYPE.MYSQL) {
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MYSQL);
+            }
+            else if (type == ENUM_DATABASE_TYPE.POSTGRESQL) {
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.POSTGRESQL);
+            }
+            else if (type == ENUM_DATABASE_TYPE.REDIS) {
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.REDIS);
+            }
+            else if (type == ENUM_DATABASE_TYPE.MONGODB) {
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MONGODB);
+            }
+            else {
                 throw new NotImplementedException();
-        }
+            }
 
-        public static (IDbConnection first, IDbConnection second) Resolve<TDatabaseA, TDatabaseB>()
-            where TDatabaseA : IDbConnection
-            where TDatabaseB : IDbConnection {
-            if (typeof(TDatabaseA) == typeof(TDatabaseB)) throw new Exception("not allow same database connection.");
-            return new ValueTuple<IDbConnection, IDbConnection>(Resolve<TDatabaseA>(), Resolve<TDatabaseB>());
+            var executor = new JDbClientExecutor(connection);
+            return executor;
         }
     }
 }

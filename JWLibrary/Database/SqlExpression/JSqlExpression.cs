@@ -163,8 +163,8 @@ namespace JWLibrary.Database {
 
         public IEnumerable<T> Query(ENUM_DATABASE_TYPE type) {
             IEnumerable<T> result = null;
-            JDatabaseResolver.Resolve(type).DbExecutor(db => {
-                result = db.Query<T>(this.Build(), _parameters.Select(m => m.Value));
+            JDatabaseResolver.Resolve(type).DbExecute((c, t) => {
+                result = c.Query<T>(this.Build(), _parameters.Select(m => m.Value));
             });
             return result;
         }

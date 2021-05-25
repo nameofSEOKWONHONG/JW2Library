@@ -5,12 +5,12 @@ using SqlKata.Compilers;
 using SqlKata.Execution;
 
 namespace JWLibrary.Database {
-    public class SqlKataCompilerFactory {
+    internal class SqlKataCompilerFactory {
         private SqlKataCompilerFactory() {
         }
 
         public static QueryFactory CreateInstance(IDbConnection connection) {
-            if (connection == typeof(MySqlConnection)) {
+            if (connection.GetType() == typeof(MySqlConnection)) {
                 var compiler = new MySqlCompiler();
                 return new QueryFactory(connection, compiler);
             }
