@@ -4,22 +4,22 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace JWLibrary.Web {
     /// <summary>
-    /// reference : https://github.com/DEV-TEAM-RED/aspnet-api-versioning
+    /// REF : https://github.com/DEV-TEAM-RED/aspnet-api-versioning
     /// </summary>
     public static class VersionConfig {
         public static void AddVersionConfig(this IServiceCollection services) {
             services.AddApiVersioning(opt => {
-                opt.AssumeDefaultVersionWhenUnspecified = true;
-                opt.DefaultApiVersion = ApiVersion.Default;
+                // opt.AssumeDefaultVersionWhenUnspecified = true;
+                // opt.DefaultApiVersion = ApiVersion.Default;
 
                 // this is going to return all available api versions
                 opt.ReportApiVersions = true;
 
-                // Add Media type versioning
-                opt.ApiVersionReader = ApiVersionReader.Combine(
-                    new HeaderApiVersionReader("x-api-version"),
-                    new MediaTypeApiVersionReader("x-api-version")
-                );
+                // // Add Media type versioning
+                // opt.ApiVersionReader = ApiVersionReader.Combine(
+                //     new HeaderApiVersionReader("x-api-version"),
+                //     new MediaTypeApiVersionReader("x-api-version")
+                // );
             });
             
             services.AddVersionedApiExplorer(

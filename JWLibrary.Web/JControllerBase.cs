@@ -111,7 +111,7 @@ namespace JWLibrary.Web {
     /// <summary>
     /// 버전 관리 컨트롤러 베이스
     /// </summary>
-    //[Route("api/v{version:apiVersion}/[controller]/[action]")] //url version route
+    [Route("api/v{version:apiVersion}/[controller]/[action]")] //url version route
     public class JVersionControllerBase<TController> : JControllerBase<TController>
         where TController : class {
         public JVersionControllerBase(ILogger<TController> logger) : base(logger) {
