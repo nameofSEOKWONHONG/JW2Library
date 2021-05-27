@@ -4,6 +4,7 @@ using eXtensionSharp;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NLog;
 using TodoWebApi.Entities;
 using TodoWebApi.Services;
 
@@ -12,6 +13,7 @@ namespace TodoWebApi.Controllers {
         private ITransactionSampleSvc _transactionSampleSvc;
         public TransactionSampleController(ILogger<TransactionSampleController> logger, ITransactionSampleSvc transactionSampleSvc) : base(logger) {
             _transactionSampleSvc = transactionSampleSvc;
+            this.BaseLogger.LogInformation("Create Instance");
         }
 
         [HttpGet]

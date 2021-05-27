@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace TodoWebApi.Controllers.Version.V2 {
     [ApiVersion("2.0")]
