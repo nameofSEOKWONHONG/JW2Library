@@ -72,6 +72,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JLiteDBFlex\JLiteDBFlex.csproj" />
+    <ProjectReference Include="..\JWLibrary.Config\JWLibrary.Config.csproj" />
   </ItemGroup>
 
   <ItemGroup>

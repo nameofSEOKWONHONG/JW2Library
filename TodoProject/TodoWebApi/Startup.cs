@@ -97,6 +97,8 @@ namespace TodoWebApi {
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseMiddleware<JErrorHandlingMiddleware>();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

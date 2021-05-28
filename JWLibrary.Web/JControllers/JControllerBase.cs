@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using eXtensionSharp;
 using JWLibrary.DI;
@@ -12,11 +13,22 @@ namespace JWLibrary.Web {
     [ApiController]
     public abstract class JControllerBase<TController> : ControllerBase, IDisposable 
         where TController : class {
-        protected ILogger<TController> Logger;
+        protected ILogger<TController> logger;
+        private NLog.ILogger _fileLogger;
 
         public JControllerBase(ILogger<TController> logger) {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
-            Logger = logger;
+            this.logger = logger;
+            _fileLogger = NLog.LogManager.GetLogger("Log");
+        }
+
+        protected void WriteLog(string folderPath, string message, Exception e, params object[] args) {
+            Thread.Sleep(1);
+            _fileLogger.Factory.Configuration.Variables.Clear();
+            _fileLogger.Factory.Configuration.Variables.Add("runtime", folderPath);    
+            _fileLogger.Factory.ReconfigExistingLoggers();
+            
+            _fileLogger.Trace(message, e, args);
         }
         
                 /// <summary>
@@ -91,34 +103,5 @@ namespace JWLibrary.Web {
         }
 
         public abstract void Dispose();
-    }
-    /// <summary>
-    /// 컨트롤러 베이스
-    /// </summary>
-    /// <typeparam name="TController"></typeparam>
-    [Route("api/[controller]/[action]")] //url version route
-    public class JController<TController> : JControllerBase<TController>
-        where TController : class {
-        //protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
-        public JController(ILogger<TController> logger) : base(logger) {
-        }
-
-        public override void Dispose() {
-            
-        }
-    }
-
-    /// <summary>
-    /// 버전 관리 컨트롤러 베이스
-    /// </summary>
-    [Route("api/v{version:apiVersion}/[controller]/[action]")] //url version route
-    public class JVersionControllerBase<TController> : JControllerBase<TController>
-        where TController : class {
-        public JVersionControllerBase(ILogger<TController> logger) : base(logger) {
-        }
-
-        public override void Dispose() {
-            
-        }
     }
 }

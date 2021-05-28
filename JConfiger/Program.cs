@@ -5,6 +5,7 @@ using System.Threading;
 using eXtensionSharp;
 using JWLibrary.Database;
 using JWLibrary.Utils;
+using JWLibrary.Web.Consts;
 
 namespace JConfiger {
     class Program {
@@ -12,7 +13,7 @@ namespace JConfiger {
             if (args.xIsEmpty()) {
                 args = new[] {
                     "PC",
-                    "D:\\WebConfig\\Database.config.json"
+                    CONFIG_CONST.DATABASE_CONFIG_PATH
                 };
             }
             var settingText = args[0];

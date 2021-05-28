@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using eXtensionSharp;
 using JWLibrary.Utils;
+using JWLibrary.Web.Consts;
 using Microsoft.Extensions.Configuration;
 using Nito.AsyncEx;
 
@@ -46,7 +47,7 @@ namespace JWLibrary.Database {
                     using (_mutex.Lock()) {
                         if (_providerMaps.xIsNull()) {
                             _providerMaps = new Dictionary<string, string>();
-                            var configFile = ConfigConst.DB_CONFIG_PATH;
+                            var configFile = CONFIG_CONST.DATABASE_CONFIG_PATH;
                             var configJson = configFile.xFileReadLine();
 
                             var jconfig = configJson.xJsonToObject<JConfig>();
@@ -54,9 +55,7 @@ namespace JWLibrary.Database {
                             _providerMaps.Add(ENUM_DATABASE_TYPE.MYSQL.Value, jconfig.DatabaseProvider.MYSQL);
                             _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE.Value, jconfig.DatabaseProvider.SQLITE);
                             _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value, jconfig.DatabaseProvider.SQLITE_IN_MEMORY);
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.POSTGRESQL.Value, jconfig.DatabaseProvider.POSTGRESQL);    
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.REDIS.Value, jconfig.DatabaseProvider.REDIS);
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.MONGODB.Value, jconfig.DatabaseProvider.MONGODB);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.POSTGRESQL.Value, jconfig.DatabaseProvider.POSTGRESQL);
                         }
                     }
                 }

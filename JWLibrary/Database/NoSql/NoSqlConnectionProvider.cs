@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using eXtensionSharp;
 using JWLibrary.Utils;
+using JWLibrary.Web.Consts;
 using Microsoft.Extensions.Configuration;
 using Nito.AsyncEx;
 
@@ -35,13 +36,11 @@ namespace JWLibrary.Database {
                     using (_mutex.Lock()) {
                         if (_providerMaps.xIsNull()) {
                             _providerMaps = new Dictionary<string, string>();
-                            var configuration = new ConfigurationBuilder()
-                                .AddJsonFile("./appsettings.json", true, true)
-                                .AddEnvironmentVariables()
-                                .Build();
-                            var section = configuration.GetSection("NoSqlConnectionProvider");
-                            _providerMaps.Add("REDIS", section.GetValue<string>("REDIS"));
-                            _providerMaps.Add("MONGODB", section.GetValue<string>("MONGODB"));
+                            var configFile = CONFIG_CONST.DATABASE_CONFIG_PATH;
+                            var configJson = configFile.xFileReadLine();
+                            var jconfig = configJson.xJsonToObject<JConfig>();
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.REDIS.Value, jconfig.DatabaseProvider.REDIS);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.MONGODB.Value, jconfig.DatabaseProvider.MONGODB);
                         }
                     }
                 }
