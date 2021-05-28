@@ -6,29 +6,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NLog;
-using NLog.Web;
 
 namespace TodoWebApi {
     public class Program {
         public static void Main(string[] args) {
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-            try {
-                logger.Debug("init logger");
-                CreateHostBuilder(args).Build().Run();
-            }
-            finally {
-                NLog.LogManager.Shutdown();
-            }
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => {
-                    webBuilder.ConfigureLogging(logging => {
-                        logging.ClearProviders();
-                    }).UseNLog();
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

@@ -12,12 +12,9 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using NLog;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using ILogger = NLog.ILogger;
 
 namespace TodoWebApi {
     public class Startup {
@@ -71,7 +68,6 @@ namespace TodoWebApi {
             //ServiceRegistry 구현을 로드한다.
             //동적 로딩으로 구현
             services.SvcLoad();
-            //services.AddSingleton<ILogger, NLog.Logger>();
 
             //BulkInstance 생성을 위한 ServiceLocator 등록
             //직접 선언을 위해 사용할 수 있지만 권장하지 않는다.

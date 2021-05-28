@@ -4,10 +4,8 @@ using System.Threading;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NLog;
 using TodoWebApi.Entities;
 using TodoWebApi.Services;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace TodoWebApi.Controllers {
     public class TodoController : JController<TodoController> {
@@ -24,8 +22,6 @@ namespace TodoWebApi.Controllers {
             _getTodoItemsSvc = getTodoItemsSvc;
             _saveTodoItemSvc = saveTodoItemSvc;
             _deleteTodoItemSvc = deleteTodoItemSvc;
-            this.BaseLogger.LogInformation("Create Instance");
-            this.CLogger.Log(NLog.LogLevel.Debug, "test");
         }
 
         /// <summary>

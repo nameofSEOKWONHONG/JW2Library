@@ -43,6 +43,12 @@ namespace JWLibrary.Database {
             else if (type == ENUM_DATABASE_TYPE.POSTGRESQL) {
                 connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.POSTGRESQL);
             }
+            else if (type == ENUM_DATABASE_TYPE.REDIS) {
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.REDIS);
+            }
+            else if (type == ENUM_DATABASE_TYPE.MONGODB) {
+                connection = JDatabaseInfo.Instance.GetConnection(ENUM_DATABASE_TYPE.MONGODB);
+            }
             else {
                 throw new NotImplementedException();
             }

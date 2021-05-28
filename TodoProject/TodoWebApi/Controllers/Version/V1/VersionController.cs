@@ -1,7 +1,6 @@
 ﻿using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NLog;
 
 namespace TodoWebApi.Controllers.Version.V1 {
     [ApiVersion("1.0")]

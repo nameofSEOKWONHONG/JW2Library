@@ -55,7 +55,8 @@ namespace JWLibrary.Database {
                             _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE.Value, jconfig.DatabaseProvider.SQLITE);
                             _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value, jconfig.DatabaseProvider.SQLITE_IN_MEMORY);
                             _providerMaps.Add(ENUM_DATABASE_TYPE.POSTGRESQL.Value, jconfig.DatabaseProvider.POSTGRESQL);    
-
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.REDIS.Value, jconfig.DatabaseProvider.REDIS);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.MONGODB.Value, jconfig.DatabaseProvider.MONGODB);
                         }
                     }
                 }

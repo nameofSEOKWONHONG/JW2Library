@@ -1,10 +1,9 @@
 ﻿using eXtensionSharp;
 using Microsoft.Extensions.Logging;
-using NLog;
 
 namespace JWLibrary.Web {
-    public class BulkUploadControllerBase<T> : JController<T> where T : class {
-        public BulkUploadControllerBase(ILogger<T> logger) : base(logger) {
+    public class BulkUploadControllerBase : JController<BulkUploadControllerBase> {
+        public BulkUploadControllerBase(ILogger<BulkUploadControllerBase> logger) : base(logger) {
         }
 
         public virtual bool Upload<T>(BulkUploadDto<T>[] items)

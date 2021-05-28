@@ -5,27 +5,18 @@ using eXtensionSharp;
 using JWLibrary.DI;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Util.Session;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NLog;
-using ILogger = NLog.ILogger;
 
 namespace JWLibrary.Web {
     [ApiController]
-    public abstract class JControllerBase<T> : ControllerBase, IDisposable  where T : class{
-        protected ILogger CLogger;
-        protected ILogger<T> BaseLogger;
+    public abstract class JControllerBase<TController> : ControllerBase, IDisposable 
+        where TController : class {
+        protected ILogger<TController> Logger;
 
-        public JControllerBase(ILogger<T> logger, ISessionContext context = null) {
+        public JControllerBase(ILogger<TController> logger) {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
-            this.BaseLogger = logger;
-            CLogger = LogManager.GetLogger("Log");
-            if (!CLogger.Factory.Configuration.Variables.Keys.Contains("runtime"))
-            {
-                CLogger.Factory.Configuration.Variables.Add("runtime", "test");    
-                CLogger.Factory.ReconfigExistingLoggers();
-            }
+            Logger = logger;
         }
         
                 /// <summary>
@@ -99,21 +90,20 @@ namespace JWLibrary.Web {
             return results;
         }
 
-        public void Dispose() {
-            CLogger.Factory.Configuration.Variables.Clear();
-        }
+        public abstract void Dispose();
     }
     /// <summary>
     /// 컨트롤러 베이스
     /// </summary>
     /// <typeparam name="TController"></typeparam>
     [Route("api/[controller]/[action]")] //url version route
-    public class JController<T> : JControllerBase<T> where T : class{
+    public class JController<TController> : JControllerBase<TController>
+        where TController : class {
         //protected ISessionContext Context = ServiceLocator.Current.GetInstance<ISessionContext>();
-        public JController(ILogger<T> logger) : base(logger) {
+        public JController(ILogger<TController> logger) : base(logger) {
         }
 
-        public void Dispose() {
+        public override void Dispose() {
             
         }
     }
@@ -122,11 +112,12 @@ namespace JWLibrary.Web {
     /// 버전 관리 컨트롤러 베이스
     /// </summary>
     [Route("api/v{version:apiVersion}/[controller]/[action]")] //url version route
-    public class JVersionControllerBase<T> : JControllerBase<T> where T : class {
-        public JVersionControllerBase(ILogger<T> logger) : base(logger) {
+    public class JVersionControllerBase<TController> : JControllerBase<TController>
+        where TController : class {
+        public JVersionControllerBase(ILogger<TController> logger) : base(logger) {
         }
 
-        public void Dispose() {
+        public override void Dispose() {
             
         }
     }
