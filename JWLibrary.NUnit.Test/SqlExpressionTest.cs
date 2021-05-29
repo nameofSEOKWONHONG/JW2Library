@@ -77,6 +77,7 @@ AND ID IN (1, 2, 3, 4)
         public void migration_expression_test() {
             var em = new EntityMigration<USER>();
             var sql = em
+                //.Key("ID", "INT", () => "IDENTITY") //key auto_increment
                 .Key("USER_ID", "VARCHAR(30)", () => "NOT NULL")
                 .Column("PASSWORD", "VARCHAR(20)", () => "NOT NULL")
                 .Column("USER_NM", "VARCHAR(30)", () => "NOT NULL")

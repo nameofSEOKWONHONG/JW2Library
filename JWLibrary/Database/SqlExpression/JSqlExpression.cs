@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Text;
 using Dapper;
 using eXtensionSharp;
-using NetFabric.Hyperlinq;
 
 namespace JWLibrary.Database {
     public class JSqlExpression {

@@ -4,7 +4,6 @@ using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
 using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
-using NetFabric.Hyperlinq;
 using RepoDb;
 using SqlKata.Execution;
 using TodoService.Data;
