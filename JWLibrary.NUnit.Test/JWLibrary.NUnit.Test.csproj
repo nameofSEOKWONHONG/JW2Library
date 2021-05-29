@@ -20,8 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\JW2Library.Implement\Service.Data\Service.Data.csproj" />
-      <ProjectReference Include="..\JW2Library.Implement\Service\Service.csproj" />
       <ProjectReference Include="..\JWLibrary\JWLibrary.csproj" />
       <ProjectReference Include="..\Service.QueryConst\Service.QueryConst.csproj" />
       <ProjectReference Include="..\TodoProject\Service.Data\Service.Data.csproj" />

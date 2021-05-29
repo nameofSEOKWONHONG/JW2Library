@@ -3,7 +3,7 @@ using JWLibrary.ServiceExecutor;
 using TodoService.Data;
 
 namespace AccountService {
-    public interface IGetAccountSvc : IServiceExecutor<int, USER> {
+    public interface IGetAccountSvc : IServiceExecutor<string, USER> {
         
     }
     
@@ -15,7 +15,7 @@ namespace AccountService {
         
     }
     
-    public interface IDeleteAccountSvc : IServiceExecutor<int, bool> {
+    public interface IDeleteAccountSvc : IServiceExecutor<string, bool> {
         
     }
 }

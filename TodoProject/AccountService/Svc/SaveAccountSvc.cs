@@ -18,7 +18,7 @@ namespace AccountService.Svc {
 
         public override bool PreExecute() {
             using var executor = new ServiceExecutorManager<IGetAccountSvc>(_getAccountSvc);
-            return executor.SetRequest(o => o.Request = Request.ID)
+            return executor.SetRequest(o => o.Request = Request.USER_ID)
                 .OnExecuted(o => {
                     _exists = o.Result;
                     return true;
@@ -30,7 +30,7 @@ namespace AccountService.Svc {
                 .AddTran()
                 .DbExecuteKata((db, q) => {
                     if (_exists.xIsNotNull()) {
-                        this.Result = q.Query("USER").Where("ID", this.Request.ID)
+                        this.Result = q.Query("USER").Where("ID", this.Request.USER_ID)
                             .Update(this.Request.xToDictionary());
                     }
                     this.Result = q.Query("TODO").InsertGetId<int>(this.Request.xToDictionary());

@@ -7,7 +7,7 @@ using TodoService.Data;
 
 namespace AccountService.Svc {
 
-    public class DeleteAccountSvc : ServiceExecutor<DeleteAccountSvc, int, bool>, 
+    public class DeleteAccountSvc : ServiceExecutor<DeleteAccountSvc, string, bool>, 
         IDeleteAccountSvc {
         private USER _exists;
         private readonly IGetAccountSvc _getAccountSvc;

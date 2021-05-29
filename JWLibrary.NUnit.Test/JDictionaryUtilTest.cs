@@ -50,7 +50,6 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void object_to_dictionary() {
             USER user = new USER() {
-                ID = 1,
                 USER_ID = "Test",
                 USER_NM = "test"
             };

@@ -7,7 +7,7 @@ using TodoService.Data;
 
 namespace AccountService.Svc {
 
-    public class GetAccountSvc : ServiceExecutor<GetAccountSvc, int, USER>,
+    public class GetAccountSvc : ServiceExecutor<GetAccountSvc, string, USER>,
         IGetAccountSvc {
         public GetAccountSvc() {
             
@@ -22,7 +22,7 @@ namespace AccountService.Svc {
         
         public class Validator : AbstractValidator<GetAccountSvc> {
             public Validator() {
-                RuleFor(m => m.Request).GreaterThan(0);
+                RuleFor(m => m.Request).NotEmpty();
             }
         }
     }
