@@ -8,9 +8,9 @@ using LiteDB;
 using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using SqlKata.Execution;
-using TodoWebApi.Entities;
+using TodoService.Data;
 
-namespace TodoWebApi.Services {
+namespace TodoService {
     /// <summary>
     /// todo 저장
     /// </summary>
@@ -80,7 +80,7 @@ namespace TodoWebApi.Services {
 #endif
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecute(db => {
+                .DbExecute((db, tran) => {
                     if (_exists.xIsNotNull()) {
                         if (db.Delete<TODO>(_exists) > 0) {
                             this.Result = db.Insert<TODO>(this.Request).Value;    

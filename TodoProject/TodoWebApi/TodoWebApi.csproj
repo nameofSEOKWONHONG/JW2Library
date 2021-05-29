@@ -23,6 +23,9 @@
     <ItemGroup>
       <ProjectReference Include="..\..\JWLibrary.Config\JWLibrary.Config.csproj" />
       <ProjectReference Include="..\..\JWLibrary.Web\JWLibrary.Web.csproj" />
+      <ProjectReference Include="..\TodoService.Abstract\TodoService.Abstract.csproj" />
+      <ProjectReference Include="..\Service.Data\Service.Data.csproj" />
+      <ProjectReference Include="..\TodoService\TodoService.csproj" />
     </ItemGroup>
 
     <ItemGroup>

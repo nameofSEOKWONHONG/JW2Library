@@ -9,14 +9,14 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using MySql.Data.MySqlClient;
 using SqlKata.Execution;
-using TodoWebApi.Entities;
+using TodoService.Data;
 
-namespace TodoWebApi.Services {
+namespace TodoService {
     /// <summary>
     /// todo list 조회
     /// </summary>
     public class GetTodoItemsSvc : ServiceExecutor<GetTodoItemsSvc, string, IEnumerable<TODO>>,
-        IGetTodoItemsSvc{
+        IGetTodoItemsSvc {
         public GetTodoItemsSvc() {
             
         }
@@ -27,7 +27,7 @@ namespace TodoWebApi.Services {
             JDatabaseResolver.Resolve<MySqlConnection>()
                 .DbExecuteKata((db, query) => {
                     this.Result = query.Query("TODO")
-                        .WhereStarts("TODO_TEXT", this.Request.xValue(), true)//WHERE TODO_TEXT LIKE '[TEXT]%'
+                        .WhereStarts("TODO_TEXT", this.Request.xSafe(), true)//WHERE TODO_TEXT LIKE '[TEXT]%'
                         .Get<TODO>();
                 });
 #else
@@ -40,7 +40,7 @@ namespace TodoWebApi.Services {
 #endif       
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecute(db => {
+                .DbExecute((db, tran) => {
                     this.Result = db.GetList<TODO>($"WHERE TODO_TEXT LIKE '%{this.Request}%'");
                 });
 #endif

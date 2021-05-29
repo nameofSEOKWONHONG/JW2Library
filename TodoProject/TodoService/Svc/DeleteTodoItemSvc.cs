@@ -1,13 +1,14 @@
-﻿using eXtensionSharp;
+﻿using Dapper;
+using eXtensionSharp;
 using FluentValidation;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
 using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using SqlKata.Execution;
-using TodoWebApi.Entities;
+using TodoService.Data;
 
-namespace TodoWebApi.Services {
+namespace TodoService {
     /// <summary>
     ///     todo 삭제
     /// </summary>
@@ -46,7 +47,7 @@ namespace TodoWebApi.Services {
 #endif
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecute(db => {
+                .DbExecute((db, tran) => {
                     var exists = db.Get<TODO>(this.Request);
                     if (exists.xIsNotNull()) {
                         this.Result = db.Delete<TODO>(exists) > 0;

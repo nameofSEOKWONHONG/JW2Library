@@ -7,9 +7,9 @@ using MySql.Data.MySqlClient;
 using NetFabric.Hyperlinq;
 using RepoDb;
 using SqlKata.Execution;
-using TodoWebApi.Entities;
+using TodoService.Data;
 
-namespace TodoWebApi.Services {
+namespace TodoService {
     
     public class TransactionSampleSvc : ServiceExecutor<TransactionSampleSvc, bool, XList<TODO>>,
         ITransactionSampleSvc {

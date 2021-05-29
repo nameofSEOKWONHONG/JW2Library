@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using Community.CsharpSqlite;
+using eXtensionSharp;
 using JWLibrary.Database;
 using JWLibrary.EF;
 using NUnit.Framework;
+using TodoService.Data;
 
 namespace JWLibrary.NUnit.Test {
     public class SqlExpressionTest {
@@ -64,6 +68,104 @@ AND ID IN (1, 2, 3, 4)
                 .Build();
             
             Assert.AreEqual(srcSql, sql);
+        }
+
+        [Test]
+        public void migration_expression_test() {
+            var em = new EntityMigration<USER>();
+            var sql = em
+                .Key("ID", "INT", () => "IDENTITY(1, 1)")
+                .Column("USER_ID", "VARCHAR(30)", () => "NOT NULL")
+                .Column("PASSWORD", "VARCHAR(20)", () => "NOT NULL")
+                .Column("USER_NM", "VARCHAR(30)", () => "NOT NULL")
+                .Column("NICK_NM", "VARCHAR(30)", () => "NOT NULL")
+                .Column("REG_DT", "DATETIME", () => "NOT NULL")
+                .Column("IS_EXFIRED", "BIT", () => "DEFAULT FALSE")
+                .Build();
+            
+            Console.WriteLine(sql);
+            
+            /*
+             * DROP TABLE IF EXISTS DBO.USER
+             * CREATE TABLE DBO.USER
+             * (
+             * ID INT PRIMARY KEY IDENTITY(1,1),
+             * USER_ID VARCHAR(10) NOT NULL,
+             * NICK_NM VARCHAR(10) NOT NULL
+             * )
+             */
+        }
+    }
+
+    public class EntityMigration<TEntity> where TEntity : class {
+        private string _tableName;
+        private string _createExpression;
+        private string _dropExpression;
+        private string _backupExpression;
+        private string _backupInsertExpression;
+        private List<string> _keyExpressions = new List<string>();
+        private List<string> _columnExpressions = new List<string>();
+        
+        public EntityMigration(bool exists = false) {
+            _tableName = typeof(TEntity).Name;
+            if (exists) {
+                _backupExpression = $"SELECT * INTO {_tableName}_BACKUP FROM {_tableName}";
+            }
+
+            _dropExpression = $"DROP TABLE IF EXISTS DBO.{_tableName}";
+            _createExpression = $"CREATE TABLE DBO.{_tableName}";
+
+            if (exists) {
+                _backupInsertExpression = $"INSERT INTO DBO.USER {_tableName} SELECT * FROM DBO.{_tableName}";    
+            }
+        }
+        
+        public EntityMigration<TEntity> Key(string key, string type, bool exists = false) {
+            var keyExpression = $"{key.ToUpper()} {type.ToUpper()} PRIMARY KEY";
+            _keyExpressions.Add(keyExpression);
+            return this;
+        }
+        
+        public EntityMigration<TEntity> Key(string key, string type, Func<string> option = null, bool exists = false) {
+            var keyExpression = $"{key.ToUpper()} {type.ToUpper()} PRIMARY KEY {option().ToUpper()}";
+            _keyExpressions.Add(keyExpression);
+            return this;
+        }
+
+        public EntityMigration<TEntity> Column(string column, string type, bool exists = false) {
+            var columnExpression = $"{column.ToUpper()} {type.ToUpper()}";
+            _columnExpressions.Add(columnExpression);
+            return this;
+        }
+        
+        public EntityMigration<TEntity> Column(string column, string type, Func<string> option = null, bool exists = false) {
+            var columnExpression = $"{column.ToUpper()} {type.ToUpper()} {option().ToUpper()}";
+            _columnExpressions.Add(columnExpression);
+            return this;
+        }
+
+        public string Build() {
+            var sb = new XStringBuilder();
+            sb.AppendLine(_backupExpression);
+            sb.AppendLine(_dropExpression);
+            sb.AppendLine(_createExpression);
+            sb.AppendLine("(");
+            _keyExpressions.xForEach(item => {
+                sb.AppendLine($"{item},");
+            });
+            
+            _columnExpressions.xForEach((item, i) => {
+                if (i == _columnExpressions.Count - 1) {
+                    sb.AppendLine($"{item}");
+                }
+                else {
+                    sb.AppendLine($"{item}, ");
+                }
+            });
+            sb.AppendLine(")");
+            var query = string.Empty;
+            sb.Release(out query);
+            return query;
         }
     }
 }

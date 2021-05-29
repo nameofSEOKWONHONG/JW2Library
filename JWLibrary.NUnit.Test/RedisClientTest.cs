@@ -16,7 +16,7 @@ namespace JWLibrary.NUnit.Test {
             handler.Execute(o => {
                 o.Set<string>("test", "test");
                 var str = o.Get<string>("test");
-                Assert.AreEqual("test", str.xValue());
+                Assert.AreEqual("test", str.xSafe());
             });
             
             handler.Execute(o => {

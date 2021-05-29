@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\JWLibrary\JWLibrary.csproj" />
+      <ProjectReference Include="..\Service.Data\Service.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper.SimpleCRUD" Version="2.2.0.1" />
+    </ItemGroup>
+
+</Project>

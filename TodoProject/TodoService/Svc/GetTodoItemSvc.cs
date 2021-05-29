@@ -1,14 +1,15 @@
 ﻿//no use System.Data.SqlClient;
 
+using Dapper;
 using FluentValidation;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
 using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using SqlKata.Execution;
-using TodoWebApi.Entities;
+using TodoService.Data;
 
-namespace TodoWebApi.Services {
+namespace TodoService {
     /// <summary>
     ///     Todo 조회
     /// </summary>
@@ -32,7 +33,7 @@ namespace TodoWebApi.Services {
 #endif
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecute(db => {
+                .DbExecute((db, tran) => {
                     this.Result = db.Get<TODO>(this.Request);
                 });
 #endif

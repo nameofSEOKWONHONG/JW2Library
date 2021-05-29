@@ -8,11 +8,11 @@ namespace JWLibrary.NUnit.Test {
         [Test]
         public void TypeConvertTest() {
             var src = "10";
-            var dest = "".xValue(src);
+            var dest = "".xSafe(src);
             Assert.AreEqual(src, dest);
 
 
-            var dest2 = "".xValue<double>(12);
+            var dest2 = "".xSafe<double>(12);
             Assert.AreEqual(dest2, 12);
 
             // var dest3 = "1".jToValue<TYPES>();

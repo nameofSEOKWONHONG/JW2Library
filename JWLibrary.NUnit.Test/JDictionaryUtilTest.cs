@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using eXtensionSharp;
 using NUnit.Framework;
+using TodoService.Data;
 
 namespace JWLibrary.NUnit.Test {
     public class JDictionaryUtilTest {
@@ -45,5 +46,19 @@ namespace JWLibrary.NUnit.Test {
 
             Console.WriteLine(jDictionaryPool.xObjectToJson());
         }
+
+        [Test]
+        public void object_to_dictionary() {
+            USER user = new USER() {
+                ID = 1,
+                USER_ID = "Test",
+                USER_NM = "test"
+            };
+
+            var dic = user.xToDictionary();
+            Assert.IsNotNull(dic);
+            Assert.AreEqual("1", dic["ID"].xSafe());
+        }
+            
     }
 }

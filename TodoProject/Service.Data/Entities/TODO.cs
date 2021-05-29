@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using FluentValidation;
 using JWLibrary.Entity;
 
-namespace TodoWebApi.Entities {
+namespace TodoService.Data {
     [Table("TODO")]
     public class TODO : ENTITY_BASE {
         [Key]

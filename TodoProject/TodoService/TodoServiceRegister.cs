@@ -1,7 +1,7 @@
 ﻿using JWLibrary.ServiceExecutor;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TodoWebApi.Services {
+namespace TodoService {
     /// <summary>
     ///     서비스 등록자
     /// </summary>

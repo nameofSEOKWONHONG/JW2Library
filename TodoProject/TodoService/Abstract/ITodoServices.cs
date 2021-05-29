@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using eXtensionSharp;
 using JWLibrary;
 using JWLibrary.ServiceExecutor;
-using TodoWebApi.Entities;
+using TodoService.Data;
+
 /*
  * todo 인터페이스
  */
-namespace TodoWebApi.Services {
+namespace TodoService {
     public interface IGetTodoItemSvc : IServiceExecutor<int, TODO> {
         
     }

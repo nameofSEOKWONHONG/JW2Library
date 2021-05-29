@@ -4,8 +4,8 @@ using System.Threading;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TodoWebApi.Entities;
-using TodoWebApi.Services;
+using TodoService;
+using TodoService.Data;
 
 namespace TodoWebApi.Controllers {
     public class TodoController : JController<TodoController> {
