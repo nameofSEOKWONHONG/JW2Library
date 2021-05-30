@@ -5,8 +5,8 @@ namespace TodoService {
     /// <summary>
     ///     서비스 등록자
     /// </summary>
-    public class TodoServiceRegister : IServiceRegister {
-        public void ServiceRegistry(IServiceCollection services) {
+    public class TodoServiceInjector : IServiceInjector {
+        public void Register(IServiceCollection services) {
             services.AddScoped<IGetTodoItemSvc, GetTodoItemSvc>();
             services.AddScoped<IGetTodoItemsSvc, GetTodoItemsSvc>();
             services.AddTransient<ISaveTodoItemSvc, SaveTodoItemSvc>();

@@ -27,7 +27,7 @@ namespace AccountService.Svc {
 
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
-                .AddTran()
+                .BeginTran()
                 .DbExecuteKata((db, q) => {
                     if (_exists.xIsNotNull()) {
                         this.Result = q.Query("USER").Where("ID", this.Request.USER_ID)

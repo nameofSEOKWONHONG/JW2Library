@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using eXtensionSharp;
 using JWLibrary.DI;
 using JWLibrary.ServiceExecutor;
 using JWLibrary.Web;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using TodoService;
 
 namespace TodoWebApi {
     public class Startup {
@@ -65,9 +67,16 @@ namespace TodoWebApi {
             });
             services.AddVersionConfig();
 
-            //ServiceRegistry 구현을 로드한다.
+            //Register 구현을 로드한다.
             //동적 로딩으로 구현
-            services.SvcLoad();
+            //PROBLEMS : 같은 프로젝트에 있을때는 동적으로 로딩할 수 있지만 외부 프로젝트로 된 경우 동적 로딩이 수행되지 않음.
+            //injector를 변경해서 쓰는 것은 가능하지만 전체가 기본 시나리오에서 변경되므로
+            //정말 필요할 경우 autofac등의 third party ioc 컨테이너를 써야 한다.
+            //따라서 동적 로딩을 포기함.
+            var injectors = new XList<IServiceInjector>() {
+                new TodoServiceInjector()
+            };
+            services.SvcLoad(injectors);
 
             //BulkInstance 생성을 위한 ServiceLocator 등록
             //직접 선언을 위해 사용할 수 있지만 권장하지 않는다.

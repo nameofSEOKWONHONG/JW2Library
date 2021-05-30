@@ -26,7 +26,7 @@ namespace AccountService.Svc {
 
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
-                .AddTran()
+                .BeginTran()
                 .DbExecuteKata((db, q) => {
                     this.Result = q.Query("USER").Where("ID", this.Request).Delete() > 0;
                 });

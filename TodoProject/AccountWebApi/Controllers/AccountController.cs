@@ -1,40 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
+using AccountService;
 using JWLibrary.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TodoService.Data;
 
 namespace AccountWebApi.Controllers {
+    [CustomAuthorize]
     public class AccountController : JController<AccountController> {
-        public AccountController(ILogger<AccountController> logger) : base(logger) {
+        private readonly IDeleteAccountSvc _deleteAccountSvc;
+        private readonly IGetAccountsSvc _getAccountsSvc;
+        private readonly IGetAccountSvc _getAccountSvc;
+        private readonly ISaveAccountSvc _saveAccountSvc;
+
+        public AccountController(ILogger<AccountController> logger,
+            IGetAccountSvc getAccountSvc,
+            IGetAccountsSvc getAccountsSvc,
+            ISaveAccountSvc saveAccountSvc,
+            IDeleteAccountSvc deleteAccountSvc) : base(logger) {
+            _getAccountSvc = getAccountSvc;
+            _getAccountsSvc = getAccountsSvc;
+            _saveAccountSvc = saveAccountSvc;
+            _deleteAccountSvc = deleteAccountSvc;
         }
 
         [HttpGet]
-        public string GetAccount() {
-            return string.Empty;
+        public USER GetAccount(string userId) {
+            return CreateService<IGetAccountSvc, string, USER>(_getAccountSvc, userId);
         }
 
         [HttpGet]
-        public IEnumerable<string> GetAccounts() {
-            return null;
+        public IEnumerable<USER> GetAccounts(USER user) {
+            return CreateService<IGetAccountsSvc, USER, IEnumerable<USER>>(_getAccountsSvc, user);
         }
 
         [HttpPost]
-        public int SaveAccount() {
-            return 0;
+        public int SaveAccount(USER user) {
+            return CreateService<ISaveAccountSvc, USER, int>(_saveAccountSvc, user);
         }
 
         [HttpPost]
-        public bool DeleteAccount() {
-            return false;
+        public bool DeleteAccount(string userId) {
+            return CreateService<IDeleteAccountSvc, string, bool>(_deleteAccountSvc, userId);
         }
-
-        [HttpPost]
-        public IEnumerable<bool> DeleteAccounts() {
-            return null;
-        }
-
-
     }
 }

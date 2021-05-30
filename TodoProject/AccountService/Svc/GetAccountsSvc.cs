@@ -19,7 +19,7 @@ namespace AccountService.Svc {
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecuteKata((db, q) => {
-                    var query = q.Query("TESTDB.DBO.USER");
+                    var query = q.Query("USER");
                     if (this.Request.USER_ID.xIsNotNullOrEmpty()) {
                         query = query.WhereLike("USER_ID", this.Request.USER_ID);
                     }

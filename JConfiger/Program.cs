@@ -12,7 +12,7 @@ namespace JConfiger {
         static void Main(string[] args) {
             if (args.xIsEmpty()) {
                 args = new[] {
-                    "PC",
+                    "SURFACE",
                     CONFIG_CONST.DATABASE_CONFIG_PATH
                 };
             }

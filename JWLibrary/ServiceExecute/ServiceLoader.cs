@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using eXtensionSharp;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,8 +17,8 @@ namespace JWLibrary.ServiceExecutor {
         /// </summary>
         /// <param name="services"></param>
         /// <param name="serviceRegisters"></param>
-        public static void SvcLoad(this IServiceCollection services, IEnumerable<IServiceRegister> serviceRegisters) {
-            serviceRegisters.xForEach(item => { item.ServiceRegistry(services); });
+        public static void SvcLoad(this IServiceCollection services, IEnumerable<IServiceInjector> serviceRegisters) {
+            serviceRegisters.xForEach(item => { item.Register(services); });
         }
 
         /// <summary>
@@ -24,16 +26,30 @@ namespace JWLibrary.ServiceExecutor {
         /// </summary>
         /// <param name="services"></param>
         public static void SvcLoad(this IServiceCollection services) {
-            var serviceRegisters = new XList<IServiceRegister>();
-            AppDomain.CurrentDomain.GetAssemblies().xForEach(assembly => {
-                var types = assembly.GetTypes()
-                    .Where(m => m.FullName.Contains("ServiceRegister") && m.IsClass);
+            var serviceRegisters = new XList<IServiceInjector>();
 
-                types.xForEach(type => { serviceRegisters.Add(Activator.CreateInstance(type) as IServiceRegister); });
-            });
+            foreach (string assemblyPath in Directory.GetFiles(System.AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories))
+            {
+                if (assemblyPath.Contains("ServiceInjector")) {
+                    var assembly = Assembly.LoadFile(assemblyPath);
+                    try {
+                        var types = assembly.GetTypes();
+                        types.xForEach(type => {
+                            if (type.FullName.Contains("ServiceInjector") && type.IsClass) {
+                                serviceRegisters.Add(Activator.CreateInstance(type) as IServiceInjector);
+                            }
+                        });
+                    }
+                    catch {
+                        //why exception? system.xaml   
+                    }   
+                }
+            }
 
             if (serviceRegisters.xIsNotEmpty())
-                serviceRegisters.xForEach(svcRegister => { svcRegister.ServiceRegistry(services); });
+                serviceRegisters.xForEach(svcRegister => {
+                    svcRegister.Register(services);
+                });
         }
     }
 }

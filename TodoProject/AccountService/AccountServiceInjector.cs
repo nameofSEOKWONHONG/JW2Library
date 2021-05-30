@@ -7,8 +7,8 @@ namespace AccountService {
     /// <summary>
     /// account service register
     /// </summary>
-    public class AccountServiceRegister : IServiceRegister {
-        public void ServiceRegistry(IServiceCollection services) {
+    public class AccountServiceInjector : IServiceInjector {
+        public void Register(IServiceCollection services) {
             services.AddScoped<IGetAccountSvc, GetAccountSvc>();
             services.AddScoped<IGetAccountsSvc, GetAccountsSvc>();
             services.AddTransient<ISaveAccountSvc, SaveAccountSvc>();

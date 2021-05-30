@@ -16,7 +16,7 @@ namespace AccountService.Svc {
         public override void Execute() {
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecuteKata((db, q) => {
-                    this.Result = q.Query("TESTDB.DBO.USER").Where("ID", this.Request).First<USER>();
+                    this.Result = q.Query("USER").Where("USER_ID", this.Request).FirstOrDefault<USER>();
                 });
         }
         

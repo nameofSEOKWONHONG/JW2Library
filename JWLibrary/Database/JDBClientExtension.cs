@@ -89,7 +89,7 @@ namespace JWLibrary.Database {
             _connection = connection;
         }
 
-        public JDbClientExecutor AddTran() {
+        public JDbClientExecutor BeginTran() {
             _addTran = connection => connection.BeginTransaction(); 
             return this;
         }
