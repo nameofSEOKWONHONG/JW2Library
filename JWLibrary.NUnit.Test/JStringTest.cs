@@ -41,5 +41,33 @@ namespace JWLibrary.NUnit.Test {
             var result = text.xSubstring(4, 1);
             Assert.AreEqual("바", result);
         }
+
+        [Test]
+        public void XGetHashCodeTest() {
+            var text = "aaaa";
+            var hash1 = text.xGetHashCode();
+
+            var text2 = "aaaa";
+            var hash2 = text2.xGetHashCode();
+            
+            Console.WriteLine(hash1);
+            Console.WriteLine(hash2);
+            
+            Assert.AreEqual(hash1, hash2);
+        }
+        
+        [Test]
+        public void XGetHashCodeTest2() {
+            var text = "aaaa";
+            var hash1 = text.xGetHashCode();
+
+            var text2 = "aaaa";
+            var hash2 = text2.xGetHashCode();
+            
+            Console.WriteLine(hash1);
+            Console.WriteLine(hash2);
+            
+            Assert.AreEqual(hash1, hash2);
+        }
     }
 }

@@ -213,7 +213,7 @@ namespace JWLibrary.Database {
     //             tran.Commit();
     //         });
     //         
-    //         (0, _transactions.Count()).xForeach(i => {
+    //         (0, _transactions.Count()).xForEach(i => {
     //             IDbTransaction tran = null;
     //             if (_transactions.TryPop(out tran)) {
     //                 tran.Commit();
@@ -226,7 +226,7 @@ namespace JWLibrary.Database {
     //             tran.Rollback();
     //         });
     //         
-    //         (0, _transactions.Count()).xForeach(i => {
+    //         (0, _transactions.Count()).xForEach(i => {
     //             IDbTransaction tran = null;
     //             if (_transactions.TryPop(out tran)) {
     //                 tran.Rollback();

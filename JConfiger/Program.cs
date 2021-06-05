@@ -31,35 +31,35 @@ namespace JConfiger {
             var dbProviderObj = new JDatabaseProviderConfig();
             if(settingText.ToUpper() == "SURFACE") {
                 dbProviderObj.MSSQL =
-                    "Data Source=192.168.137.245;Initial Catalog=testdb;User ID=sa;Password=1q2w3e4r!Q@W#E$R;".xToEncAes256(
+                    "Data Source=192.168.137.245;Initial Catalog=testdb;User ID=sa;Password=1q2w3e4r!Q@W#E$R;".xToEncAES256(
                         key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.MYSQL = "Server=192.168.137.245;Port=3306;Database=testdb;Uid=admin;Pwd=1q2w3e4r!Q@W#E$R;".xToEncAes256(
+                dbProviderObj.MYSQL = "Server=192.168.137.245;Port=3306;Database=testdb;Uid=admin;Pwd=1q2w3e4r!Q@W#E$R;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.POSTGRESQL = "Server=192.168.137.245;Port=5432;Database=testdb;User Id=seokwon;Password=1q2w3e4r!Q@W#E$R;".xToEncAes256(
+                dbProviderObj.POSTGRESQL = "Server=192.168.137.245;Port=5432;Database=testdb;User Id=seokwon;Password=1q2w3e4r!Q@W#E$R;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.MONGODB = "mongodb://seokwon:1q2w3e4r!Q@W#E$R@192.168.137.245:27017/testdb".xToEncAes256(
+                dbProviderObj.MONGODB = "mongodb://seokwon:1q2w3e4r!Q@W#E$R@192.168.137.245:27017/testdb".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.REDIS = "192.168.137.245:6379,allowAdmin=true,password=1q2w3e4r!Q@W#E$R".xToEncAes256(
+                dbProviderObj.REDIS = "192.168.137.245:6379,allowAdmin=true,password=1q2w3e4r!Q@W#E$R".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.SQLITE = "Data Source=./testdb.db;Version=3;".xToEncAes256(
+                dbProviderObj.SQLITE = "Data Source=./testdb.db;Version=3;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.SQLITE_IN_MEMORY = "Data Source=:memory:;Version=3;New=True;".xToEncAes256(
+                dbProviderObj.SQLITE_IN_MEMORY = "Data Source=:memory:;Version=3;New=True;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
             } else {
                 dbProviderObj.MSSQL =
-                    "Data Source=192.168.137.233;Initial Catalog=testdb;User ID=sa;Password=1q2w3e4r!Q@W#E$R;".xToEncAes256(
+                    "Data Source=192.168.137.233;Initial Catalog=testdb;User ID=sa;Password=1q2w3e4r!Q@W#E$R;".xToEncAES256(
                         key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.MYSQL = "Server=192.168.137.233;Port=3306;Database=testdb;Uid=admin;Pwd=1q2w3e4r!Q@W#E$R;".xToEncAes256(
+                dbProviderObj.MYSQL = "Server=192.168.137.233;Port=3306;Database=testdb;Uid=admin;Pwd=1q2w3e4r!Q@W#E$R;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.POSTGRESQL = "Server=192.168.137.233;Port=5432;Database=testdb;User Id=seokwon;Password=1q2w3e4r!Q@W#E$R;".xToEncAes256(
+                dbProviderObj.POSTGRESQL = "Server=192.168.137.233;Port=5432;Database=testdb;User Id=seokwon;Password=1q2w3e4r!Q@W#E$R;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.MONGODB = "mongodb://seokwon:1q2w3e4r!Q@W#E$R@192.168.137.233:27017/testdb".xToEncAes256(
+                dbProviderObj.MONGODB = "mongodb://seokwon:1q2w3e4r!Q@W#E$R@192.168.137.233:27017/testdb".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.REDIS = "192.168.137.233:6379,allowAdmin=true,password=1q2w3e4r!Q@W#E$R".xToEncAes256(
+                dbProviderObj.REDIS = "192.168.137.233:6379,allowAdmin=true,password=1q2w3e4r!Q@W#E$R".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.SQLITE = "Data Source=./testdb.db;Version=3;".xToEncAes256(
+                dbProviderObj.SQLITE = "Data Source=./testdb.db;Version=3;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
-                dbProviderObj.SQLITE_IN_MEMORY = "Data Source=:memory:;Version=3;New=True;".xToEncAes256(
+                dbProviderObj.SQLITE_IN_MEMORY = "Data Source=:memory:;Version=3;New=True;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);            
             }
             dbProviderObj.KEY = key;

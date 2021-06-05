@@ -19,10 +19,10 @@ namespace JWLibrary.Database {
             }
         }
         
-        public readonly string REDIS = ProviderMaps["REDIS"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string REDIS = ProviderMaps["REDIS"].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
         
-        public readonly string MONGODB = ProviderMaps["MONGODB"].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MONGODB = ProviderMaps["MONGODB"].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);        
         
         //public readonly string REDIS = ProviderMaps["REDIS"]

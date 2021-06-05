@@ -18,20 +18,20 @@ namespace JWLibrary.Database {
             }
         }
         
-        public readonly string MSSQL = ProviderMaps[ENUM_DATABASE_TYPE.MSSQL.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MSSQL = ProviderMaps[ENUM_DATABASE_TYPE.MSSQL.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string MYSQL = ProviderMaps[ENUM_DATABASE_TYPE.MYSQL.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MYSQL = ProviderMaps[ENUM_DATABASE_TYPE.MYSQL.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string SQLITE = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE_IN_MEMORY = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value].xToDecAes256(
+        public readonly string SQLITE_IN_MEMORY = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value].xToDecAES256(
             DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string POSTGRESQL = ProviderMaps[ENUM_DATABASE_TYPE.POSTGRESQL.Value].xToDecAes256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string POSTGRESQL = ProviderMaps[ENUM_DATABASE_TYPE.POSTGRESQL.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
         public DbConnectionProvider() {
