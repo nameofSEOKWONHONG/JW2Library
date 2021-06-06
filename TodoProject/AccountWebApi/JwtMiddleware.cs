@@ -95,7 +95,7 @@ namespace AccountWebApi {
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.FromSeconds(((6 * 10) * 60) * 24) //1day
                 }, out var validatedToken);
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
