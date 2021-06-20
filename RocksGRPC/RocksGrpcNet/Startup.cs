@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JWLibrary.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,15 +18,20 @@ namespace RocksGrpcNet {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
+
+            appLifetime.ApplicationStopping.Register(() => {
+                RocksDbHandler.Instance.Free();
+            });
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<RocksDbService>();
 
                 endpoints.MapGet("/",
                     async context => {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using eXtensionSharp;
 using RocksDbSharp;
@@ -7,6 +8,28 @@ namespace RocksGrpcTest {
     public class RocksDbHandler : IDisposable {
         private string _dbPath;
         private RocksDb _rocksDb;
+
+        private Dictionary<string, Func<RocksDb, string, string, string>> _commandMaps = new Dictionary<string, Func<RocksDb, string, string, string>>()
+        {
+            {
+                "PUT", (r, k, v) =>
+                {
+                    var exists = r.Get(k);
+                    if(exists.xIsEmpty())
+                    {
+                        r.Put(k, v);
+                    }
+
+                    return string.Empty;
+                }
+            },
+            {
+                "GET", (r, k, v) =>
+                {
+                    return r.Get(k);
+                }
+            }
+        };
         
         public RocksDbHandler(string dbPath) {
             _dbPath = dbPath;
@@ -17,6 +40,11 @@ namespace RocksGrpcTest {
                 .SetCreateIfMissing(isCreateIfMissing);
             _rocksDb = RocksDb.Open(options, _dbPath);
             return this;
+        }
+
+        public string ExecuteCommand(string cmd, string key, string value)
+        {
+            return _commandMaps[cmd.ToUpper()].Invoke(_rocksDb, key, value);
         }
 
         public void Put(string key, string value) {
