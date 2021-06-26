@@ -58,10 +58,10 @@ namespace JWLibrary.Database {
 
         public void Put(string key, string value) {
             var exists = _db.Get(key);
-            if (exists.xIsEmpty()) _db.Put(key, value);
+            if (exists.xIsEmpty()) PutBytes(key, value);
         }
 
-        public void PutBytes(string key, string value) {
+        private void PutBytes(string key, string value) {
             var eKey = Encoding.UTF8.GetBytes(key);
             var eVal = Encoding.UTF8.GetBytes(value);
             _db.Put(eKey, eVal);
@@ -86,10 +86,10 @@ namespace JWLibrary.Database {
         }
 
         public string Get(string key) {
-            return _db.Get(key);
+            return GetBytes(key);
         }
 
-        public string GetBytes(string key) {
+        private string GetBytes(string key) {
             var eKey = Encoding.UTF8.GetBytes(key);
             var eVal = _db.Get(eKey);
             return Encoding.UTF8.GetString(eVal);
@@ -108,7 +108,7 @@ namespace JWLibrary.Database {
         }
 
         public void Remove(string key, ColumnFamilyHandle cf = null, WriteOptions writeOptions = null) {
-            _db.Remove(key, cf, writeOptions);
+            RemoveBytes(key, cf, writeOptions);
         }
 
         public void RemoveBytes(string key, ColumnFamilyHandle cf = null, WriteOptions writeOptions = null) {

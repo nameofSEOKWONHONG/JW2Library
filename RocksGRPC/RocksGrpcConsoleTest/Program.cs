@@ -18,6 +18,7 @@ namespace RocksGrpcConsoleTest {
             using var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var client =  new RocksGrpcExecutor.RocksGrpcExecutorClient(channel);
             
+            //Parallel.ForEach(Enumerable.Range(1, 10), item => {
             Enumerable.Range(1, 100).ToList().ForEach(item => {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
@@ -33,8 +34,6 @@ namespace RocksGrpcConsoleTest {
                         Key = kkey,
                         Value = vvalue
                     }).GetAwaiter().GetResult();
-                    Console.WriteLine("put result: " + reply.xObjectToJson());
-                            
                 });
             
                 Enumerable.Range(1, 1).ToList().ForEach(i => {
@@ -47,8 +46,6 @@ namespace RocksGrpcConsoleTest {
                         Command = "GET",
                         Key = kkey
                     }).GetAwaiter().GetResult();
-                    Console.WriteLine("get result: " + result.xObjectToJson());
-                            
                 });
                 sw.Stop();
                 Console.WriteLine("run sec : " + sw.Elapsed.TotalSeconds);

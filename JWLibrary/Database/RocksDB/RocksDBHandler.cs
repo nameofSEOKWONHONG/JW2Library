@@ -16,6 +16,7 @@ namespace JWLibrary.Database {
         public static RocksDBHandler Instance => _instance.Value;
 
         private readonly AsyncLock _mutex = new AsyncLock();
+        private readonly AsyncLock _innerMutex = new AsyncLock();
 
         #region [dispose]
 
@@ -103,18 +104,20 @@ namespace JWLibrary.Database {
         #region [private method]
 
         private RocksDBImpl GetRocksDBImpl(string path) {
-            RocksDBImpl impl = null;
+            using (_mutex.Lock()) {
+                RocksDBImpl impl = null;
             
-            if (_concurrentDbHandlerMaps.TryGetValue(path, out impl)) {
-                return impl;
-            }
-            else {
-                using (_mutex.Lock()) {
-                    impl = new RocksDBImpl(path);
-                    _concurrentDbHandlerMaps.TryAdd(path, impl);
+                if (_concurrentDbHandlerMaps.TryGetValue(path, out impl)) {
+                    return impl;
                 }
+                else {
+                    using (_innerMutex.Lock()) {
+                        impl = new RocksDBImpl(path);
+                        _concurrentDbHandlerMaps.TryAdd(path, impl);                        
+                    }
+                }
+                return impl;                 
             }
-            return impl; 
         }
 
         private void Put(string path, string key, string value) {
