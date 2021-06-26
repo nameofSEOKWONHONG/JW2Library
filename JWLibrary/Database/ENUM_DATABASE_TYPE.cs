@@ -1,7 +1,7 @@
 ﻿using eXtensionSharp;
 
 namespace JWLibrary.Database {
-    public class ENUM_DATABASE_TYPE : XENUM_BASE<ENUM_DATABASE_TYPE> {
+    public class ENUM_DATABASE_TYPE : XEnumBase<ENUM_DATABASE_TYPE> {
         public static readonly ENUM_DATABASE_TYPE MSSQL = Define("MSSQL");
         public static readonly ENUM_DATABASE_TYPE MYSQL = Define("MYSQL");
         public static readonly ENUM_DATABASE_TYPE POSTGRESQL = Define("POSTGRESQL");

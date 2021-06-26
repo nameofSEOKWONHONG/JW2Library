@@ -49,8 +49,8 @@ namespace JWLibrary.NUnit.Test {
     }
 
     [JsonConverter(typeof(JsonConverter<ENUM_USE_YN>))]
-    public class ENUM_USE_YN : XENUM_BASE<ENUM_USE_YN> {
-        public static ENUM_USE_YN Y { get; set; } = Define("Y");
-        public static ENUM_USE_YN N { get; set; } = Define("N");
+    public class ENUM_USE_YN : XEnumBase<ENUM_USE_YN> {
+        public static readonly ENUM_USE_YN Y = Define("Y");
+        public static readonly ENUM_USE_YN N = Define("N");
     }
 }

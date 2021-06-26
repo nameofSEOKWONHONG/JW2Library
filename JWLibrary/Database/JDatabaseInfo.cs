@@ -27,19 +27,19 @@ namespace JWLibrary.Database {
         #region [1st class variable]
         private readonly Dictionary<string, Func<string, IDbConnection>> _connectionMaps = new() {
             {
-                ENUM_DATABASE_TYPE.MSSQL.Value, connectionString => {
+                ENUM_DATABASE_TYPE.MSSQL.ToString(), connectionString => {
                     //no more use System.Data.SqlClient.SqlConnection
                     //replace Microsoft.Data.SqlClient.SqlConnection
                     RepoDb.SqlServerBootstrap.Initialize();
                     return new Microsoft.Data.SqlClient.SqlConnection(DbConnectionProvider.Instance.MSSQL);
                 }
             }, {
-                ENUM_DATABASE_TYPE.MYSQL.Value, connectionString => {
+                ENUM_DATABASE_TYPE.MYSQL.ToString(), connectionString => {
                     RepoDb.MySqlBootstrap.Initialize();
                     return new MySqlConnection(DbConnectionProvider.Instance.MYSQL);
                 }
             }, {
-                ENUM_DATABASE_TYPE.POSTGRESQL.Value, connectionString => {
+                ENUM_DATABASE_TYPE.POSTGRESQL.ToString(), connectionString => {
                     RepoDb.PostgreSqlBootstrap.Initialize();
                     return new NpgsqlConnection(DbConnectionProvider.Instance.POSTGRESQL);
                 }
@@ -56,7 +56,7 @@ namespace JWLibrary.Database {
             new();
 
         public IDbConnection GetConnection(ENUM_DATABASE_TYPE dbType) {
-            return _connectionMaps[dbType.Value].Invoke(dbType.Value);
+            return _connectionMaps[dbType.ToString()].Invoke(dbType.ToString());
         }
 
         #region [ctor]

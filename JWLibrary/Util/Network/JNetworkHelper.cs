@@ -8,7 +8,7 @@ namespace JWLibrary.Utils {
     /// <summary>
     ///     firewall port type
     /// </summary>
-    public class ENUM_PORT_TYPE : XENUM_BASE<ENUM_PORT_TYPE> {
+    public class ENUM_PORT_TYPE : XEnumBase<ENUM_PORT_TYPE> {
         public static readonly ENUM_PORT_TYPE TCP = Define("TCP");
         public static readonly ENUM_PORT_TYPE UDP = Define("UDP");
     }
@@ -16,7 +16,7 @@ namespace JWLibrary.Utils {
     /// <summary>
     ///     firewall bound type
     /// </summary>
-    public class ENUM_BOUND_TYPE : XENUM_BASE<ENUM_BOUND_TYPE> {
+    public class ENUM_BOUND_TYPE : XEnumBase<ENUM_BOUND_TYPE> {
         public static readonly ENUM_BOUND_TYPE IN = Define("in");
         public static readonly ENUM_BOUND_TYPE OUT = Define("out");
     }
@@ -44,7 +44,7 @@ namespace JWLibrary.Utils {
 
         public static void OpenPort(this int port, string name, ENUM_PORT_TYPE portType,
             ENUM_BOUND_TYPE boundType) {
-            var arg = OpenPortCommand(name, boundType.Value, portType.Value, port);
+            var arg = OpenPortCommand(name, boundType.ToString(), portType.ToString(), port);
             ProcessHandlerAsync.RunAsync("cmd.exe", arg,
                     output => { Debug.WriteLine(output); },
                     error => { Debug.WriteLine(error); })
@@ -54,7 +54,7 @@ namespace JWLibrary.Utils {
 
         public static void ClosePort(this int port, string name, ENUM_PORT_TYPE portType,
             ENUM_BOUND_TYPE boundType) {
-            var arg = ClosePortCommand(name, boundType.Value, portType.Value, port);
+            var arg = ClosePortCommand(name, boundType.ToString(), portType.ToString(), port);
             ProcessHandlerAsync.RunAsync("cmd.exe", arg,
                     output => { Debug.WriteLine(output); },
                     error => { Debug.WriteLine(error); })

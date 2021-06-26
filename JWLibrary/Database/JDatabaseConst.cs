@@ -15,7 +15,7 @@ namespace JWLibrary.Database {
             };
     }
 
-    public class ENUM_SQL_COMPILER_TYPE : XENUM_BASE<ENUM_SQL_COMPILER_TYPE> {
+    public class ENUM_SQL_COMPILER_TYPE : XEnumBase<ENUM_SQL_COMPILER_TYPE> {
         public static readonly ENUM_SQL_COMPILER_TYPE MSSQL = Define("MSSQL");
         public static readonly ENUM_SQL_COMPILER_TYPE MYSQL = Define("MYSQL");
         public static readonly ENUM_SQL_COMPILER_TYPE ORACLE = Define("ORACLE");

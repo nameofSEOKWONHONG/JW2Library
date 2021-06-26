@@ -18,20 +18,20 @@ namespace JWLibrary.Database {
             }
         }
         
-        public readonly string MSSQL = ProviderMaps[ENUM_DATABASE_TYPE.MSSQL.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MSSQL = ProviderMaps[ENUM_DATABASE_TYPE.MSSQL.ToString()].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string MYSQL = ProviderMaps[ENUM_DATABASE_TYPE.MYSQL.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string MYSQL = ProviderMaps[ENUM_DATABASE_TYPE.MYSQL.ToString()].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string SQLITE = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE.ToString()].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string SQLITE_IN_MEMORY = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value].xToDecAES256(
+        public readonly string SQLITE_IN_MEMORY = ProviderMaps[ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.ToString()].xToDecAES256(
             DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
-        public readonly string POSTGRESQL = ProviderMaps[ENUM_DATABASE_TYPE.POSTGRESQL.Value].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
+        public readonly string POSTGRESQL = ProviderMaps[ENUM_DATABASE_TYPE.POSTGRESQL.ToString()].xToDecAES256(DbCipherKeyIVProvider.Instance.Key,
             DbCipherKeyIVProvider.Instance.IV, CipherMode.CBC, PaddingMode.PKCS7, DeconvertCipherFormat.HEX);
 
         public DbConnectionProvider() {
@@ -51,11 +51,11 @@ namespace JWLibrary.Database {
                             var configJson = configFile.xFileReadLine();
 
                             var jconfig = configJson.xJsonToObject<JConfig>();
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.MSSQL.Value, jconfig.DatabaseProvider.MSSQL);
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.MYSQL.Value, jconfig.DatabaseProvider.MYSQL);
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE.Value, jconfig.DatabaseProvider.SQLITE);
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.Value, jconfig.DatabaseProvider.SQLITE_IN_MEMORY);
-                            _providerMaps.Add(ENUM_DATABASE_TYPE.POSTGRESQL.Value, jconfig.DatabaseProvider.POSTGRESQL);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.MSSQL.ToString(), jconfig.DatabaseProvider.MSSQL);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.MYSQL.ToString(), jconfig.DatabaseProvider.MYSQL);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE.ToString(), jconfig.DatabaseProvider.SQLITE);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.SQLITE_IN_MEMORY.ToString(), jconfig.DatabaseProvider.SQLITE_IN_MEMORY);
+                            _providerMaps.Add(ENUM_DATABASE_TYPE.POSTGRESQL.ToString(), jconfig.DatabaseProvider.POSTGRESQL);
                         }
                     }
                 }

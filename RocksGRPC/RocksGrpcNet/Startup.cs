@@ -24,13 +24,12 @@ namespace RocksGrpcNet {
             }
 
             appLifetime.ApplicationStopping.Register(() => {
-                RocksDbHandler.Instance.Free();
+                RocksDBHandler.Instance.Free();
             });
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints => {
-                endpoints.MapGrpcService<GreeterService>();
                 endpoints.MapGrpcService<RocksDbService>();
 
                 endpoints.MapGet("/",

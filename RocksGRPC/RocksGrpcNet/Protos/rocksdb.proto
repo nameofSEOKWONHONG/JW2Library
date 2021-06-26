@@ -16,9 +16,15 @@ message RocksGrpcRequest {
   string command = 2;
   string key = 3;
   string value = 4;
+  repeated string keys = 5;
+  map<string, string> keyValues = 6;
 }
 
 // The response message containing the greetings.
 message RocksGrpcReply {
-  string result = 1;
+  string key = 1;
+  string value = 2;
+  map<string, string> keyValues = 3;
+  bool state = 4;
+  string stateMsg = 5;
 }
