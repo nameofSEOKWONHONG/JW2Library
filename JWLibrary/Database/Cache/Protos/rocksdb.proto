@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "RocksGrpcNet";
+
+package rocksdb;
+
+// The greeting service definition.
+service RocksGrpcExecutor {
+  // Sends a greeting
+  rpc ExecuteCommand (RocksGrpcRequest) returns (RocksGrpcReply);
+}
+
+// The request message containing the user's name.
+message RocksGrpcRequest {
+  string path = 1;
+  string command = 2;
+  string key = 3;
+  string value = 4;
+  repeated string keys = 5;
+  map<string, string> keyValues = 6;
+}
+
+// The response message containing the greetings.
+message RocksGrpcReply {
+  string key = 1;
+  string value = 2;
+  map<string, string> keyValues = 3;
+  bool state = 4;
+  string stateMsg = 5;
+}

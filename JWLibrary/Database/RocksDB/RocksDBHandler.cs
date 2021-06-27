@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using eXtensionSharp;
+using IronPython.Modules;
 using Nito.AsyncEx;
 
 namespace JWLibrary.Database {
@@ -30,44 +31,42 @@ namespace JWLibrary.Database {
         #region [public method]
 
         public RocksDBResult ExecuteCommand(RocksDBRequest request) {
-            if (ROCKSDB_COMMAND.Get == request.Command)
+            if (ROCKSDB_COMMAND.Get == request.Command) {
+                var getResult = Get(request.Path, request.Key);
                 return new RocksDBResult {
                     Key = request.Key,
-                    Value = Get(request.Path, request.Key),
-                    State = true
+                    Value = getResult,
+                    State = getResult.xIsNullOrEmpty() ? false : true
                 };
-
-            if (ROCKSDB_COMMAND.Put == request.Command) {
+            }
+            else if (ROCKSDB_COMMAND.Put == request.Command) {
                 Put(request.Path, request.Key, request.Value);
                 return new RocksDBResult {
                     Key = request.Key,
-                    Value = request.Value,
+                    Value = request.Value.xSafe(),
                     State = true
                 };
             }
-
-            if (ROCKSDB_COMMAND.Gets == request.Command) {
+            else if (ROCKSDB_COMMAND.Gets == request.Command) {
+                var getsResult = Gets(request.Path, request.Keys).xSafe();
                 return new RocksDBResult() {
-                    KeyValues = Gets(request.Path, request.Keys),
-                    State = true
+                    KeyValues = getsResult,
+                    State = getsResult.xIsNull() ? false : true
                 };
             }
-
-            if (ROCKSDB_COMMAND.Puts == request.Command) {
+            else if (ROCKSDB_COMMAND.Puts == request.Command) {
                 Puts(request.Path, request.KeyValues);
                 return new RocksDBResult() {
                     State = true
                 };
             }
-
-            if (ROCKSDB_COMMAND.Remove == request.Command) {
+            else if (ROCKSDB_COMMAND.Remove == request.Command) {
                 Remove(request.Path, request.Key);
                 return new RocksDBResult() {
                     State = true
                 };
             }
-
-            if (ROCKSDB_COMMAND.Removes == request.Command) {
+            else if (ROCKSDB_COMMAND.Removes == request.Command) {
                 Removes(request.Path, request.Keys);
                 return new RocksDBResult() {
                     State = true

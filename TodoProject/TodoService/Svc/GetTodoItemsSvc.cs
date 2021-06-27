@@ -1,26 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Dapper;
-using eXtensionSharp;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using MySql.Data.MySqlClient;
-using SqlKata.Execution;
 using TodoService.Data;
+using RepoDb;
 
 namespace TodoService {
     /// <summary>
-    /// todo list 조회
+    ///     todo list 조회
     /// </summary>
     public class GetTodoItemsSvc : ServiceExecutor<GetTodoItemsSvc, string, IEnumerable<TODO>>,
         IGetTodoItemsSvc {
-        public GetTodoItemsSvc() {
-            
-        }
-
         public override void Execute() {
 #if __SQLKATA__
 #if __MYSQLKATA__
@@ -37,12 +28,15 @@ namespace TodoService {
                         .WhereStarts("TODO_TEXT", this.Request.xValue(), true)//WHERE TODO_TEXT LIKE '[TEXT]%'
                         .Get<TODO>();
                 });
-#endif       
+#endif
 #else
+            //redb db
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecute((db, tran) => {
-                    this.Result = db.GetList<TODO>($"WHERE TODO_TEXT LIKE '%{this.Request}%'");
-                });
+                    this.Result = db.QueryAll<TODO>().Where(m => m.TODO_TEXT.Contains(Request)).ToList();
+                    //Result = db.GetList<TODO>($"WHERE TODO_TEXT LIKE '%{Request}%'");
+                })
+                .SetCache<string, IEnumerable<TODO>>(this.Request, this.Result);
 #endif
         }
     }

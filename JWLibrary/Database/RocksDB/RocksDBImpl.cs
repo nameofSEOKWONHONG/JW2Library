@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using eXtensionSharp;
 using RocksDbSharp;
@@ -92,11 +94,14 @@ namespace JWLibrary.Database {
         private string GetBytes(string key) {
             var eKey = Encoding.UTF8.GetBytes(key);
             var eVal = _db.Get(eKey);
+            if (eVal.xIsNull()) return string.Empty;
             return Encoding.UTF8.GetString(eVal);
         }
 
         public Dictionary<string, string> Gets(IEnumerable<string> keys) {
             var maps = new Dictionary<string, string>();
+
+            if (keys.xIsEmpty()) return maps;
 
             var bytesKeys = new XList<byte[]>();
             keys.xForEach(key => { bytesKeys.Add(key.xToBytes()); });
