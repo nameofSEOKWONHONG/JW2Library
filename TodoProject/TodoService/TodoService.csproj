@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Dapper.SimpleCRUD" Version="2.2.0.1" />
+      <PackageReference Include="RepoDb" Version="1.12.7" />
     </ItemGroup>
 
 </Project>

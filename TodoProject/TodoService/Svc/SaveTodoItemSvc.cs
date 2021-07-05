@@ -1,5 +1,5 @@
 ﻿using System;
-using Dapper;
+using RepoDb;
 using eXtensionSharp;
 using FluentValidation;
 using JWLibrary.Database;
@@ -83,11 +83,11 @@ namespace TodoService {
                 .DbExecute((db, tran) => {
                     if (_exists.xIsNotNull()) {
                         if (db.Delete<TODO>(_exists) > 0) {
-                            this.Result = db.Insert<TODO>(this.Request).Value;    
+                            this.Result = db.Insert<TODO, int>(this.Request);    
                         }
                     }
                     else {
-                        this.Result =  db.Insert<TODO>(this.Request).Value;
+                        this.Result =  db.Insert<TODO, int>(this.Request);
                     }
                 });
 #endif

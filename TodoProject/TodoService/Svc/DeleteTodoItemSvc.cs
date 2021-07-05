@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Linq;
+using RepoDb;
 using eXtensionSharp;
 using FluentValidation;
 using JWLibrary.Database;
@@ -48,7 +49,7 @@ namespace TodoService {
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecute((db, tran) => {
-                    var exists = db.Get<TODO>(this.Request);
+                    var exists = db.Query<TODO>(m => m.ID == this.Request).First();
                     if (exists.xIsNotNull()) {
                         this.Result = db.Delete<TODO>(exists) > 0;
                     }   

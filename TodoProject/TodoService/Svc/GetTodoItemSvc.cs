@@ -1,6 +1,7 @@
 ﻿//no use System.Data.SqlClient;
 
-using Dapper;
+using System.Linq;
+using RepoDb;
 using FluentValidation;
 using JWLibrary.Database;
 using JWLibrary.ServiceExecutor;
@@ -34,7 +35,7 @@ namespace TodoService {
 #else
             JDatabaseResolver.Resolve<SqlConnection>()
                 .DbExecute((db, tran) => {
-                    this.Result = db.Get<TODO>(this.Request);
+                    this.Result = db.Query<TODO>(m => m.ID == this.Request).First();
                 });
 #endif
         }
