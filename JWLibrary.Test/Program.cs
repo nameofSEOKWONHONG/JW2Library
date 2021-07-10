@@ -8,7 +8,14 @@ using Service.Data;
 using Service.WeatherForecast;
 
 namespace JCoreSvcTest {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Program {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args) {
             var serviceProvider = new ServiceCollection()
                 .AddLogging()
@@ -38,7 +45,7 @@ namespace JCoreSvcTest {
                     });
             }
 
-            result.xForEach(item => { Console.WriteLine(item.xObjectToJson()); });
+            result.xForEach(item => { Console.WriteLine(item.xToJson()); });
         }
     }
 }

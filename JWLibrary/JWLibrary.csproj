@@ -79,11 +79,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JLiteDBFlex\JLiteDBFlex.csproj" />
-    <ProjectReference Include="..\JWLibrary.Config\JWLibrary.Config.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -91,14 +86,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Database\Cache\Protos\rocksdb.proto">
-      <GrpcServices>Client</GrpcServices>
-      <Access>Public</Access>
-      <ProtoCompile>True</ProtoCompile>
-      <CompileOutputs>True</CompileOutputs>
-      <OutputDir>obj\Debug\net5.0\</OutputDir>
-      <Generator>MSBuild:Compile</Generator>
-    </Protobuf>
+    <ProjectReference Include="..\..\eXtensionSharp\src\eXtensionSharp.csproj" />
   </ItemGroup>
 
 <!--  <ItemGroup>-->

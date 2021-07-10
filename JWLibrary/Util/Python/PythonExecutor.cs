@@ -3,13 +3,15 @@ using System.IO;
 using System.Threading.Tasks;
 using eXtensionSharp;
 using IronPython.Hosting;
-using JWLibrary.Utils.Files;
 using Microsoft.Scripting.Hosting;
 
-namespace JWLibrary.Util {
-    public static class PythonExecutor {
+namespace JWLibrary.Util
+{
+    public static class PythonExecutor
+    {
         public static Task Execute_Python_Script_Async(this string script, Action<ScriptScope> preaction,
-            Action<ScriptScope> endaction) {
+            Action<ScriptScope> endaction)
+        {
             if (script.xIsNullOrEmpty()) throw new Exception("script is empty.");
 
             var engine = Python.CreateEngine();
@@ -26,7 +28,8 @@ namespace JWLibrary.Util {
         }
 
         public static async Task Execute_Python_File_Async(this string fileName, Action<ScriptScope> preaction,
-            Action<ScriptScope> endaction) {
+            Action<ScriptScope> endaction)
+        {
             if (fileName.xIsNull()) throw new FileNotFoundException("pytho_file_path is empty");
             if (!fileName.xFileExists()) throw new FileNotFoundException();
             if (!fileName.Contains(".py")) throw new FileLoadException("file is not support python");

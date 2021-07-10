@@ -1,17 +1,23 @@
 ﻿using JWLibrary.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace JWLibrary.EF {
+namespace JWLibrary.EF
+{
     /// <summary>
     ///     postgres sql dbcontext
     /// </summary>
-    public class JNpgSqlDbContext : JEfDbContextBase {
-        protected JNpgSqlDbContext() {
-        }        
-        protected JNpgSqlDbContext(DbContextOptions options) : base(options) {
+    public class JNpgSqlDbContext : JEfDbContextBase
+    {
+        protected JNpgSqlDbContext()
+        {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        protected JNpgSqlDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
             optionsBuilder.UseNpgsql(DbConnectionProvider.Instance.POSTGRESQL);
             //base.OnConfiguring(optionsBuilder);
         }

@@ -4,12 +4,14 @@ using System.Text;
 using System.Threading;
 using eXtensionSharp;
 
-namespace JWLibrary.Utils {
+namespace JWLibrary.Utils
+{
     /// <summary>
     ///     execute command line base
     ///     (this method execute target fileName (process name) and repeated event)
     /// </summary>
-    public class ProcessHandler : IDisposable {
+    public class ProcessHandler : IDisposable
+    {
         #region variables
 
         private bool disposed;
@@ -18,7 +20,8 @@ namespace JWLibrary.Utils {
 
         #region Constructor
 
-        public ProcessHandler() {
+        public ProcessHandler()
+        {
             RunProcess = new Process();
         }
 
@@ -34,7 +37,8 @@ namespace JWLibrary.Utils {
 
         public event EventHandler<DataReceivedEventArgs> CommandDataReceived;
 
-        public virtual void OnCommandDataReceived(object sender, DataReceivedEventArgs e) {
+        public virtual void OnCommandDataReceived(object sender, DataReceivedEventArgs e)
+        {
             if (CommandDataReceived.xIsNull()) CommandDataReceived(this, e);
         }
 
@@ -42,12 +46,14 @@ namespace JWLibrary.Utils {
 
         #region Functions
 
-        public void ExecuteCommand(string workingDir, string exeFullFileName, string arguments, bool createNoWindow) {
+        public void ExecuteCommand(string workingDir, string exeFullFileName, string arguments, bool createNoWindow)
+        {
             SetCommandLine(workingDir, exeFullFileName, arguments, createNoWindow);
             CommandLineStart();
         }
 
-        private void SetCommandLine(string workingDir, string exeFullFileName, string arguments, bool createNoWindow) {
+        private void SetCommandLine(string workingDir, string exeFullFileName, string arguments, bool createNoWindow)
+        {
             RunProcess.StartInfo.WorkingDirectory = workingDir;
             RunProcess.StartInfo.FileName = exeFullFileName;
             RunProcess.StartInfo.Arguments = arguments;
@@ -63,18 +69,22 @@ namespace JWLibrary.Utils {
             RunProcess.ErrorDataReceived += (s, e) => { OnCommandDataReceived(this, e); };
         }
 
-        private void CommandLineStart() {
+        private void CommandLineStart()
+        {
             RunProcess.Start();
             RunProcess.BeginOutputReadLine();
             RunProcess.BeginErrorReadLine();
         }
 
-        public void CommandLineStandardInput(string command) {
+        public void CommandLineStandardInput(string command)
+        {
             RunProcess.StandardInput.Write(command);
         }
 
-        public void CommandLineStop() {
-            if (!RunProcess.HasExited) {
+        public void CommandLineStop()
+        {
+            if (!RunProcess.HasExited)
+            {
                 RunProcess.Kill();
                 Thread.Sleep(100);
             }
@@ -84,15 +94,18 @@ namespace JWLibrary.Utils {
 
         #region dispose
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
             if (disposed) return;
             if (disposing)
-                if (RunProcess != null) {
+                if (RunProcess != null)
+                {
                     RunProcess.Dispose();
                     RunProcess = null;
                 }

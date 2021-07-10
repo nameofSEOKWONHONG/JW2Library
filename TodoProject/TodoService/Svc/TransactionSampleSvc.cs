@@ -16,17 +16,19 @@ namespace TodoService {
             this.Result = new XList<TODO>();
             var sql = "SELECT * FROM TODO";
 
-            using (var dispose1 = JDatabaseResolver.Resolve<SqlConnection>()
+            JDatabaseResolver.Resolve<SqlConnection>()
                 .BeginTran()
-                .DbExecute((c, t) => {
+                .DbExecute((c, t) =>
+                {
                     this.Result.AddAll(c.ExecuteQuery<TODO>(sql, transaction: t));
-                }))
-            using (var dispose2 = JDatabaseResolver.Resolve<MySqlConnection>()
-                .BeginTran()
-                .DbExecute((c1, t1) => {
-                    this.Result.AddAll(c1.ExecuteQuery<TODO>(sql, transaction: t1));
-                }))
-                ;
+
+                    JDatabaseResolver.Resolve<MySqlConnection>()
+                        .BeginTran()
+                        .DbExecute((c1, t1) =>
+                        {
+                            this.Result.AddAll(c1.ExecuteQuery<TODO>(sql, transaction: t1));
+                        });
+                });
         }
     }
 }

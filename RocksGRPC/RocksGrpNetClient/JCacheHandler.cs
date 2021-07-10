@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace JWLibrary.Database {
-    public class JDataCacheHandler {
-        private static readonly Lazy<JDataCacheHandler> _instance = new(() => new JDataCacheHandler());
+namespace RocksGrpcNetClient {
+    public class JCacheHandler {
+        private static readonly Lazy<JCacheHandler> _instance = new(() => new JCacheHandler());
 
-        private JDataCacheHandler() {
+        private JCacheHandler() {
         }
 
-        public static JDataCacheHandler Instance => _instance.Value;
+        public static JCacheHandler Instance => _instance.Value;
 
         public TResult GetOrAdd<TKey, TResult>(TKey key, TResult result, ENUM_CACHE_TYPE type) {
             if (type == ENUM_CACHE_TYPE.IN_MEMORY)
-                return JDataInMemoryCacheHandler.Instance.GetOrAdd(key, result);
+                return JInMemoryCacheHandler.Instance.GetOrAdd(key, result);
             if (type == ENUM_CACHE_TYPE.ROCKSDB) return JDataGrpcRocksDBCacheHandler.Instance.GetOrAdd(key, result);
 
             throw new NotImplementedException();
@@ -19,7 +19,7 @@ namespace JWLibrary.Database {
 
         public void ResetCache<TKey>(TKey key, ENUM_CACHE_TYPE type) {
             if (type == ENUM_CACHE_TYPE.IN_MEMORY) {
-                JDataInMemoryCacheHandler.Instance.ResetCache(key);
+                JInMemoryCacheHandler.Instance.ResetCache(key);
                 return;
             }
 

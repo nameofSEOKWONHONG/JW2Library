@@ -23,7 +23,7 @@ namespace JWLibrary.NUnit.Test {
             var result2 = mapA.xConcatUpdate(mapB);
             Assert.AreEqual(result2["B"], "BB");
 
-            Console.WriteLine(result2.xObjectToJson());
+            Console.WriteLine(result2.xToJson());
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace JWLibrary.NUnit.Test {
             jDictionaryPool.Release("C", "C");
             jDictionaryPool.Clear();
 
-            Console.WriteLine(jDictionaryPool.xObjectToJson());
+            Console.WriteLine(jDictionaryPool.xToJson());
         }
 
         [Test]

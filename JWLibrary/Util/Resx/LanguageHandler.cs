@@ -6,13 +6,16 @@ using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
 
-namespace JWLibrary.Utils {
+namespace JWLibrary.Utils
+{
     public class LanguageHandler<T>
-        where T : class, new() {
+        where T : class, new()
+    {
         private static readonly Lazy<LanguageHandler<T>> _instance =
             new(() => new LanguageHandler<T>());
 
-        private readonly Dictionary<string, string> _keyValues = new() {
+        private readonly Dictionary<string, string> _keyValues = new()
+        {
             {"ko-KR", "./Resource/Lang/ko-KR.json"},
             {"en-US", "./Resource/Lang/en-US.json"}
         };
@@ -21,8 +24,10 @@ namespace JWLibrary.Utils {
 
         private T _languageResource;
 
-        private LanguageHandler() {
-            if (_languageResources.Count <= 0) {
+        private LanguageHandler()
+        {
+            if (_languageResources.Count <= 0)
+            {
                 _languageResources.Add("en-US", LoadLanguageSetting("en-US"));
                 _languageResources.Add("ko-KR", LoadLanguageSetting("ko-KR"));
             }
@@ -30,8 +35,10 @@ namespace JWLibrary.Utils {
 
         public static LanguageHandler<T> Instance => _instance.Value;
 
-        public T LanguageResource {
-            get {
+        public T LanguageResource
+        {
+            get
+            {
                 if (_languageResource == null)
                     _languageResource = _languageResources[Thread.CurrentThread.CurrentCulture.Name];
 
@@ -39,14 +46,17 @@ namespace JWLibrary.Utils {
             }
         }
 
-        public T this[string lang] {
-            get {
+        public T this[string lang]
+        {
+            get
+            {
                 _languageResource = _languageResources[lang];
                 return _languageResource;
             }
         }
 
-        private T LoadLanguageSetting(string language) {
+        private T LoadLanguageSetting(string language)
+        {
             var keyValue = _keyValues.FirstOrDefault(m => m.Key == language);
             T langRes = null;
 
@@ -59,11 +69,13 @@ namespace JWLibrary.Utils {
             var numberFormatInfo = CultureInfo.CreateSpecificCulture(language).NumberFormat;
             var cultureInfo = new CultureInfo(language) {NumberFormat = numberFormatInfo};
 
-            if (language == "ko-KR") {
+            if (language == "ko-KR")
+            {
                 cultureInfo.DateTimeFormat.DateSeparator = "-";
                 cultureInfo.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
             }
-            else {
+            else
+            {
                 cultureInfo.DateTimeFormat.DateSeparator = "/";
                 cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
             }

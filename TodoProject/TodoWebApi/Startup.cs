@@ -76,7 +76,7 @@ namespace TodoWebApi {
             var injectors = new XList<IServiceInjector>() {
                 new TodoServiceInjector()
             };
-            services.SvcLoad(injectors);
+            services.Load(injectors);
 
             //BulkInstance 생성을 위한 ServiceLocator 등록
             //직접 선언을 위해 사용할 수 있지만 권장하지 않는다.

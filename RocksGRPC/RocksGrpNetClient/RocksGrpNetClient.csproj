@@ -1,23 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
+      <Protobuf Include="Protos\rocksdb.proto">
+        <Generator>MSBuild:Compile</Generator>
+      </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Google.Protobuf" Version="3.17.3" />
       <PackageReference Include="Grpc.Net.Client" Version="2.38.0" />
-      <PackageReference Include="Grpc.Tools" Version="2.38.0">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PackageReference Include="Grpc.Tools" Version="2.38.1">
         <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\eXtensionSharp\src\eXtensionSharp.csproj" />
       <ProjectReference Include="..\..\JWLibrary\JWLibrary.csproj" />
-      <ProjectReference Include="..\RocksGrpNetClient\RocksGrpNetClient.csproj" />
     </ItemGroup>
 
 </Project>

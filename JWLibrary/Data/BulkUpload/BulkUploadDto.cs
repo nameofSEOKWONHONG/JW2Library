@@ -1,8 +1,10 @@
 ﻿using eXtensionSharp;
 
-namespace JWLibrary {
+namespace JWLibrary
+{
     public class BulkUploadDto<T>
-        where T : class {
+        where T : class
+    {
         public T Data { get; set; }
         public bool IsValid { get; set; }
         public string ErrorMsg { get; set; }

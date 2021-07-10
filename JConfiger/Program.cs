@@ -4,8 +4,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using eXtensionSharp;
 using JWLibrary.Database;
-using JWLibrary.Utils;
-using JWLibrary.Web.Consts;
+using CONFIG_CONST = JWLibrary.Database.CONFIG_CONST;
 
 namespace JConfiger {
     class Program {
@@ -67,7 +66,7 @@ namespace JConfiger {
 
             var config = new JConfig();
             config.DatabaseProvider = dbProviderObj;
-            var json = config.xObjectToJson();
+            var json = config.xToJson();
 
             var configPath = filePath;
             configPath.xFileCreateAll();

@@ -1,5 +1,7 @@
-﻿namespace JWLibrary {
-    public class TUIPagingRequestDto<T> : RequestDto<T>, ITUIPagingBase, ITUIPagingOption {
+﻿namespace JWLibrary
+{
+    public class TUIPagingRequestDto<T> : RequestDto<T>, ITUIPagingBase, ITUIPagingOption
+    {
         public int TotalItems { get; set; }
         public int ItemsPerPage { get; set; }
         public int VisiblePages { get; set; }

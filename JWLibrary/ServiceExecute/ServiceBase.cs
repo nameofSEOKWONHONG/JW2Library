@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
 using FluentValidation;
 
-namespace JWLibrary.ServiceExecutor {
-    public abstract class ServiceBase<TOwner> : IServiceBase {
+namespace JWLibrary.ServiceExecutor
+{
+    public abstract class ServiceBase<TOwner> : IServiceBase
+    {
         public abstract void Dispose();
         public abstract void Execute();
         public abstract Task ExecuteAsync();

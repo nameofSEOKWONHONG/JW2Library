@@ -9,8 +9,4 @@
       <ProjectReference Include="..\..\JWLibrary\JWLibrary.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Dtos" />
-    </ItemGroup>
-
 </Project>

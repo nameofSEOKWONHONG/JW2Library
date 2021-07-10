@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
 using System.Text;
 using eXtensionSharp;
 using RocksDbSharp;
 
-namespace JWLibrary.Database {
-    internal class RocksDBImpl : IDisposable {
+namespace JWLibrary.Database
+{
+    internal class RocksDBImpl : IDisposable
+    {
         /// <summary>
         ///     prefix path (base path)
         /// </summary>
         private const string PREFIX = "rocksdb";
 
         /// <summary>
-        ///     rocksdb instance
-        /// </summary>
-        private RocksDb _db;
-
-        /// <summary>
         ///     save path (local path)
         /// </summary>
         private readonly string _dbPath;
 
+        /// <summary>
+        ///     rocksdb instance
+        /// </summary>
+        private RocksDb _db;
+
         #region [ctor]
 
-        public RocksDBImpl(string dbPath) {
+        public RocksDBImpl(string dbPath)
+        {
             PREFIX.xToPath().xDirCreateAll();
             _dbPath = $"{PREFIX}\\{dbPath}".xToPath();
             CreateRocksDB();
@@ -40,7 +41,8 @@ namespace JWLibrary.Database {
 
         #region [dispose]
 
-        public void Dispose() {
+        public void Dispose()
+        {
             if (_db.xIsNotNull()) _db.Dispose();
         }
 
@@ -48,7 +50,8 @@ namespace JWLibrary.Database {
 
         #region [private method]
 
-        private void CreateRocksDB(bool isCreateIfMissing = true) {
+        private void CreateRocksDB(bool isCreateIfMissing = true)
+        {
             var options = new DbOptions()
                 .SetCreateIfMissing(isCreateIfMissing);
             _db = RocksDb.Open(options, _dbPath);
@@ -58,27 +61,32 @@ namespace JWLibrary.Database {
 
         #region [public method]
 
-        public void Put(string key, string value) {
+        public void Put(string key, string value)
+        {
             var exists = _db.Get(key);
             if (exists.xIsEmpty()) PutBytes(key, value);
         }
 
-        private void PutBytes(string key, string value) {
+        private void PutBytes(string key, string value)
+        {
             var eKey = Encoding.UTF8.GetBytes(key);
             var eVal = Encoding.UTF8.GetBytes(value);
             _db.Put(eKey, eVal);
         }
 
-        public void Puts(Dictionary<string, string> maps) {
+        public void Puts(Dictionary<string, string> maps)
+        {
             var batch = new WriteBatch();
             maps.xForEach(keyvalues => { batch.Put(keyvalues.Key, keyvalues.Value); });
             _db.Write(batch);
             batch.Dispose();
         }
 
-        public void PutsBytes(Dictionary<string, string> maps) {
+        public void PutsBytes(Dictionary<string, string> maps)
+        {
             var batch = new WriteBatch();
-            maps.xForEach(keyvalues => {
+            maps.xForEach(keyvalues =>
+            {
                 var bytesKey = keyvalues.Key.xToBytes();
                 var bytesValue = keyvalues.Value.xToBytes();
                 batch.Put(bytesKey, bytesValue);
@@ -87,18 +95,21 @@ namespace JWLibrary.Database {
             batch.Dispose();
         }
 
-        public string Get(string key) {
+        public string Get(string key)
+        {
             return GetBytes(key);
         }
 
-        private string GetBytes(string key) {
+        private string GetBytes(string key)
+        {
             var eKey = Encoding.UTF8.GetBytes(key);
             var eVal = _db.Get(eKey);
             if (eVal.xIsNull()) return string.Empty;
             return Encoding.UTF8.GetString(eVal);
         }
 
-        public Dictionary<string, string> Gets(IEnumerable<string> keys) {
+        public Dictionary<string, string> Gets(IEnumerable<string> keys)
+        {
             var maps = new Dictionary<string, string>();
 
             if (keys.xIsEmpty()) return maps;
@@ -112,19 +123,20 @@ namespace JWLibrary.Database {
             return maps;
         }
 
-        public void Remove(string key, ColumnFamilyHandle cf = null, WriteOptions writeOptions = null) {
+        public void Remove(string key, ColumnFamilyHandle cf = null, WriteOptions writeOptions = null)
+        {
             RemoveBytes(key, cf, writeOptions);
         }
 
-        public void RemoveBytes(string key, ColumnFamilyHandle cf = null, WriteOptions writeOptions = null) {
+        public void RemoveBytes(string key, ColumnFamilyHandle cf = null, WriteOptions writeOptions = null)
+        {
             var eKey = Encoding.UTF8.GetBytes(key);
             _db.Remove(eKey);
         }
 
-        public void Removes(IEnumerable<string> keys) {
-            keys.xForEach(key => {
-                Remove(key);
-            });
+        public void Removes(IEnumerable<string> keys)
+        {
+            keys.xForEach(key => { Remove(key); });
         }
 
         #endregion

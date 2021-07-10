@@ -32,11 +32,11 @@ namespace TodoService {
 #else
             //redb db
             JDatabaseResolver.Resolve<SqlConnection>()
-                .DbExecute((db, tran) => {
+                .DbExecute((db, tran) =>
+                {
                     this.Result = db.QueryAll<TODO>().Where(m => m.TODO_TEXT.Contains(Request)).ToList();
                     //Result = db.GetList<TODO>($"WHERE TODO_TEXT LIKE '%{Request}%'");
-                })
-                .SetCache<string, IEnumerable<TODO>>(this.Request, this.Result);
+                });
 #endif
         }
     }

@@ -1,12 +1,14 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace JWLibrary {
+namespace JWLibrary
+{
     /// <summary>
     ///     base request class
     /// </summary>
     /// <typeparam name="TRequestDto"></typeparam>
-    public class RequestBase<TRequestDto> {
+    public class RequestBase<TRequestDto>
+    {
         [JsonProperty("data")] public TRequestDto Data { get; set; }
     }
 
@@ -14,7 +16,8 @@ namespace JWLibrary {
     ///     single query request class
     /// </summary>
     /// <typeparam name="TRequestDto"></typeparam>
-    public class RequestDto<TRequestDto> : RequestBase<TRequestDto> {
+    public class RequestDto<TRequestDto> : RequestBase<TRequestDto>
+    {
         public string WRITER_ID { get; set; }
         public DateTime WRITE_DT { get; set; } = DateTime.Now;
         public string EDITOR_ID { get; set; }
@@ -25,7 +28,8 @@ namespace JWLibrary {
     ///     paging query request class
     /// </summary>
     /// <typeparam name="TRequestDto"></typeparam>
-    public class PagingRequestDto<TRequestDto> : RequestDto<TRequestDto> {
+    public class PagingRequestDto<TRequestDto> : RequestDto<TRequestDto>
+    {
         public int Page { get; set; }
         public int Size { get; set; }
     }

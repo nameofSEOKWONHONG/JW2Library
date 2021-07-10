@@ -1,8 +1,10 @@
-﻿namespace JWLibrary {
+﻿namespace JWLibrary
+{
     /// <summary>
     ///     ref : https://github.com/nhn/tui.pagination/blob/production/docs/getting-started.md
     /// </summary>
-    public interface ITUIPagingBase {
+    public interface ITUIPagingBase
+    {
         /// <summary>
         ///     Total number of items
         /// </summary>
@@ -24,7 +26,8 @@
         int Page { get; set; }
     }
 
-    public interface ITUIPagingOption {
+    public interface ITUIPagingOption
+    {
         /// <summary>
         ///     Whether the page is moved to centered or not
         /// </summary>
@@ -46,7 +49,8 @@
         TUITemplage Template { get; set; }
     }
 
-    public class TUITemplage {
+    public class TUITemplage
+    {
         public string Page { get; set; }
         public string CurrentPage { get; set; }
         public string MoveButton { get; set; }

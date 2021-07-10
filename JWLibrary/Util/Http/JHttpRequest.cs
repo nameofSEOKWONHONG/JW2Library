@@ -7,21 +7,27 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace JWLibrary.Utils {
-    public class JHttpRequest {
+namespace JWLibrary.Utils
+{
+    public class JHttpRequest
+    {
         private readonly Uri _uri;
 
-        public JHttpRequest(string baseAddress) {
+        public JHttpRequest(string baseAddress)
+        {
             _uri = new Uri(baseAddress);
         }
 
-        public async Task<T> GetSingleDataAsync<T>(string apiUrl, string token = null) {
+        public async Task<T> GetSingleDataAsync<T>(string apiUrl, string token = null)
+        {
             if (string.IsNullOrEmpty(_uri.AbsoluteUri)) throw new Exception("Base url is empty.");
 
-            using (var client = new HttpClient()) {
+            using (var client = new HttpClient())
+            {
                 client.BaseAddress = _uri;
 
-                if (!string.IsNullOrEmpty(token)) {
+                if (!string.IsNullOrEmpty(token))
+                {
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer" + token);
@@ -29,7 +35,8 @@ namespace JWLibrary.Utils {
 
                 var response = await client.GetAsync(apiUrl);
 
-                if (response.IsSuccessStatusCode) {
+                if (response.IsSuccessStatusCode)
+                {
                     var data = await response.Content.ReadAsStringAsync();
 
                     if (!string.IsNullOrEmpty(data))
@@ -40,13 +47,16 @@ namespace JWLibrary.Utils {
             return default;
         }
 
-        public async Task<List<T>> GetMultipleDataAsync<T>(string apiUrl, string token = null) {
+        public async Task<List<T>> GetMultipleDataAsync<T>(string apiUrl, string token = null)
+        {
             if (string.IsNullOrEmpty(_uri.AbsolutePath)) throw new Exception("Base Url is null");
 
-            using (var client = new HttpClient()) {
+            using (var client = new HttpClient())
+            {
                 client.BaseAddress = _uri;
 
-                if (!string.IsNullOrEmpty(token)) {
+                if (!string.IsNullOrEmpty(token))
+                {
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer" + token);
@@ -54,7 +64,8 @@ namespace JWLibrary.Utils {
 
                 var response = await client.GetAsync(apiUrl);
 
-                if (response.IsSuccessStatusCode) {
+                if (response.IsSuccessStatusCode)
+                {
                     var data = await response.Content.ReadAsStringAsync();
 
                     if (!string.IsNullOrEmpty(data)) return JsonConvert.DeserializeObject<List<T>>(data);
@@ -64,11 +75,14 @@ namespace JWLibrary.Utils {
             return default;
         }
 
-        public async Task<bool> PostAsync(object data, string apiUrl, string token = null) {
-            using (var client = new HttpClient()) {
+        public async Task<bool> PostAsync(object data, string apiUrl, string token = null)
+        {
+            using (var client = new HttpClient())
+            {
                 client.BaseAddress = _uri;
 
-                if (!string.IsNullOrEmpty(token)) {
+                if (!string.IsNullOrEmpty(token))
+                {
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("Token", token);
@@ -86,11 +100,14 @@ namespace JWLibrary.Utils {
             return false;
         }
 
-        public async Task<bool> PutAsync(object data, string apiUrl, string token = null) {
-            using (var client = new HttpClient()) {
+        public async Task<bool> PutAsync(object data, string apiUrl, string token = null)
+        {
+            using (var client = new HttpClient())
+            {
                 client.BaseAddress = _uri;
 
-                if (!string.IsNullOrEmpty(token)) {
+                if (!string.IsNullOrEmpty(token))
+                {
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer" + token);
@@ -108,11 +125,14 @@ namespace JWLibrary.Utils {
             return false;
         }
 
-        public async Task<bool> DeleteAsync(string apiUrl, string key, string token = null) {
-            using (var client = new HttpClient()) {
+        public async Task<bool> DeleteAsync(string apiUrl, string key, string token = null)
+        {
+            using (var client = new HttpClient())
+            {
                 client.BaseAddress = _uri;
 
-                if (!string.IsNullOrEmpty(token)) {
+                if (!string.IsNullOrEmpty(token))
+                {
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer" + token);
@@ -133,7 +153,8 @@ namespace JWLibrary.Utils {
             return false;
         }
 
-        public async Task DownloadAsync(string remoteFileName, string localFileName) {
+        public async Task DownloadAsync(string remoteFileName, string localFileName)
+        {
             using var httpClient = new HttpClient();
             httpClient.BaseAddress = _uri;
             var url = remoteFileName;

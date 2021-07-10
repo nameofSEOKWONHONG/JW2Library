@@ -4,7 +4,7 @@ using Grpc.Net.Client;
 using Newtonsoft.Json;
 using RocksGrpcNet;
 
-namespace JWLibrary.Database {
+namespace RocksGrpcNetClient {
     internal class JDataGrpcRocksDBCacheHandler {
         private static Lazy<JDataGrpcRocksDBCacheHandler> _instance = new Lazy<JDataGrpcRocksDBCacheHandler>(() => new JDataGrpcRocksDBCacheHandler());
 
@@ -22,8 +22,8 @@ namespace JWLibrary.Database {
 
         public TResult GetOrAdd<TKey, TResult>(TKey key, TResult result) {
             var getRequest = new RocksGrpcRequest() {
-                Key = key.xObjectToJson(),
-                Value = result.xObjectToJson(),
+                Key = key.xToJson(),
+                Value = result.xToJson(),
                 Command = "GET",
                 Path = "testdb5"
             };
@@ -31,8 +31,8 @@ namespace JWLibrary.Database {
 
             if (clientResult.State == false) {
                 var putRequest = new RocksGrpcRequest() {
-                    Key = key.xObjectToJson(),
-                    Value = result.xObjectToJson(),
+                    Key = key.xToJson(),
+                    Value = result.xToJson(),
                     Command = "PUT",
                     Path = "testdb5"
                 };
@@ -44,7 +44,7 @@ namespace JWLibrary.Database {
 
         public void ResetCache<TKey>(TKey key) {
             _client.ExecuteCommandAsync(new RocksGrpcRequest() {
-                Key = key.xObjectToJson(),
+                Key = key.xToJson(),
                 Command = "REMOVE",
                 Path = "testdb5"
             }).GetAwaiter().GetResult();

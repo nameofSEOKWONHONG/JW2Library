@@ -7,30 +7,29 @@ using JWLibrary.Database;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace JWLibrary.EF {
+namespace JWLibrary.EF
+{
     /// <summary>
     ///     Entity
     /// </summary>
-    [System.ComponentModel.DataAnnotations.Schema.Table("Blogs")]
+    [Table("Blogs")]
     [BsonIgnoreExtraElements]
-    public class Blog {
-        [System.ComponentModel.DataAnnotations.Key]
+    public class Blog
+    {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [MaxLength(100)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string BLOG_NAME { get; set; }
+        [MaxLength(100)] [Required] public string BLOG_NAME { get; set; }
 
-        [MaxLength(30)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string BLOG_AUTHOR { get; set; }
+        [MaxLength(30)] [Required] public string BLOG_AUTHOR { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Required]
-        public DateTime WRITE_DT { get; set; }
+        [Required] public DateTime WRITE_DT { get; set; }
 
-        public class BlogMSSqlMigration : JMigration {
-            public override bool IsExistsTable(IDbConnection connection) {
+        public class BlogMSSqlMigration : JMigration
+        {
+            public override bool IsExistsTable(IDbConnection connection)
+            {
                 var sql = @"
 IF (EXISTS (SELECT * 
             FROM INFORMATION_SCHEMA.TABLES 
@@ -47,7 +46,8 @@ END
                 return connection.QueryFirst<bool>(sql);
             }
 
-            public override void CreateTable(IDbConnection connection) {
+            public override void CreateTable(IDbConnection connection)
+            {
                 var sql = @"
 CREATE TABLE [DBO].[BLOGS] (
     ID INT NOT NULL PRIMARY KEY IDENTITY (1,1),
@@ -59,7 +59,8 @@ CREATE TABLE [DBO].[BLOGS] (
                 connection.Execute(sql);
             }
 
-            public override void CreateTempTable(IDbConnection connection) {
+            public override void CreateTempTable(IDbConnection connection)
+            {
                 var sql = @"
 DROP TABLE IF EXISTS BLOG_TEMP
 
@@ -70,7 +71,8 @@ FROM ACC.DBO.BLOGS
                 connection.Execute(sql);
             }
 
-            public override void AfterProcess(IDbConnection connection) {
+            public override void AfterProcess(IDbConnection connection)
+            {
                 var sql = @"
 CREATE TABLE [DBO].[BLOGS] (
     ID INT NOT NULL PRIMARY KEY IDENTITY (1,1),
@@ -91,56 +93,71 @@ SET IDENTITY_INSERT ACC.DBO.BLOG ON
             }
         }
 
-        public class BlogMySqlMigration : JMigration {
-            public override bool IsExistsTable(IDbConnection connection) {
+        public class BlogMySqlMigration : JMigration
+        {
+            public override bool IsExistsTable(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
 
-            public override void CreateTable(IDbConnection connection) {
+            public override void CreateTable(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
 
-            public override void CreateTempTable(IDbConnection connection) {
+            public override void CreateTempTable(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
 
-            public override void AfterProcess(IDbConnection connection) {
-                throw new NotImplementedException();
-            }
-        }
-
-        public class BlogNpgSqlMigration : JMigration {
-            public override bool IsExistsTable(IDbConnection connection) {
-                throw new NotImplementedException();
-            }
-
-            public override void CreateTable(IDbConnection connection) {
-                throw new NotImplementedException();
-            }
-
-            public override void CreateTempTable(IDbConnection connection) {
-                throw new NotImplementedException();
-            }
-
-            public override void AfterProcess(IDbConnection connection) {
+            public override void AfterProcess(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
         }
 
-        public class BlogSqliteMigration : JMigration {
-            public override bool IsExistsTable(IDbConnection connection) {
+        public class BlogNpgSqlMigration : JMigration
+        {
+            public override bool IsExistsTable(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
 
-            public override void CreateTable(IDbConnection connection) {
+            public override void CreateTable(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
 
-            public override void CreateTempTable(IDbConnection connection) {
+            public override void CreateTempTable(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
 
-            public override void AfterProcess(IDbConnection connection) {
+            public override void AfterProcess(IDbConnection connection)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class BlogSqliteMigration : JMigration
+        {
+            public override bool IsExistsTable(IDbConnection connection)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTable(IDbConnection connection)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void CreateTempTable(IDbConnection connection)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void AfterProcess(IDbConnection connection)
+            {
                 throw new NotImplementedException();
             }
         }
@@ -167,26 +184,32 @@ SET IDENTITY_INSERT ACC.DBO.BLOG ON
         #endregion
     }
 
-    public class BlogDetail {
+    public class BlogDetail
+    {
         public int ID { get; set; }
-        
+
         public int BLOG_ID { get; set; }
-        
+
         public string CONTENTS { get; set; }
     }
+
     /// <summary>
     ///     mssql blog dbcontext
     /// </summary>
-    public class BlogSqlContext : JSqlDbContext {
-        public BlogSqlContext() {
+    public class BlogSqlContext : JSqlDbContext
+    {
+        public BlogSqlContext()
+        {
         }
 
-        public BlogSqlContext(DbContextOptions<BlogSqlContext> options) : base(options) {
+        public BlogSqlContext(DbContextOptions<BlogSqlContext> options) : base(options)
+        {
         }
 
         public DbSet<Blog> Blogs { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Blog>();
             //base.OnModelCreating(modelBuilder);
         }
@@ -195,16 +218,20 @@ SET IDENTITY_INSERT ACC.DBO.BLOG ON
     /// <summary>
     ///     sqlite blog dbcontext
     /// </summary>
-    public class BlogSqliteDbContext : JSqlLiteDbContext {
-        public BlogSqliteDbContext() {
+    public class BlogSqliteDbContext : JSqlLiteDbContext
+    {
+        public BlogSqliteDbContext()
+        {
         }
 
-        public BlogSqliteDbContext(DbContextOptions<BlogSqliteDbContext> options) : base(options) {
+        public BlogSqliteDbContext(DbContextOptions<BlogSqliteDbContext> options) : base(options)
+        {
         }
 
         public DbSet<Blog> Blogs { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             //base.OnModelCreating(modelBuilder);
         }
     }

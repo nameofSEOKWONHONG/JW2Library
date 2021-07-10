@@ -59,7 +59,7 @@ namespace AccountWebApi {
             var injectors = new XList<IServiceInjector>() {
                 new AccountServiceInjector()
             };
-            services.SvcLoad(injectors);
+            services.Load(injectors);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

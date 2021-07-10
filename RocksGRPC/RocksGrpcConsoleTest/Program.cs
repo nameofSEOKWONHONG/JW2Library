@@ -3,9 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using eXtensionSharp;
-using Grpc.Net.Client;
-using JWLibrary.Database;
-using RocksGrpcNet;
+using RocksGrpcNetClient;
 
 namespace RocksGrpcConsoleTest {
     class Program {
@@ -13,10 +11,10 @@ namespace RocksGrpcConsoleTest {
             Parallel.ForEach(Enumerable.Range(1, 100), i => {
             //Enumerable.Range(1, 100).ToList().ForEach(item => {
                 Stopwatch sw = Stopwatch.StartNew();
-                var result = JDataCacheHandler.Instance.GetOrAdd<string, string>("test", "asdfasdf", ENUM_CACHE_TYPE.ROCKSDB);
-                Console.WriteLine(result.xObjectToJson());
+                var result = JCacheHandler.Instance.GetOrAdd<string, string>("test", "asdfasdf", ENUM_CACHE_TYPE.ROCKSDB);
+                Console.WriteLine(result.xToJson());
             
-                JDataCacheHandler.Instance.ResetCache<string>("test", ENUM_CACHE_TYPE.ROCKSDB);
+                JCacheHandler.Instance.ResetCache<string>("test", ENUM_CACHE_TYPE.ROCKSDB);
 
                 sw.Stop();
                 Console.WriteLine($"execution time {sw.Elapsed.TotalSeconds}");

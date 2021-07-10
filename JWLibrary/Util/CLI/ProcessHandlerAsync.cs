@@ -4,16 +4,21 @@ using System.Text;
 using System.Threading.Tasks;
 using eXtensionSharp;
 
-namespace JWLibrary.Util.CLI {
+namespace JWLibrary.Util.CLI
+{
     /// <summary>
     ///     execute command line base
     ///     (this method execute target fileName (process name))
     /// </summary>
-    public class ProcessHandlerAsync {
+    public class ProcessHandlerAsync
+    {
         public static async Task<int> RunAsync(string fileName, string args, Action<string> outputReceived,
-            Action<string> errorReceived) {
-            using var process = new Process {
-                StartInfo = new ProcessStartInfo {
+            Action<string> errorReceived)
+        {
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
                     FileName = fileName,
                     Arguments = args,
                     UseShellExecute = false,
@@ -31,15 +36,18 @@ namespace JWLibrary.Util.CLI {
         }
 
         private static Task<int> RunAsync(Process process, Action<string> outputReceived,
-            Action<string> errorReceived) {
+            Action<string> errorReceived)
+        {
             var tcs = new TaskCompletionSource<int>();
 
             process.Exited += (s, e) => tcs.SetResult(process.ExitCode);
-            process.OutputDataReceived += (s, e) => {
+            process.OutputDataReceived += (s, e) =>
+            {
                 if (!e.Data.xIsNullOrEmpty())
                     outputReceived(e.Data);
             };
-            process.ErrorDataReceived += (s, e) => {
+            process.ErrorDataReceived += (s, e) =>
+            {
                 if (!e.Data.xIsNullOrEmpty())
                     errorReceived(e.Data);
             };

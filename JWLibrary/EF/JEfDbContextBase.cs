@@ -1,21 +1,27 @@
 ﻿using eXtensionSharp;
 using Microsoft.EntityFrameworkCore;
 
-namespace JWLibrary.EF {
+namespace JWLibrary.EF
+{
     /// <summary>
     ///     base db context
     /// </summary>
-    public abstract class JEfDbContextBase : DbContext {
-        protected static bool IsCreated = false;
-        protected JEfDbContextBase() {
-            if (IsCreated.xIsFalse()) {
+    public abstract class JEfDbContextBase : DbContext
+    {
+        protected static bool IsCreated;
+
+        protected JEfDbContextBase()
+        {
+            if (IsCreated.xIsFalse())
+            {
                 IsCreated = true;
-                this.Database.Migrate();
-                this.Database.EnsureCreated();
+                Database.Migrate();
+                Database.EnsureCreated();
             }
         }
 
-        protected JEfDbContextBase(DbContextOptions options) : base(options) {
+        protected JEfDbContextBase(DbContextOptions options) : base(options)
+        {
         }
     }
 }

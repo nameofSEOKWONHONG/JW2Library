@@ -3,6 +3,7 @@ using eXtensionSharp;
 using JWLibrary.Database;
 using JWLibrary.EF;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using NUnit.Framework;
 
@@ -18,7 +19,7 @@ namespace JWLibrary.NUnit.Test {
                     BLOG_AUTHOR = "test",
                     WRITE_DT = DateTime.Now
                 };
-                var document = BsonDocument.Parse(blog.xObjectToJson());
+                var document = BsonDocument.Parse(blog.xToJson());
                 collection.InsertOne(document);
             });
             
@@ -26,7 +27,8 @@ namespace JWLibrary.NUnit.Test {
                 var filter = Builders<BsonDocument>.Filter.Eq("BLOG_NAME", "test");
                 var exists = collection.Find(filter).FirstOrDefault();
                 Assert.IsTrue(exists.xIsNotNull());
-                var blog = exists.xBsonToObject<Blog>();
+
+                var blog = exists.xToEntity<Blog>();
                 Assert.AreEqual(blog.BLOG_NAME, "test");
             });
             
