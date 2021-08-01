@@ -39,7 +39,7 @@ namespace JWLibrary.Database
 
         public void Execute()
         {
-            var list = new XList<IMigration>();
+            var list = new List<IMigration>();
             _dllPaths.xForEach(path =>
             {
                 var instances = path.CreateInstance<IMigration>(new[] {"Migration"}, new[] {"MigrationExecutor"});

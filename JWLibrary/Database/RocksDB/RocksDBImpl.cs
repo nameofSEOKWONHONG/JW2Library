@@ -114,7 +114,7 @@ namespace JWLibrary.Database
 
             if (keys.xIsEmpty()) return maps;
 
-            var bytesKeys = new XList<byte[]>();
+            var bytesKeys = new List<byte[]>();
             keys.xForEach(key => { bytesKeys.Add(key.xToBytes()); });
 
             var keyvalues = _db.MultiGet(bytesKeys.ToArray());

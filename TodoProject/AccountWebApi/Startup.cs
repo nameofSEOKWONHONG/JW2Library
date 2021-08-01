@@ -56,7 +56,7 @@ namespace AccountWebApi {
                 });    
             });
 
-            var injectors = new XList<IServiceInjector>() {
+            var injectors = new List<IServiceInjector>() {
                 new AccountServiceInjector()
             };
             services.Load(injectors);

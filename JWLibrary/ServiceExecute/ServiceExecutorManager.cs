@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using eXtensionSharp;
 
@@ -7,7 +8,7 @@ namespace JWLibrary.ServiceExecutor
     public sealed class ServiceExecutorManager<TIService> : IDisposable
         where TIService : IServiceBase
     {
-        private readonly XList<Func<TIService, bool>> filters = new();
+        private readonly List<Func<TIService, bool>> filters = new();
         private bool disposed;
         private TIService service;
 

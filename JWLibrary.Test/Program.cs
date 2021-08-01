@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using eXtensionSharp;
 using JWLibrary.DI;
 using JWLibrary.ServiceExecutor;
@@ -25,7 +26,7 @@ namespace JCoreSvcTest {
 
             ServiceLocator.SetLocatorProvider(serviceProvider);
 
-            var request = new XList<WeatherForecastRequestDto> {
+            var request = new List<WeatherForecastRequestDto> {
                 new() {
                     ID = 2003
                 },
@@ -34,7 +35,7 @@ namespace JCoreSvcTest {
                 }
             };
 
-            var result = new XList<WEATHER_FORECAST>();
+            var result = new List<WEATHER_FORECAST>();
             using (var svc =
                 new BulkServiceExecutorManager<IGetWeatherForecastSvc, WeatherForecastRequestDto>(request)) {
                 svc.SetRequest((s, r) => s.Request = r)

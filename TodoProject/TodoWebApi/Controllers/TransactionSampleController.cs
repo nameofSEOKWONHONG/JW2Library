@@ -16,7 +16,7 @@ namespace TodoWebApi.Controllers {
 
         [HttpGet]
         public IEnumerable<TODO> GetSample1() {
-            return this.CreateService<ITransactionSampleSvc, bool, XList<TODO>>(_transactionSampleSvc, true);
+            return this.CreateService<ITransactionSampleSvc, bool, List<TODO>>(_transactionSampleSvc, true);
         }
     }
 }

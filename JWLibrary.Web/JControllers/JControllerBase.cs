@@ -91,7 +91,7 @@ namespace JWLibrary.Web {
         protected IEnumerable<TResult> CreateBulkService<TServiceExecutor, TRequest, TResult>(
             IEnumerable<TRequest> requests)
             where TServiceExecutor : IServiceExecutor<TRequest, TResult> {
-            var results = new XList<TResult>();
+            var results = new List<TResult>();
             using var bulkExecutor = new BulkServiceExecutorManager<TServiceExecutor, TRequest>(requests);
             bulkExecutor.SetRequest((o, c) => o.Request = c)
                 .OnExecuted(o => {

@@ -26,7 +26,7 @@ namespace JWLibrary.EF
     /// </summary>
     public class JDbSyncContext : IJDbSyncContext
     {
-        private readonly IList<DbContext> _destDbContexts = new XList<DbContext>();
+        private readonly IList<DbContext> _destDbContexts = new List<DbContext>();
         private bool _isRollback;
         private readonly DbContext _srcDbContext;
 

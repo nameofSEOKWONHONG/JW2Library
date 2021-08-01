@@ -73,7 +73,7 @@ namespace TodoWebApi {
             //injector를 변경해서 쓰는 것은 가능하지만 전체가 기본 시나리오에서 변경되므로
             //정말 필요할 경우 autofac등의 third party ioc 컨테이너를 써야 한다.
             //따라서 동적 로딩을 포기함.
-            var injectors = new XList<IServiceInjector>() {
+            var injectors = new List<IServiceInjector>() {
                 new TodoServiceInjector()
             };
             services.Load(injectors);

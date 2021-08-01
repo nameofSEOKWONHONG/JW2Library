@@ -26,7 +26,7 @@ namespace JWLibrary.Database
             var tbAlias = predicate.Parameters.Last().Name;
 
             dynamic body = predicate.Body;
-            var memberlist = new XList<string>();
+            var memberlist = new List<string>();
             foreach (var arg in body.Arguments) memberlist.Add($"{arg.Expression.Name}.{arg.Member.Name}");
 
             var select = $"SELECT {string.Join(", ", memberlist)}";
@@ -48,7 +48,7 @@ namespace JWLibrary.Database
         private JSqlExpression<T> QuerySelectAll<T>() where T : class
         {
             var publics = typeof(T).GetProperties();
-            var columns = new XList<string>();
+            var columns = new List<string>();
             publics.xForEach(column => { columns.Add(column.Name); });
 
             var select = $"SELECT {string.Join(", ", columns)}";
@@ -66,13 +66,13 @@ namespace JWLibrary.Database
     public class JSqlExpression<T> where T : class
     {
         private string _from = string.Empty;
-        private XList<Expression> _list = new();
+        private List<Expression> _list = new();
         private string _on = string.Empty;
         private readonly int _parameterCnt = 1;
 
         private readonly Dictionary<string, SqlParameter> _parameters = new();
         private readonly string _select = string.Empty;
-        private readonly XList<string> _where = new();
+        private readonly List<string> _where = new();
 
 
         public JSqlExpression(string select, string from)
@@ -187,9 +187,9 @@ namespace JWLibrary.Database
     public class JSqlExpression<Ta, Tb> where Ta : class where Tb : class
     {
         private readonly string _from;
-        private readonly XList<string> _onAnds = new();
+        private readonly List<string> _onAnds = new();
         private readonly string _select;
-        private readonly XList<string> _wheres = new();
+        private readonly List<string> _wheres = new();
 
         public JSqlExpression(string select, string from)
         {

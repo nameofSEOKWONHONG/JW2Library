@@ -10,23 +10,23 @@ using TodoService.Data;
 
 namespace TodoService {
     
-    public class TransactionSampleSvc : ServiceExecutor<TransactionSampleSvc, bool, XList<TODO>>,
+    public class TransactionSampleSvc : ServiceExecutor<TransactionSampleSvc, bool, List<TODO>>,
         ITransactionSampleSvc {
         public override void Execute() {
-            this.Result = new XList<TODO>();
+            this.Result = new List<TODO>();
             var sql = "SELECT * FROM TODO";
 
             JDatabaseResolver.Resolve<SqlConnection>()
                 .BeginTran()
                 .DbExecute((c, t) =>
                 {
-                    this.Result.AddAll(c.ExecuteQuery<TODO>(sql, transaction: t));
+                    this.Result.AddRange(c.ExecuteQuery<TODO>(sql, transaction: t));
 
                     JDatabaseResolver.Resolve<MySqlConnection>()
                         .BeginTran()
                         .DbExecute((c1, t1) =>
                         {
-                            this.Result.AddAll(c1.ExecuteQuery<TODO>(sql, transaction: t1));
+                            this.Result.AddRange(c1.ExecuteQuery<TODO>(sql, transaction: t1));
                         });
                 });
         }

@@ -29,7 +29,7 @@ namespace JWLibrary.ServiceExecutor
         /// <param name="services"></param>
         public static void Load(this IServiceCollection services)
         {
-            var serviceRegisters = new XList<IServiceInjector>();
+            var serviceRegisters = new List<IServiceInjector>();
 
             foreach (var assemblyPath in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll",
                 SearchOption.AllDirectories))

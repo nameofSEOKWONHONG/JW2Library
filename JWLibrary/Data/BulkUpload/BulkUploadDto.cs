@@ -1,4 +1,5 @@
-﻿using eXtensionSharp;
+﻿using System.Collections.Generic;
+using eXtensionSharp;
 
 namespace JWLibrary
 {
@@ -8,6 +9,6 @@ namespace JWLibrary
         public T Data { get; set; }
         public bool IsValid { get; set; }
         public string ErrorMsg { get; set; }
-        public XHDictionary<string, object> Options { get; set; }
+        public Dictionary<string, object> Options { get; set; }
     }
 }

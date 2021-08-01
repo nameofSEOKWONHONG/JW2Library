@@ -29,7 +29,7 @@ namespace TodoService {
         
     }
 
-    public interface ITransactionSampleSvc : IServiceExecutor<bool, XList<TODO>> {
+    public interface ITransactionSampleSvc : IServiceExecutor<bool, List<TODO>> {
         
     }
     
