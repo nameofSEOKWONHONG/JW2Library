@@ -13,7 +13,7 @@ namespace JWLibrary.Database
 
         protected string ReadQueryJS(string javascriptFile)
         {
-            return javascriptFile.xFileReadLines().xJoin(CARRIAGE_RETURN);
+            return javascriptFile.xFileReadAllLines().xJoin(CARRIAGE_RETURN);
         }
     }
 }

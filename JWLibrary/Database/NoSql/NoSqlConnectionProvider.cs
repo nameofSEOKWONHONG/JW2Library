@@ -35,7 +35,7 @@ namespace JWLibrary.Database
                         {
                             _providerMaps = new Dictionary<string, string>();
                             var configFile = CONFIG_CONST.DATABASE_CONFIG_PATH;
-                            var configJson = configFile.xFileReadLine();
+                            var configJson = configFile.xFileReadAllText();
                             var jconfig = configJson.xToEntity<JConfig>();
                             _providerMaps.Add(ENUM_DATABASE_TYPE.REDIS.ToString(), jconfig.DatabaseProvider.REDIS);
                             _providerMaps.Add(ENUM_DATABASE_TYPE.MONGODB.ToString(), jconfig.DatabaseProvider.MONGODB);

@@ -30,7 +30,7 @@ namespace JConfiger {
             var dbProviderObj = new JDatabaseProviderConfig();
             if(settingText.ToUpper() == "SURFACE") {
                 dbProviderObj.MSSQL =
-                    "Data Source=192.168.137.245;Initial Catalog=testdb;User ID=sa;Password=1q2w3e4r!Q@W#E$R;".xToEncAES256(
+                        "Data Source=172.20.77.141;Initial Catalog=WORKERDB;User ID=sa;Password=1q2w3e4r!Q@W#E$R".xToEncAES256(
                         key, chiper, CipherMode.CBC, PaddingMode.PKCS7);
                 dbProviderObj.MYSQL = "Server=192.168.137.245;Port=3306;Database=testdb;Uid=admin;Pwd=1q2w3e4r!Q@W#E$R;".xToEncAES256(
                     key, chiper, CipherMode.CBC, PaddingMode.PKCS7);

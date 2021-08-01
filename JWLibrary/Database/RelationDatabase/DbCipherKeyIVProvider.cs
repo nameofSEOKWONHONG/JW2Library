@@ -24,7 +24,7 @@ namespace JWLibrary.Database
         {
             //setting key & iv, read file or http request
             var configFile = CONFIG_CONST.DATABASE_CONFIG_PATH;
-            var configJson = configFile.xFileReadLine();
+            var configJson = configFile.xFileReadAllText();
             var jconfig = configJson.xToEntity<JConfig>();
             return new ValueTuple<string, string>(jconfig.DatabaseProvider.KEY, jconfig.DatabaseProvider.CHIPER);
         }

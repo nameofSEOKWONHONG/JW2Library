@@ -55,7 +55,7 @@ namespace JWLibrary.Util
 
             var context = new Context();
             if (preaction.xIsNotNull()) preaction(context);
-            context.Eval(string.Join("\n", fileName.xFileReadLines()));
+            context.Eval(string.Join("\n", fileName.xFileReadAllLines()));
             if (endaction.xIsNotNull()) endaction(context);
         }
     }
